@@ -1,0 +1,147 @@
+# Build directories
+build/
+_build/
+cmake-build-*/
+install/
+.cmake/
+
+# Compiled files
+*.o
+*.obj
+*.so
+*.dylib
+*.dll
+*.a
+*.lib
+*.exe
+*.out
+*.app
+*.ptx
+*.cubin
+
+# CUDA specific
+*.i
+*.ii
+*.gpu
+*.ptx
+*.cubin
+*.fatbin
+*.fatbin.c
+*.module_id
+*.cpp*.ii
+*.cudafe*
+
+# CMake
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+compile_commands.json
+CTestTestfile.cmake
+Testing/
+DartConfiguration.tcl
+
+# IDE - Visual Studio
+.vs/
+*.sln
+*.vcxproj
+*.vcxproj.filters
+*.vcxproj.user
+*.pdb
+*.ilk
+*.exp
+ipch/
+*.aps
+*.ncb
+*.opensdf
+*.sdf
+*.cachefile
+*.VC.db
+*.VC.VC.opendb
+
+# IDE - VSCode
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+*.code-workspace
+
+# IDE - CLion
+.idea/
+*.iml
+*.iws
+.idea_modules/
+
+# Debugging
+*.dSYM/
+*.su
+*.idb
+*.pdb
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+.directory
+
+# Temporary files
+*.swp
+*.swo
+*~
+*.tmp
+*.bak
+
+# Python (for any scripts)
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+env/
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+*.egg-info/
+.installed.cfg
+*.egg
+
+# Documentation
+docs/_build/
+doxygen/
+
+# Coverage reports
+*.gcno
+*.gcda
+*.gcov
+coverage/
+
+# Logs and databases
+*.log
+*.sqlite
+*.db
+
+# Package files
+*.tar.gz
+*.zip
+*.7z
+*.rar
+
+# Prerequisites
+*.d
+
+# Generated source files
+version.hpp
+config.hpp
+*.gen.h
+*.gen.cpp
