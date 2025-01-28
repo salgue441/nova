@@ -1,0 +1,142 @@
+# File: .github/workflows/ci.yml
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  formatting:
+    name: Code Formatting
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install clang-format
+        run: sudo apt-get install -y clang-format
+
+      - name: Check formatting
+        run: |
+          find . -name '*.cpp' -o -name '*.hpp' -o -name '*.cu' -o -name '*.cuh' | \
+          xargs clang-format --dry-run --Werror
+
+  build:
+    name: ${{ matrix.config.name }}
+    runs-on: ${{ matrix.config.os }}
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {
+              name: "Ubuntu Latest GCC",
+              os: ubuntu-latest,
+              build_type: "Release",
+              cc: "gcc",
+              cxx: "g++",
+              cuda: false,
+            }
+          - {
+              name: "Ubuntu Latest GCC Debug",
+              os: ubuntu-latest,
+              build_type: "Debug",
+              cc: "gcc",
+              cxx: "g++",
+              cuda: false,
+            }
+          - {
+              name: "Ubuntu Latest Clang",
+              os: ubuntu-latest,
+              build_type: "Release",
+              cc: "clang",
+              cxx: "clang++",
+              cuda: false,
+            }
+          - {
+              name: "Ubuntu CUDA",
+              os: ubuntu-latest,
+              build_type: "Release",
+              cc: "gcc",
+              cxx: "g++",
+              cuda: true,
+            }
+
+    steps:
+      - uses: actions/checkout@v3
+        with:
+          submodules: recursive
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            libfmt-dev \
+            libgtest-dev
+
+      - name: Install CUDA
+        if: matrix.config.cuda
+        run: |
+          sudo apt-get install -y \
+            nvidia-cuda-toolkit \
+            nvidia-cuda-toolkit-gcc
+
+      - name: Configure CMake
+        run: |
+          cmake -B build \
+            -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} \
+            -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
+            -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
+            -DUSE_CUDA=${{ matrix.config.cuda }}
+
+      - name: Build
+        run: cmake --build build --config ${{ matrix.config.build_type }} -j $(nproc)
+
+      - name: Test
+        working-directory: build
+        run: ctest -C ${{ matrix.config.build_type }} --output-on-failure
+
+  coverage:
+    name: Code Coverage
+    needs: build
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            build-essential \
+            cmake \
+            libfmt-dev \
+            libgtest-dev \
+            lcov
+
+      - name: Configure CMake
+        run: |
+          cmake -B build \
+            -DCMAKE_BUILD_TYPE=Debug \
+            -DNOVA_ENABLE_COVERAGE=ON
+
+      - name: Build
+        run: cmake --build build -j $(nproc)
+
+      - name: Run tests
+        working-directory: build
+        run: ctest --output-on-failure
+
+      - name: Generate coverage report
+        run: |
+          lcov --capture --directory build --output-file coverage.info
+          lcov --remove coverage.info '/usr/*' --output-file coverage.info
+          lcov --list coverage.info
+
+      - name: Upload coverage report
+        uses: codecov/codecov-action@v3
+        with:
+          files: ./coverage.info
