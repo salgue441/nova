@@ -44,6 +44,17 @@ namespace brezel::core
     constexpr Shape() noexcept = default;
 
     /**
+     * @brief ContainerType constructor
+     *
+     * @param dims Dimensions of the shape
+     * @version 1.0.0
+     */
+    explicit Shape(container_type dims) : m_dims(std::move(dims))
+    {
+      validate_and_compute();
+    }
+
+    /**
      * @brief Iterator constructor for shape dimensions
      *
      * @tparam It Input iterator type for dimensions
@@ -172,15 +183,30 @@ namespace brezel::core
     [[nodiscard]] IndexType dim(size_type idx) const
     {
       if (idx >= ndim())
-      {
         BREZEL_THROW(fmt::format("Index {} out of bounds (max: {})",
-                                 idx, ndim()));
-      }
+                                 idx, ndim() - 1));
 
       return m_dims[idx];
     }
 
     // Element access
+    /**
+     * @brief At function for element access with bounds checking
+     *
+     * @param idx Index of the element
+     * @return IndexType Element at the given index
+     * @version 1.0.0
+     */
+    [[nodiscard]] IndexType at(size_type idx) const
+    {
+      if (idx >= ndim())
+        BREZEL_THROW(fmt::format(
+            "Index {} out of bounds (max: {})",
+            idx, ndim() - 1));
+
+      return m_dims[idx];
+    }
+
     /**
      * @brief Element access with bounds checking in debug mode
      *
@@ -188,11 +214,12 @@ namespace brezel::core
      * @return constexpr IndexType Element at the given index
      * @version 2.0.0
      */
-    [[nodiscard]] constexpr IndexType operator[](size_type idx) const noexcept
+    [[nodiscard]] const IndexType &operator[](size_type idx) const
     {
-      BREZEL_DEBUG_ONLY(
-          if (idx >= ndim()){
-              BREZEL_THROW("Index {} out of range (ndim = {})", idx, ndim())});
+      if (idx >= ndim())
+        BREZEL_THROW(fmt::format(
+            "Index {} out of bounds (max: {})",
+            idx, ndim() - 1));
 
       return m_dims[idx];
     }
@@ -371,28 +398,24 @@ namespace brezel::core
      * @return Broadcasted shape
      * @version 2.0.0
      */
-    template <typename OtherIndex>
-    static Shape broadcast_shapes(const Shape &a,
-                                  const Shape<OtherIndex> &b)
+    static Shape broadcast_shapes(const Shape &a, const Shape &b)
     {
-      BREZEL_CHECK(a.can_broadcast_with(b),
-                   "Cannot broadcast shapes with incompatible elements");
+      if (!a.can_broadcast_with(b))
+        BREZEL_THROW("Shapes are not broadcast compatible");
 
       const auto max_dims = std::max(a.ndim(), b.ndim());
       container_type new_dims;
-
       new_dims.reserve(max_dims);
+
       for (size_type i = 0; i < max_dims; ++i)
       {
-        const auto a_idx = a.ndim() - 1 - i;
-        const auto b_idx = b.ndim() - 1 - i;
+        const auto a_idx = i < a.ndim() ? i : max_dims;
+        const auto b_idx = i < b.ndim() ? i : max_dims;
 
-        const auto dim1 = a_idx < a.ndim() ? a.dim(a_idx) : 1;
-        const auto dim_b = b_idx < b.ndim()
-                               ? static_cast<IndexType>(b[b_idx])
-                               : 1;
+        const auto dim_a = a_idx < a.ndim() ? a[i] : 1;
+        const auto dim_b = b_idx < b.ndim() ? b[i] : 1;
 
-        new_dims.push_back(std::max(dim1, dim_b));
+        new_dims.push_back(std::max(dim_a, dim_b));
       }
 
       return Shape(std::move(new_dims));
