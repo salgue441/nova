@@ -1,6 +1,6 @@
-# NOVA
+# BREZEL
 
-NOVA is a modern, high-performance tensor computation framework written in C++20. It provides a flexible and intuitive API for building and training neural networks, with seamless support for both CPU and GPU acceleration.
+BREZEL is a modern, high-performance tensor computation framework written in C++20. It provides a flexible and intuitive API for building and training neural networks, with seamless support for both CPU and GPU acceleration.
 
 ## Features
 
@@ -15,35 +15,35 @@ NOVA is a modern, high-performance tensor computation framework written in C++20
 ## Quick Start
 
 ```cpp
-#include <nova/nova.hpp>
-namespace nv = nova;
+#include <brezel/brezel.hpp>
+namespace bz = brezel;
 
 int main() {
     // Create a tensor on CPU
-    auto x = nv::tensor::ones({2, 3});
+    auto x = bz::tensor::ones({2, 3});
 
     // Move to GPU if available
     x = x.cuda();
 
     // Basic operations
-    auto y = nv::sin(x) + nv::cos(x);
+    auto y = bz::sin(x) + bz::cos(x);
 
     // Create a simple neural network
-    auto model = nv::nn::Sequential({
-        nv::nn::Linear(784, 256),
-        nv::nn::ReLU(),
-        nv::nn::Linear(256, 10),
-        nv::nn::LogSoftmax()
+    auto model = bz::nn::Sequential({
+        bz::nn::Linear(784, 256),
+        bz::nn::ReLU(),
+        bz::nn::Linear(256, 10),
+        bz::nn::LogSoftmax()
     });
 
     // Training loop example
-    auto optimizer = nv::optim::Adam(model.parameters());
+    auto optimizer = bz::optim::Adam(model.parameters());
 
     for (const auto& batch : dataloader) {
         optimizer.zero_grad();
 
         auto output = model(batch.input);
-        auto loss = nv::nn::nll_loss(output, batch.target);
+        auto loss = bz::nn::nll_loss(output, batch.target);
 
         loss.backward();
         optimizer.step();
@@ -69,8 +69,8 @@ int main() {
 
 ```bash
 # Clone the repository
-git clone https://github.com/salgue441/nova.git
-cd nova
+git clone https://github.com/salgue441/brezel.git
+cd brezel
 
 # Create build directory
 mkdir build && cd build
@@ -91,13 +91,13 @@ cmake --build . --target docs
 ### Project Structure
 
 ```bash
-nova/
+brezel/
 ├── benchmarks/          # Performance benchmarks
 ├── cmake/              # CMake modules and utilities
 ├── docs/               # Documentation
 ├── examples/           # Example projects and notebooks
 ├── include/            # Public headers
-│   └── nova/
+│   └── brezel/
 │       ├── core/       # Core tensor operations
 │       ├── nn/         # Neural network modules
 │       ├── optim/      # Optimizers
@@ -109,7 +109,7 @@ nova/
 
 ## Documentation
 
-Comprehensive documentation is available at [https://salgue441.github.io/nova/](https://salgue441.github.io/nova/).
+Comprehensive documentation is available at [https://salgue441.github.io/brezel/](https://salgue441.github.io/brezel/).
 
 - API Reference
 - Tutorials

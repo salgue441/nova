@@ -75,58 +75,58 @@ namespace brezel::core
   // Error checking macros
 #define BREZEL_THROW(message)                                    \
   throw ::brezel::core::RuntimeError(::fmt::format("[{}:{}] {}", \
-                                                 __FILE__, __LINE__, message))
+                                                   __FILE__, __LINE__, message))
 
 #define BREZEL_CHECK(condition, message) \
-  do                                   \
-  {                                    \
-    if (!(condition))                  \
-    {                                  \
+  do                                     \
+  {                                      \
+    if (!(condition))                    \
+    {                                    \
       BREZEL_THROW(message);             \
-    }                                  \
+    }                                    \
   } while (0)
 
-#define BREZEL_CHECK_SHAPE(condition, message)                                \
-  do                                                                        \
-  {                                                                         \
-    if (!(condition))                                                       \
-    {                                                                       \
-      throw ::brezel::ShapeError(::fmt::format("[{}:{}] {}",                  \
-                                             __FILE__, __LINE__, message)); \
-    }                                                                       \
+#define BREZEL_CHECK_SHAPE(condition, message)                                      \
+  do                                                                                \
+  {                                                                                 \
+    if (!(condition))                                                               \
+    {                                                                               \
+      throw ::brezel::core::ShapeError(::fmt::format("[{}:{}] {}",                  \
+                                                     __FILE__, __LINE__, message)); \
+    }                                                                               \
   } while (0)
 
-#define BREZEL_CHECK_DEVICE(condition, message)                                \
-  do                                                                         \
-  {                                                                          \
-    if (!(condition))                                                        \
-    {                                                                        \
-      throw ::brezel::DeviceError(::fmt::format("[{}:{}] {}",                  \
-                                              __FILE__, __LINE__, message)); \
-    }                                                                        \
+#define BREZEL_CHECK_DEVICE(condition, message)                                      \
+  do                                                                                 \
+  {                                                                                  \
+    if (!(condition))                                                                \
+    {                                                                                \
+      throw ::brezel::core::DeviceError(::fmt::format("[{}:{}] {}",                  \
+                                                      __FILE__, __LINE__, message)); \
+    }                                                                                \
   } while (0)
 
-#define BREZEL_CHECK_MEMORY(condition, message)                                \
-  do                                                                         \
-  {                                                                          \
-    if (!(condition))                                                        \
-    {                                                                        \
-      throw ::brezel::MemoryError(::fmt::format("[{}:{}] {}",                  \
-                                              __FILE__, __LINE__, message)); \
-    }                                                                        \
+#define BREZEL_CHECK_MEMORY(condition, message)                                      \
+  do                                                                                 \
+  {                                                                                  \
+    if (!(condition))                                                                \
+    {                                                                                \
+      throw ::brezel::core::MemoryError(::fmt::format("[{}:{}] {}",                  \
+                                                      __FILE__, __LINE__, message)); \
+    }                                                                                \
   } while (0)
 
 // CUDA error checking
 #ifdef BREZEL_WITH_CUDA
-#define BREZEL_CUDA_CHECK(call)                                                                \
-  do                                                                                         \
-  {                                                                                          \
-    cudaError_t error = call;                                                                \
-    if (error != cudaSuccess)                                                                \
-    {                                                                                        \
-      throw ::brezel::CUDAError(::fmt::format("[{}:{}] CUDA error: {}",                        \
-                                            __FILE__, __LINE__, cudaGetErrorString(error))); \
-    }                                                                                        \
+#define BREZEL_CUDA_CHECK(call)                                                                      \
+  do                                                                                                 \
+  {                                                                                                  \
+    cudaError_t error = call;                                                                        \
+    if (error != cudaSuccess)                                                                        \
+    {                                                                                                \
+      throw ::brezel::core::CUDAError(::fmt::format("[{}:{}] CUDA error: {}",                        \
+                                                    __FILE__, __LINE__, cudaGetErrorString(error))); \
+    }                                                                                                \
   } while (0)
 #endif
 } // namespace brezel

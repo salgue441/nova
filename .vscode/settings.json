@@ -76,6 +76,10 @@
     "format": "cpp",
     "__nullptr": "cpp",
     "ranges": "cpp",
-    "target": "cpp"
+    "target": "cpp",
+    "source_location": "cpp",
+    "shared_mutex": "cpp",
+    "__mutex_base": "cpp",
+    "filesystem": "cpp"
   }
 }
