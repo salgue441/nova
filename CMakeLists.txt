@@ -1,5 +1,11 @@
 cmake_minimum_required(VERSION 3.20)
 
+# Set up vcpkg before project()
+if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
+  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+    CACHE STRING "")
+endif()
+
 # First check if CUDA is available
 include(CheckLanguage)
 check_language(CUDA)
@@ -13,7 +19,6 @@ endif()
 
 # Add cmake modules path
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
-include(Dependencies)
 include(Functions)
 
 # Build options
@@ -33,15 +38,16 @@ if(USE_CUDA AND NOT CMAKE_CUDA_COMPILER)
   set(USE_CUDA OFF)
 endif()
 
-# Dependencies
+# Find dependencies using vcpkg
 find_package(Threads REQUIRED)
+find_package(fmt CONFIG REQUIRED)
 
 if(USE_CUDA)
   find_package(CUDAToolkit REQUIRED)
 endif()
 
 if(BUILD_TESTING)
-  find_package(GTest REQUIRED)
+  find_package(GTest CONFIG REQUIRED)
 endif()
 
 # Components
@@ -63,4 +69,5 @@ message(STATUS "  Build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "  CUDA support: ${USE_CUDA}")
 message(STATUS "  Testing enabled: ${BUILD_TESTING}")
 message(STATUS "  Examples enabled: ${BUILD_EXAMPLES}")
+message(STATUS "  Using vcpkg toolchain: ${CMAKE_TOOLCHAIN_FILE}")
 message(STATUS "")

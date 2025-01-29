@@ -1,19 +1,32 @@
+# cmake/Dependencies.cmake
 include(FetchContent)
 
-# Common function for handling dependencies
-function(nova_handle_dependency NAME VERSION REPOSITORY TAG)
-  string(TOLOWER ${NAME} NAME_LOWER)
+# Development dependencies
+if(BUILD_TESTING)
+  # Try to find system GTest first
+  find_package(GTest QUIET)
 
-  if(NOT TARGET ${NAME}::${NAME} AND NOT TARGET ${NAME})
-    message(STATUS "Fetching ${NAME} ${VERSION} from ${REPOSITORY}")
+  if(NOT GTest_FOUND)
+    message(STATUS "System GTest not found, building from source")
     FetchContent_Declare(
-      ${NAME_LOWER}
-      GIT_REPOSITORY ${REPOSITORY}
-      GIT_TAG ${TAG}
+      googletest
+      GIT_REPOSITORY https://github.com/google/googletest.git
+      GIT_TAG v1.14.0
     )
-    FetchContent_MakeAvailable(${NAME_LOWER})
+
+    # For Windows: Prevent overriding the parent project's compiler/linker settings
+    set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+    FetchContent_MakeAvailable(googletest)
+
+    # Create aliases if they don't exist
+    if(NOT TARGET GTest::gtest)
+      add_library(GTest::gtest ALIAS gtest)
+      add_library(GTest::gtest_main ALIAS gtest_main)
+      add_library(GTest::gmock ALIAS gmock)
+      add_library(GTest::gmock_main ALIAS gmock_main)
+    endif()
   endif()
-endfunction()
+endif()
 
 # Required dependencies
 find_package(Threads REQUIRED)
@@ -25,19 +38,7 @@ if(USE_CUDA)
   find_package(CUDAToolkit REQUIRED)
 endif()
 
-# Development dependencies
-if(BUILD_TESTING)
-  # Google Test
-  nova_handle_dependency(
-    GTest
-    "1.12.1"
-    "https://github.com/google/googletest.git"
-    "release-1.12.1"
-  )
-endif()
-
 if(BUILD_BENCHMARKS)
-  # Google Benchmark
   nova_handle_dependency(
     benchmark
     "1.8.0"

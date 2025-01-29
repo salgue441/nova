@@ -25,3 +25,32 @@ function(nova_add_target target_name)
     )
   endif()
 endfunction()
+
+function(nova_add_test test_name)
+  cmake_parse_arguments(TEST "" "" "SOURCES;DEPENDS" ${ARGN})
+
+  add_executable(${test_name} ${TEST_SOURCES})
+  target_link_libraries(${test_name} PRIVATE
+    ${TEST_DEPENDS}
+    GTest::gtest
+    GTest::gtest_main
+    Threads::Threads
+  )
+
+  add_test(
+    NAME ${test_name}
+    COMMAND ${test_name}
+    WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
+  )
+
+  if(USE_CUDA)
+    set_target_properties(${test_name} PROPERTIES
+      CUDA_SEPARABLE_COMPILATION ON
+    )
+  endif()
+
+  # Add include directories
+  target_include_directories(${test_name} PRIVATE
+    ${CMAKE_SOURCE_DIR}/include
+  )
+endfunction()
