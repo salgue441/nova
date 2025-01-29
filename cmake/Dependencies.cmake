@@ -1,6 +1,32 @@
 # cmake/Dependencies.cmake
 include(FetchContent)
 
+# Function to handle external dependencies
+function(nova_handle_dependency NAME VERSION REPO TAG)
+  FetchContent_Declare(
+    ${NAME}
+    GIT_REPOSITORY ${REPO}
+    GIT_TAG ${TAG}
+  )
+  FetchContent_MakeAvailable(${NAME})
+endfunction()
+
+# Boost
+set(BOOST_MIN_VERSION "1.80.0")
+find_package(Boost ${BOOST_MIN_VERSION} COMPONENTS container)
+if(NOT Boost_FOUND)
+  message(STATUS "System Boost not found, building from source")
+  set(BOOST_INCLUDE_LIBRARIES container)
+  set(BOOST_ENABLE_CMAKE ON)
+  
+  nova_handle_dependency(
+    boost
+    ${BOOST_MIN_VERSION}
+    "https://github.com/boostorg/boost.git"
+    "boost-${BOOST_MIN_VERSION}"
+  )
+endif()
+
 # Development dependencies
 if(BUILD_TESTING)
   # Try to find system GTest first
@@ -8,15 +34,15 @@ if(BUILD_TESTING)
 
   if(NOT GTest_FOUND)
     message(STATUS "System GTest not found, building from source")
-    FetchContent_Declare(
+    nova_handle_dependency(
       googletest
-      GIT_REPOSITORY https://github.com/google/googletest.git
-      GIT_TAG v1.14.0
+      "1.14.0"
+      "https://github.com/google/googletest.git"
+      "v1.14.0"
     )
 
     # For Windows: Prevent overriding the parent project's compiler/linker settings
     set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-    FetchContent_MakeAvailable(googletest)
 
     # Create aliases if they don't exist
     if(NOT TARGET GTest::gtest)

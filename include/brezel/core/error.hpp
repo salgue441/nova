@@ -1,18 +1,18 @@
 #pragma once
 
-#include "nova/core/macros.hpp"
+#include <brezel/core/macros.hpp>
 #include <stdexcept>
 #include <string>
 #include <fmt/format.h>
 
-namespace nova::core
+namespace brezel::core
 {
   /**
-   * @class NOVA_API
-   * @brief Base class for all NOVA exceptions
+   * @class BREZEL_API
+   * @brief Base class for all brezel exceptions
    *
    */
-  class NOVA_API Exception : public std::runtime_error
+  class BREZEL_API Exception : public std::runtime_error
   {
   public:
     explicit Exception(const std::string &message)
@@ -30,7 +30,7 @@ namespace nova::core
   /**
    * @brief Exception for runtime errors
    */
-  class NOVA_API RuntimeError : public Exception
+  class BREZEL_API RuntimeError : public Exception
   {
   public:
     explicit RuntimeError(const std::string &message) : Exception(message) {}
@@ -39,7 +39,7 @@ namespace nova::core
   /**
    * @brief Exception for shape mismatches
    */
-  class NOVA_API ShapeError : public Exception
+  class BREZEL_API ShapeError : public Exception
   {
   public:
     explicit ShapeError(const std::string &message) : Exception(message) {}
@@ -48,7 +48,7 @@ namespace nova::core
   /**
    * @brief Exception for device-related errors
    */
-  class NOVA_API DeviceError : public Exception
+  class BREZEL_API DeviceError : public Exception
   {
   public:
     explicit DeviceError(const std::string &message) : Exception(message) {}
@@ -57,7 +57,7 @@ namespace nova::core
   /**
    * @brief Exception for memory-related errors
    */
-  class NOVA_API MemoryError : public Exception
+  class BREZEL_API MemoryError : public Exception
   {
   public:
     explicit MemoryError(const std::string &message) : Exception(message) {}
@@ -66,67 +66,67 @@ namespace nova::core
   /**
    * @brief Exception for CUDA-related errors
    */
-  class NOVA_API CUDAError : public Exception
+  class BREZEL_API CUDAError : public Exception
   {
   public:
     explicit CUDAError(const std::string &message) : Exception(message) {}
   };
 
   // Error checking macros
-#define NOVA_THROW(message)                              \
-  throw ::nova::RuntimeError(::fmt::format("[{}:{}] {}", \
-                                           __FILE__, __LINE__, message))
+#define BREZEL_THROW(message)                                    \
+  throw ::brezel::core::RuntimeError(::fmt::format("[{}:{}] {}", \
+                                                 __FILE__, __LINE__, message))
 
-#define NOVA_CHECK(condition, message) \
+#define BREZEL_CHECK(condition, message) \
   do                                   \
   {                                    \
     if (!(condition))                  \
     {                                  \
-      NOVA_THROW(message);             \
+      BREZEL_THROW(message);             \
     }                                  \
   } while (0)
 
-#define NOVA_CHECK_SHAPE(condition, message)                                \
+#define BREZEL_CHECK_SHAPE(condition, message)                                \
   do                                                                        \
   {                                                                         \
     if (!(condition))                                                       \
     {                                                                       \
-      throw ::nova::ShapeError(::fmt::format("[{}:{}] {}",                  \
+      throw ::brezel::ShapeError(::fmt::format("[{}:{}] {}",                  \
                                              __FILE__, __LINE__, message)); \
     }                                                                       \
   } while (0)
 
-#define NOVA_CHECK_DEVICE(condition, message)                                \
+#define BREZEL_CHECK_DEVICE(condition, message)                                \
   do                                                                         \
   {                                                                          \
     if (!(condition))                                                        \
     {                                                                        \
-      throw ::nova::DeviceError(::fmt::format("[{}:{}] {}",                  \
+      throw ::brezel::DeviceError(::fmt::format("[{}:{}] {}",                  \
                                               __FILE__, __LINE__, message)); \
     }                                                                        \
   } while (0)
 
-#define NOVA_CHECK_MEMORY(condition, message)                                \
+#define BREZEL_CHECK_MEMORY(condition, message)                                \
   do                                                                         \
   {                                                                          \
     if (!(condition))                                                        \
     {                                                                        \
-      throw ::nova::MemoryError(::fmt::format("[{}:{}] {}",                  \
+      throw ::brezel::MemoryError(::fmt::format("[{}:{}] {}",                  \
                                               __FILE__, __LINE__, message)); \
     }                                                                        \
   } while (0)
 
 // CUDA error checking
-#ifdef NOVA_WITH_CUDA
-#define NOVA_CUDA_CHECK(call)                                                                \
+#ifdef BREZEL_WITH_CUDA
+#define BREZEL_CUDA_CHECK(call)                                                                \
   do                                                                                         \
   {                                                                                          \
     cudaError_t error = call;                                                                \
     if (error != cudaSuccess)                                                                \
     {                                                                                        \
-      throw ::nova::CUDAError(::fmt::format("[{}:{}] CUDA error: {}",                        \
+      throw ::brezel::CUDAError(::fmt::format("[{}:{}] CUDA error: {}",                        \
                                             __FILE__, __LINE__, cudaGetErrorString(error))); \
     }                                                                                        \
   } while (0)
 #endif
-} // namespace nova
+} // namespace brezel

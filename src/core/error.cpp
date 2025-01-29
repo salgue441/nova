@@ -1,6 +1,6 @@
-#include <nova/core/error.hpp>
+#include <brezel/core/error.hpp>
 
-namespace nova::core
+namespace brezel::core
 {
   namespace detail
   {
@@ -35,7 +35,7 @@ namespace nova::core
     }
   } // namespace detail
 
-#ifdef NOVA_WITH_CUDA
+#ifdef BREZEL_WITH_CUDA
   namespace cuda
   {
     /**
