@@ -1,53 +1,32 @@
 cmake_minimum_required(VERSION 3.20)
 
-# Set up vcpkg before project()
+# Setup vcpkg if available
 if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
   set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-    CACHE STRING "")
+    CACHE STRING "Vcpkg toolchain file")
 endif()
 
-# First check if CUDA is available
+# Check for CUDA availability
 include(CheckLanguage)
 check_language(CUDA)
 
-# Initialize project with conditionally enabled CUDA
+# Project initialization (CUDA conditional)
 if(CMAKE_CUDA_COMPILER)
-  project(Nova VERSION 0.1.0 LANGUAGES CXX CUDA)
+  project(Brezel VERSION 0.1.0 LANGUAGES CXX CUDA)
 else()
-  project(Nova VERSION 0.1.0 LANGUAGES CXX)
+  project(Brezel VERSION 0.1.0 LANGUAGES CXX)
 endif()
 
-# Add cmake modules path
+# Cmake modules
 list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
+include(Options)
 include(Functions)
+include(Dependencies)
 
-# Build options
-option(BUILD_TESTING "Build tests" ON)
-option(BUILD_EXAMPLES "Build examples" ON)
-option(USE_CUDA "Enable CUDA support" OFF)
-
-# Global settings
-set(CMAKE_CXX_STANDARD 20)
-set(CMAKE_CXX_STANDARD_REQUIRED ON)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
-set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-
-# Validate CUDA option
+# Validate CUDA Settings
 if(USE_CUDA AND NOT CMAKE_CUDA_COMPILER)
-  message(WARNING "CUDA support requested but no CUDA compiler found. Disabling CUDA support.")
+  message(WARNING "CUDA support requested but CUDA compiler not found. Disabling CUDA support.")
   set(USE_CUDA OFF)
-endif()
-
-# Find dependencies using vcpkg
-find_package(Threads REQUIRED)
-find_package(fmt CONFIG REQUIRED)
-
-if(USE_CUDA)
-  find_package(CUDAToolkit REQUIRED)
-endif()
-
-if(BUILD_TESTING)
-  find_package(GTest CONFIG REQUIRED)
 endif()
 
 # Components
@@ -58,16 +37,10 @@ if(BUILD_TESTING)
   add_subdirectory(tests)
 endif()
 
-# if(BUILD_EXAMPLES)
-# add_subdirectory(examples)
-# endif()
-
-# Print configuration summary
-message(STATUS "")
-message(STATUS "Nova Configuration:")
+# Configuration summary
+message(STATUS "\nNova Configuration:")
 message(STATUS "  Build type: ${CMAKE_BUILD_TYPE}")
 message(STATUS "  CUDA support: ${USE_CUDA}")
 message(STATUS "  Testing enabled: ${BUILD_TESTING}")
 message(STATUS "  Examples enabled: ${BUILD_EXAMPLES}")
-message(STATUS "  Using vcpkg toolchain: ${CMAKE_TOOLCHAIN_FILE}")
-message(STATUS "")
+message(STATUS "  Using vcpkg toolchain: ${CMAKE_TOOLCHAIN_FILE}\n")

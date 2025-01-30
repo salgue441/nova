@@ -1,51 +1,55 @@
 #!/bin/bash
-set -e
 
-# Default values
+# Set exit on any error and error pipeline cache
+set -e
+set -o pipefail
+
 BUILD_DIR="build"
-BINARY=""
+EXECUTABLE=""
+ARGS=""
 
 # Help message
-show_help() {
-  echo "Usage: $0 [options] binary_name [binary_args]"
-  echo "Options:"
-  echo "  -h, --help            Show this help message"
-  echo "  -b, --build-dir DIR   Build directory"
+usage() {
+  echo "Usage: $0 -e EXECUTABLE [-b BUILD_DIR] [-- ARGS...]"
+  echo "  -e EXECUTABLE  Name of the executable to run (required)"
+  echo "  -b BUILD_DIR   Set the build directory (default: 'build')"
+  echo "  -- ARGS...     Additional arguments to pass to the executable"
+  exit 1
 }
 
-# Parse arguments
-while [[ $# -gt 0 ]]; do
-  case $1 in
-  -h | --help)
-    show_help
-    exit 0
-    ;;
-  -b | --build-dir)
-    BUILD_DIR="$2"
-    shift 2
-    ;;
-  *)
-    BINARY="$1"
-    shift
-    BINARY_ARGS="$@"
-    break
-    ;;
+# Parse command-line arguments
+while getopts "e:b:h" opt; do
+  case ${opt} in
+  e) EXECUTABLE="$OPTARG" ;;
+  b) BUILD_DIR="$OPTARG" ;;
+  h) usage ;;
+  *) usage ;;
   esac
 done
 
-# Check binary name
-if [ -z "${BINARY}" ]; then
-  echo "Error: No binary specified"
-  show_help
+# Shift to positional arguments (executable arguments)
+shift $((OPTIND - 1))
+ARGS="$@"
+
+# Ensure executable is provided
+if [ -z "$EXECUTABLE" ]; then
+  echo "Error: No executable specified."
+  usage
+fi
+
+# Ensure build directory exists
+if [ ! -d "$BUILD_DIR" ]; then
+  echo "Error: Build directory '$BUILD_DIR' does not exist. Run './build.sh' first."
   exit 1
 fi
 
-# Check build directory
-if [ ! -d "${BUILD_DIR}" ]; then
-  echo "Error: Build directory not found"
-  echo "Please run build.sh first"
+# Check if executable exists
+EXEC_PATH="$BUILD_DIR/$EXECUTABLE"
+if [ ! -f "$EXEC_PATH" ]; then
+  echo "Error: Executable '$EXEC_PATH' not found."
   exit 1
 fi
 
-# Run binary
-"${BUILD_DIR}/bin/${BINARY}" ${BINARY_ARGS}
+# Run executable
+echo "Running '$EXECUTABLE' with arguments: $ARGS"
+"$EXEC_PATH" $ARGS

@@ -5,7 +5,7 @@ add_executable(shape_tests
 
 target_link_libraries(shape_tests
   PRIVATE
-  nova_core
+  brezel_core
   GTest::gtest
   GTest::gtest_main
   fmt::fmt
