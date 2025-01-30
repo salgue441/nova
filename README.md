@@ -5,7 +5,7 @@ BREZEL is a modern, high-performance tensor computation framework written in C++
 ## Features
 
 - **Modern C++ Design**: Built using C++20 features for improved performance and developer experience.
-- **Hardware Acceleration**: Seamless CPU and CUDA AGPU support with unified API.
+- **Hardware Acceleration**: Seamless CPU and CUDA GPU support with unified API.
 - **Automatic Differentiation**: Dynamic computational graph with reverse-mode automatic differentiation.
 - **Neural Network API**: High-level modules for quick model prototyping and training.
 - **Performance**: Optimized tensor operations with SIMD and thread pooling.
@@ -64,6 +64,7 @@ int main() {
 - Google Benchmark (for benchmarking)
 - fmt library
 - Doxygen (for documentation)
+- Ninja build system (optional, recommended)
 
 ### Build instructions
 
@@ -72,21 +73,30 @@ int main() {
 git clone https://github.com/salgue441/brezel.git
 cd brezel
 
-# Create build directory
-mkdir build && cd build
+# Basic build
+./scripts/build.sh
 
-# Configure with CMake
-cmake -DCMAKE_BUILD_TYPE=Release ..
+# Debug build with CUDA support
+./scripts/build.sh -t Debug -g
 
-# Build
-cmake --build . --config Release -j8
+# Release build with all features
+./scripts/build.sh -t Release -g -b -d -l -j 8 --prefix /usr/local
 
-# Run tests
-ctest --output-on-failure
-
-# Generate documentation
-cmake --build . --target docs
+# Show all build options
+./scripts/build.sh --help
 ```
+
+### Available Build Options
+
+- `-t, --type`: Build type (Debug|Release|RelWithDebInfo) [default: Release]
+- `-c, --clean`: Clean build directory before building
+- `-g, --cuda`: Enable CUDA support
+- `-j, --jobs`: Number of parallel jobs
+- `-p, --prefix`: Installation prefix
+- `-b, --benchmarks`: Enable benchmarks build
+- `-d, --docs`: Enable documentation build
+- `-s, --sanitizer`: Enable sanitizer instrumentation
+- `-l, --lto`: Enable Link Time Optimization
 
 ### Project Structure
 
@@ -102,9 +112,60 @@ brezel/
 │       ├── nn/         # Neural network modules
 │       ├── optim/      # Optimizers
 │       └── cuda/       # CUDA operations
+├── scripts/           # Build and utility scripts
 ├── src/               # Implementation files
 ├── tests/             # Test suite
 └── tools/             # Development tools
+```
+
+## Development
+
+### Code Formatting
+
+The project uses clang-format for code formatting. To format your code:
+
+```bash
+# Format all source files
+./scripts/format.sh
+
+# Check formatting without making changes
+./scripts/format.sh -c
+
+# Format specific files or directories
+./scripts/format.sh src/ include/
+```
+
+### Testing
+
+The project uses Google Test for unit testing and integration testing. Tests can be run using:
+
+```bash
+# Run all tests
+./scripts/test.sh
+
+# Run only unit tests
+./scripts/test.sh -t unit
+
+# Run tests matching pattern
+./scripts/test.sh -f "TensorTest*"
+
+# Run with code coverage report
+./scripts/test.sh -c
+```
+
+### Running Examples and Benchmarks
+
+To run examples and benchmarks:
+
+```bash
+# Run a specific example
+./scripts/run.sh examples/basic_tensor
+
+# Run with arguments
+./scripts/run.sh examples/neural_net -- --input data.txt --epochs 100
+
+# Run benchmarks with profiling
+./scripts/run.sh -p benchmarks/tensor_ops
 ```
 
 ## Documentation
@@ -117,28 +178,6 @@ Comprehensive documentation is available at [https://salgue441.github.io/brezel/
 - Performance Guide
 - Contributing Guidelines
 
-## Testing
-
-The project uses Google Test for unit testing and integration testing. Tests are organized by component:
-
-```bash
-./bin/nova_tests
-
-# Specific test suite
-./bin/nova_tests --gtest_filter="TensorTest.*"
-```
-
-## Benchmarks
-
-Performance benchmarks are implemented using Google Benchmark:
-
-```bash
-./bin/nova_benchmarks
-
-# Specific benchmark
-./bin/nova_benchmarks --benchmark_filter="TensorOps"
-```
-
 ## License
 
 This project is licensed under MIT License - see the [LICENSE](LICENSE) file for details.
@@ -146,5 +185,5 @@ This project is licensed under MIT License - see the [LICENSE](LICENSE) file for
 ## Acknowledgements
 
 - The CUDA integration is inspired by PyTorch's ATen library.
-- Testing infrastucture is based on Google Test and Google Benchmark.
+- Testing infrastructure is based on Google Test and Google Benchmark.
 - Performance optimizations are based on Eigen and TensorFlow.
