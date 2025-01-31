@@ -2,55 +2,44 @@
 
 #include <tbb/concurrent_unordered_map.h>
 
-#include <boost/container/flat_map.hpp>
 #include <boost/container/small_vector.hpp>
+#include <boost/smart_ptr/atomic_shared_ptr.hpp>
+#include <brezel/core/error/error_category.hpp>
 #include <brezel/core/macros.hpp>
 #include <compare>
 #include <memory>
 #include <source_location>
-#include <string>
-
-#include "error_category.hpp"
 
 namespace brezel::core::error {
 /**
- * @brief Error code class combining error value and category
+ * @brief Represents error codes with associated context and category
+ * information
  *
- * @details Thread-safe error code class with efficient storage
- * and caching of error messages. Supports comparison, hashing,
- * and provides rich context information
+ * @details Provides efficient, thread-safe error handling with message
+ * caching, contextual information storage, and comparison operations.
  */
 class BREZEL_API ErrorCode {
 public:
-    /// @brief Additional context for error code
+    /// @brief Context information for an error code
     struct Context {
         boost::container::small_vector<std::string, 2> notes;
         std::source_location location;
     };
 
-    /**
-     * @brief Default constructor creates a success error code
-     */
-    BREZEL_NODISCARD constexpr ErrorCode() noexcept
-        : m_code(0), m_category(&LogicCategory::instance()) {}
-
-    /**
-     * @brief Copy constructor
-     *
-     */
-    BREZEL_NODISCARD ErrorCode(const ErrorCode& other) noexcept
+    /// @brief Default constructor creates a success (0) error code
+    BREZEL_NODISCARD constexpr ErrorCode() noexcept = default;
+    constexpr ErrorCode(const ErrorCode& other) noexcept
         : m_code(other.m_code), m_category(other.m_category) {
         if (other.m_context)
             m_context = std::make_unique<Context>(*other.m_context);
     }
 
-    /**
-     * @brief Move constructor
-     */
-    BREZEL_NODISCARD ErrorCode(ErrorCode&& othher) noexcept = default;
+    ErrorCode& operator=(const ErrorCode& other) noexcept = default;
+    ErrorCode(ErrorCode&& other) noexcept = default;
+    ErrorCode& operator=(ErrorCode&& other) noexcept = default;
 
     /**
-     * @brief Construct from error code and category
+     * @brief Constructs error code with specified value and category
      *
      * @param code Numeric error code
      * @param category Error category
@@ -60,7 +49,7 @@ public:
         : m_code(code), m_category(&category) {}
 
     /**
-     * @brief Construct from runtime category code
+     * @brief Constructs from runtime category code
      *
      * @param code Runtime error code
      */
@@ -69,7 +58,7 @@ public:
           m_category(&RuntimeCategory::instance()) {}
 
     /**
-     * @brief Construct from logic category code
+     * @brief Constructs from logic category code
      *
      * @param code Logic error code
      */
@@ -77,66 +66,62 @@ public:
         : m_code(static_cast<int>(code)),
           m_category(&LogicCategory::instance()) {}
 
-    /**
-     * @brief Construct from optional error code
-     *
-     * @param opt Optional error code
-     */
-    BREZEL_NODISCARD explicit ErrorCode(
-        const std::optional<ErrorCode>& opt) noexcept
-        : ErrorCode(opt.value_or(ErrorCode{})) {}
-
     // Access methods
     /**
-     * @brief Get the error value
+     * @brief Gets the numeric error value
      *
-     * @return Numeric error value
+     * @return Error code value
      */
-    BREZEL_NODISCARD constexpr int value() const noexcept { return m_code; }
+    BREZEL_NODISCARD BREZEL_FORCE_INLINE constexpr int value() const noexcept {
+        return m_code;
+    }
 
     /**
-     * @brief Get the error category
+     * @brief Gets the error category
      *
-     * @return Reference to the error category
+     * @return Reference to error category
      */
-    BREZEL_NODISCARD constexpr const ErrorCategory& category() const noexcept {
+    BREZEL_NODISCARD BREZEL_FORCE_INLINE constexpr const ErrorCategory&
+    category() const noexcept {
         return *m_category;
+    }
+
+    /**
+     * @brief Gets error context if available
+     *
+     * @return Pointer to context or nullptr
+     */
+    BREZEL_NODISCARD BREZEL_FORCE_INLINE const Context* context()
+        const noexcept {
+        return m_context.get();
     }
 
     // Methods
     /**
-     * @brief Get the error message with optional caching
+     * @brief Gets cached error message
      *
-     * @return Error message string
+     * @return Reference to error message
      */
-    BREZEL_NODISCARD std::string message() const {
+    BREZEL_NODISCARD const std::string& message() const {
         auto it = s_messages_cache.find(m_code);
-        if (it != s_messages_cache.end())
+        if (BREZEL_PREDICT_TRUE(it != s_messages_cache.end()))
             return it->second;
 
-        auto msg = category().message(value());
-        s_messages_cache.insert({m_code, msg});
+        auto [it_new, _] =
+            s_messages_cache.insert({m_code, category().message(value())});
 
-        return msg;
+        return it_new->second;
     }
 
     /**
-     * @brief Check if the error code represent success
+     * @brief Adds contextual information to error
      *
-     * @return true if the error code is non-zero
+     * @param note Additional note
+     * @param location Source location
      */
-    BREZEL_NODISCARD constexpr explicit operator bool() const noexcept {
-        return value() != 0;
-    }
-
-    /**
-     * @brief Add context information to the error code
-     *
-     * @param note Additional note about the error
-     * @param location Source location (defaults to current)
-     */
-    void add_context(std::string note, const std::source_location& location =
-                                           std::source_location::current()) {
+    BREZEL_HOT void add_context(std::string note,
+                                const std::source_location& location =
+                                    std::source_location::current()) {
         if (!m_context)
             m_context = std::make_unique<Context>();
 
@@ -144,21 +129,19 @@ public:
         m_context->location = location;
     }
 
-    /**
-     * @brief Get the current context if available
-     *
-     * @return Optional reference to the error context
-     */
-    BREZEL_NODISCARD const Context* context() const noexcept {
-        return m_context.get();
-    }
-
     // Operators
     /**
-     * @brief Three-way comparison operator
+     * @brief Checks if error code represents an error
      *
-     * @param other Error code to compare with
-     * @return Comparison result
+     * @return true if error code is non-zero
+     */
+    BREZEL_NODISCARD BREZEL_FORCE_INLINE constexpr explicit operator bool()
+        const noexcept {
+        return value() != 0;
+    }
+
+    /**
+     * @brief Three-way comparison operator
      */
     BREZEL_NODISCARD constexpr auto operator<=>(
         const ErrorCode& other) const noexcept {
@@ -169,129 +152,79 @@ public:
     }
 
     /**
-     * @brief Equality comparison operator
+     * @brief Equality operator
      *
-     * @param other Error code to compare with
-     * @return true if error codes are equal
+     * @param other Other ErrorCode to check
      */
     BREZEL_NODISCARD constexpr bool operator==(
         const ErrorCode& other) const noexcept {
         return *this <=> other == 0;
     }
 
-    /**
-     * @brief Copy assignment operator
-     */
-    BREZEL_NODISCARD ErrorCode& operator=(const ErrorCode& other) noexcept {
-        if (this != &other) {
-            m_code = other.m_code;
-            m_category = other.m_category;
-
-            if (other.m_context)
-                m_context = std::make_unique<Context>(*other.m_context);
-
-            else
-                m_context.reset();
-        }
-
-        return *this;
-    }
-
-    /**
-     * @brief Move assignment operator
-     */
-    ErrorCode& operator=(ErrorCode&& other) noexcept = default;
-
 private:
-    int m_code;
-    const ErrorCategory* m_category;
+    BREZEL_ALIGN_CACHE int m_code{0};
+    BREZEL_ALIGN_CACHE const ErrorCategory* m_category{
+        &LogicCategory::instance()};
     std::unique_ptr<Context> m_context;
 
     static inline tbb::concurrent_unordered_map<int, std::string>
         s_messages_cache;
 };
 
-// Helper functions to create error code
 /**
- * @brief Create a runtime error code
+ * @brief Creates runtime error code
  *
  * @param code Runtime error code
- * @return Error code instance
+ * @return ErrorCode instance
  */
-BREZEL_NODISCARD inline ErrorCode make_error_code(
-    RuntimeCategory::Code code) noexcept {
+BREZEL_NODISCARD BREZEL_FORCE_INLINE ErrorCode
+make_error_code(RuntimeCategory::Code code) noexcept {
     return ErrorCode{code};
 }
 
 /**
- * @brief Create a logic error code
+ * @brief Creates logic error code
  *
  * @param code Logic error code
- * @return Error code instance
+ * @return ErrorCode instance
  */
-BREZEL_NODISCARD inline ErrorCode make_error_code(
-    LogicCategory::Code code) noexcept {
+BREZEL_NODISCARD BREZEL_FORCE_INLINE ErrorCode
+make_error_code(LogicCategory::Code code) noexcept {
     return ErrorCode{code};
 }
 
 /**
- * @brief Creates an error code with custom category
+ * @brief Creates error code with custom category
  *
- * @param code Numeric error code
+ * @param code Error code value
  * @param category Error category
- * @return Error code instance
+ * @return ErrorCode instance
  */
-BREZEL_NODISCARD inline ErrorCode make_error_code(
-    int code, const ErrorCategory& category) noexcept {
+BREZEL_NODISCARD BREZEL_FORCE_INLINE ErrorCode
+make_error_code(int code, const ErrorCategory& category) noexcept {
     return ErrorCode{code, category};
 }
 
 /**
- * @brief Creates a system error code
+ * @brief Creates system error code
  *
  * @param error_code System error code
- * @return Error code instance
+ * @return ErrorCode instance
  */
-BREZEL_NODISCARD inline ErrorCode make_system_error(int error_code) noexcept {
+BREZEL_NODISCARD BREZEL_FORCE_INLINE ErrorCode
+make_system_error(int error_code) noexcept {
     return ErrorCode{error_code, SystemCategory::instance()};
 }
-
-// Helper macros
-/**
- * @brief Try an operation and return its error code on failure
- */
-#define BREZEL_TRY(expr)                                                 \
-    do {                                                                 \
-        if (auto&& result = (expr); !result) {                           \
-            return brezel::core::error::make_error_code(result.error()); \
-        }                                                                \
-    } while (0)
-
-/**
- * @brief Try an operation and assign its result, returning error code on
- * failure
- */
-#define BREZEL_TRY_ASSIGN(var, expr)                              \
-    auto&& var = (expr);                                          \
-    if (!var) {                                                   \
-        return brezel::core::error::make_error_code(var.error()); \
-    }
 }  // namespace brezel::core::error
 
-// Hash support for ErrorCode
-using ErrorCode = brezel::core::error::ErrorCode;
-
+namespace std {
 template <>
-struct std::hash<ErrorCode> {
-    /**
-     * @brief Hash an error code
-     *
-     * @param code Error code to hash
-     * @return Hash value
-     */
-    BREZEL_NODISCARD size_t operator()(const ErrorCode& code) const noexcept {
+struct hash<brezel::core::error::ErrorCode> {
+    BREZEL_NODISCARD BREZEL_FORCE_INLINE size_t
+    operator()(const brezel::core::error::ErrorCode& code) const noexcept {
         return std::hash<int>()(code.value()) ^
                std::hash<const brezel::core::error::ErrorCategory*>()(
                    &code.category());
     }
 };
+}  // namespace std

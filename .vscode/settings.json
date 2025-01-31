@@ -89,6 +89,10 @@
     "__split_buffer": "cpp",
     "__tree": "cpp",
     "queue": "cpp",
-    "stack": "cpp"
+    "stack": "cpp",
+    "csetjmp": "cpp",
+    "strstream": "cpp",
+    "coroutine": "cpp",
+    "future": "cpp"
   }
 }

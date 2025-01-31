@@ -33,11 +33,10 @@ public:
      * @param code Error code
      * @return Error message
      */
-    BREZEL_NODISCARD virtual std::string message(int code) const = 0;
+    BREZEL_NODISCARD virtual const std::string& message(int code) const = 0;
 
 protected:
     ErrorCategory() = default;
-
     BREZEL_IMMOVABLE(ErrorCategory);
     BREZEL_UNCOPYABLE(ErrorCategory);
 
@@ -66,15 +65,15 @@ public:
      * @param code Error code
      * @return Error message
      */
-    BREZEL_NODISCARD std::string message(int code) const override {
+    BREZEL_NODISCARD const std::string& message(int code) const override {
         auto it = m_message_cache.find(code);
-        if (it != m_message_cache.end())
+        if (it != m_message_cache.end()) {
             return it->second;
+        }
 
-        auto msg = static_cast<const Derived*>(this)->do_message(code);
-        m_message_cache.insert({code, msg});
-
-        return msg;
+        return m_message_cache
+            .insert({code, static_cast<const Derived*>(this)->do_message(code)})
+            .first->second;
     }
 
 protected:
@@ -140,7 +139,7 @@ public:
     BREZEL_NODISCARD std::string do_message(int code) const {
         static const boost::container::flat_map<int, std::string_view> messages{
             {static_cast<int>(Code::Success), "Success"},
-            {static_cast<int>(Code::Unknown), "Unknown error"},
+            {static_cast<int>(Code::Unknown), "Unknown runtime error"},
             {static_cast<int>(Code::InvalidOperation), "Invalid operation"},
             {static_cast<int>(Code::OutOfMemory), "Out of memory"},
             {static_cast<int>(Code::InvalidState), "Invalid state"},
@@ -193,7 +192,7 @@ public:
     BREZEL_NODISCARD std::string do_message(int code) const {
         static const boost::container::flat_map<int, std::string_view> messages{
             {static_cast<int>(Code::Success), "Success"},
-            {static_cast<int>(Code::Unknown), "Unknown error"},
+            {static_cast<int>(Code::Unknown), "Unknown logic error"},
             {static_cast<int>(Code::InvalidArgument), "Invalid argument"},
             {static_cast<int>(Code::OutOfRange), "Out of range"},
             {static_cast<int>(Code::InvalidCast), "Invalid type cast"},

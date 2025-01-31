@@ -1,6 +1,6 @@
 add_executable(shape_test
-  shape_test.cpp
-  tensor_test.cpp
+  error_category_test.cpp
+  error_code_test.cpp
   main.cpp
 )
 
