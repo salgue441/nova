@@ -99,6 +99,7 @@ function(brezel_add_test test_name)
     GTest::gtest
     GTest::gtest_main
     Threads::Threads
+    TBB::tbb
   )
 
   if(ARG_CUDA AND USE_CUDA)

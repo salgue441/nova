@@ -80,6 +80,15 @@
     "source_location": "cpp",
     "shared_mutex": "cpp",
     "__mutex_base": "cpp",
-    "filesystem": "cpp"
+    "filesystem": "cpp",
+    "expected": "cpp",
+    "stacktrace": "cpp",
+    "typeindex": "cpp",
+    "stdfloat": "cpp",
+    "__hash_table": "cpp",
+    "__split_buffer": "cpp",
+    "__tree": "cpp",
+    "queue": "cpp",
+    "stack": "cpp"
   }
 }

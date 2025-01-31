@@ -1,0 +1,46 @@
+#pragma once
+
+#include <brezel/core/macros.hpp>
+
+namespace brezel::core {
+/**
+ * @brief Version information for the brezel framework
+ *
+ */
+struct Version {
+    static constexpr char string[] = "@PROJECT_VERSION@";
+    static constexpr int major = "@PROJECT_VERSION_MAJOR@";
+    static constexpr int minor = "@PROJECT_VERSION_MINOR@";
+    static constexpr int patch = "@PROJECT_VERSION_PATCH";
+
+    /**
+     * @brief Checks if current version is at least the specified
+     *  version
+     *
+     * @param major_req Required major version
+     * @param minor_req Required minor version
+     * @param patch_req Required patch version
+     * @return true if current version is at least the specified one
+     * @version 1.0.0
+     */
+    static constexpr bool at_least(int major_req, int minor_req = 0,
+                                   int patch_req = 0) noexcept {
+        if (major != major_req)
+            return major > major_req;
+
+        if (minor != minor_req)
+            return minor > minor_req;
+
+        return patch >= patch_req;
+    }
+};
+
+// Macros for version check
+#define BREZEL_VERSION_AT_LEAST(major, minor, patch) \
+    ::brezel::core::Version::at_least(major, minor, patch)
+
+#define BREZEL_VERSION_STRING ::brezel::core::Version::string
+#define BREZEL_VERSION_MAJOR ::brezel::core::Version::major
+#define BREZEL_VERSION_MINOR ::brezel::core::Version::minor
+#define BREZEL_VERSION_PATCH ::brezel::core::Version::patch
+}  // namespace brezel::core

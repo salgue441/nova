@@ -1,9 +1,10 @@
-add_executable(shape_tests
-  shape_tests.cpp
+add_executable(shape_test
+  shape_test.cpp
+  tensor_test.cpp
   main.cpp
 )
 
-target_link_libraries(shape_tests
+target_link_libraries(shape_test
   PRIVATE
   brezel_core
   GTest::gtest
@@ -12,16 +13,16 @@ target_link_libraries(shape_tests
 )
 
 if(UNIX AND NOT APPLE)
-  target_link_libraries(shape_tests PRIVATE pthread)
+  target_link_libraries(shape_test PRIVATE pthread)
 endif()
 
-target_include_directories(shape_tests
+target_include_directories(shape_test
   PRIVATE
   ${CMAKE_SOURCE_DIR}/include
 )
 
 add_test(
-  NAME shape_tests
-  COMMAND shape_tests
+  NAME shape_test
+  COMMAND shape_test
   WORKING_DIRECTORY ${CMAKE_RUNTIME_OUTPUT_DIRECTORY}
 )
