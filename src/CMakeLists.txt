@@ -33,6 +33,7 @@ target_link_libraries(brezel_core
   Boost::container
   Boost::system
   Boost::filesystem
+  tl::expected
 )
 
 # CUDA dependencies

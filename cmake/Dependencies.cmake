@@ -38,12 +38,9 @@ endfunction()
 
 # Required core dependencies
 find_package(Threads REQUIRED)
-
-# fmt
 find_package(fmt CONFIG REQUIRED)
-
-# TBB
 find_package(TBB CONFIG REQUIRED)
+find_package(tl-expected CONFIG REQUIRED)
 
 if(NOT TARGET TBB::tbb)
   message(FATAL_ERROR "TBB targets not available. Please install TBB through vcpkg: vcpkg install tbb:${VCPKG_TARGET_TRIPLET}")

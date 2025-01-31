@@ -1,6 +1,7 @@
 add_executable(shape_test
   error_category_test.cpp
   error_code_test.cpp
+  error_test.cpp
   main.cpp
 )
 
