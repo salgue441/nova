@@ -2,12 +2,14 @@ add_executable(shape_test
   error_category_test.cpp
   error_code_test.cpp
   error_test.cpp
+  shape_test.cpp
+  strides_test.cpp
   main.cpp
 )
 
 target_link_libraries(shape_test
   PRIVATE
-  brezel_core
+  brezel
   GTest::gtest
   GTest::gtest_main
   fmt::fmt

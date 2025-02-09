@@ -2,6 +2,7 @@
 
 #include <tbb/concurrent_vector.h>
 
+#include <atomic>
 #include <boost/circular_buffer.hpp>
 #include <boost/container/small_vector.hpp>
 #include <boost/container/static_vector.hpp>
@@ -10,6 +11,7 @@
 #include <brezel/core/macros.hpp>
 #include <format>
 #include <memory>
+#include <mutex>
 #include <ranges>
 #include <source_location>
 #include <tl/expected.hpp>
@@ -27,8 +29,17 @@ struct BREZEL_ALIGN_CACHE ErrorContext {
     boost::container::small_vector<std::string, 4> notes;
     std::optional<ErrorCode> code;
 
+    static inline std::atomic<size_t> live_error_count{0};
+    static inline std::mutex error_history_mutex;
+
     static inline tbb::concurrent_vector<std::weak_ptr<const ErrorContext>>
         error_history;
+
+    ErrorContext() { live_error_count.fetch_add(1, std::memory_order_relaxed); }
+
+    ~ErrorContext() {
+        live_error_count.fetch_sub(1, std::memory_order_relaxed);
+    }
 };
 
 /**
@@ -129,9 +140,7 @@ public:
      * @return std::ranges::views
      */
     BREZEL_NODISCARD static auto error_history() {
-        return std::ranges::views::all(ErrorContext::error_history) |
-               std::ranges::views::filter(
-                   [](const auto& wp) { return !wp.expired(); });
+        return std::ranges::views::all(ErrorContext::error_history);
     }
 
 protected:
@@ -147,6 +156,7 @@ private:
         m_context->location = std::source_location::current();
         m_context->stacktrace = boost::stacktrace::stacktrace();
 
+        std::lock_guard<std::mutex> lock(ErrorContext::error_history_mutex);
         ErrorContext::error_history.push_back(m_context);
     }
 };
@@ -220,11 +230,11 @@ using Result = tl::expected<T, std::shared_ptr<Error>>;
         }                                                                   \
     } while (0)
 
-#define BREZEL_ENSURE(condition, message, ...)                            \
-    do {                                                                  \
-        if (BREZEL_PREDICT_FALSE(!(condition))) {                         \
-            throw ::brezel::core::error::LogicError(message __VA_ARGS__); \
-        }                                                                 \
+#define BREZEL_ENSURE(condition, message, ...)                               \
+    do {                                                                     \
+        if (BREZEL_PREDICT_FALSE(!(condition))) {                            \
+            throw ::brezel::core::error::LogicError(message, ##__VA_ARGS__); \
+        }                                                                    \
     } while (0)
 
 #define BREZEL_THROW_IF(condition, exception_type, message, ...) \

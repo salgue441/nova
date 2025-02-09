@@ -1,16 +1,15 @@
 cmake_minimum_required(VERSION 3.20)
 
-# Project initialization
 project(BrezelTensor
   VERSION 1.0.0
-  DESCRIPTION "Modern C++20 Tensor Framework with CUDA support"
+  DESCRIPTION "Modern C++20 Header-only Tensor Framework with CUDA support"
   HOMEPAGE_URL "https://github.com/salgue441/brezel-framework"
   LANGUAGES CXX)
 
 # Set modern CMake policies
-cmake_policy(SET CMP0048 NEW) # Project versioning
-cmake_policy(SET CMP0077 NEW) # Option command behavior
-cmake_policy(SET CMP0079 NEW) # Target linking behavior
+cmake_policy(SET CMP0048 NEW)
+cmake_policy(SET CMP0077 NEW)
+cmake_policy(SET CMP0079 NEW)
 
 # Add CMake modules path
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
@@ -43,7 +42,6 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
-set(CMAKE_POSITION_INDEPENDENT_CODE ON)
 
 # Setup vcpkg if available
 if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
@@ -51,8 +49,8 @@ if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
     CACHE STRING "Vcpkg toolchain file")
 endif()
 
-# Component directories
-add_subdirectory(src)
+# Add the main header-only library
+add_subdirectory(include)
 
 # Optional components
 if(BUILD_TESTING)
@@ -104,24 +102,13 @@ install(FILES
   DESTINATION ${BREZEL_INSTALL_CONFIGDIR}
 )
 
-# Install targets
+# Export targets
 install(
-  TARGETS brezel_core
+  TARGETS brezel
   EXPORT BrezelTargets
-  ARCHIVE DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
-  RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
   INCLUDES DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}
 )
 
-# Export targets for use in the build tree
-export(
-  EXPORT BrezelTargets
-  FILE "${CMAKE_BINARY_DIR}/BrezelTargets.cmake"
-  NAMESPACE Brezel::
-)
-
-# Install the export targets
 install(
   EXPORT BrezelTargets
   FILE BrezelTargets.cmake

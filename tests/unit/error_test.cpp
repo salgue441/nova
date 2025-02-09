@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 
+#include <barrier>
 #include <brezel/core/error/error.hpp>
 #include <future>
 #include <vector>
@@ -64,15 +65,22 @@ TEST_F(ErrorTest, ThreadSafeErrorTracking) {
 
     auto initial_count = std::ranges::distance(Error::error_history());
 
+    // Create barrier to synchronize threads
+    std::barrier sync_point(kThreads + 1);
+
     for (int i = 0; i < kThreads; ++i) {
-        futures.push_back(std::async(std::launch::async, []() {
+        futures.push_back(std::async(std::launch::async, [&sync_point]() {
             try {
                 throw RuntimeError("Thread error");
             } catch (const RuntimeError&) {
+                sync_point.arrive_and_wait();
             }
         }));
     }
 
+    sync_point.arrive_and_wait();
+
+    // Wait for all threads to complete
     for (auto& future : futures) {
         future.wait();
     }
