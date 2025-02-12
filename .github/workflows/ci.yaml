@@ -1,26 +1,33 @@
-# File: .github/workflows/ci.yml
 name: CI
 
 on:
   push:
-    branches: [main]
+    branches: [main, develop]
+    tags: ["v*"]
   pull_request:
-    branches: [main]
+    branches: [main, develop]
   workflow_dispatch:
+
+env:
+  VCPKG_COMMIT: "78b61582c9e093fda56a01ebb654be15a0033897"
+  CMAKE_VERSION: "3.27.7"
 
 jobs:
   formatting:
     name: Code Formatting
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install clang-format
-        run: sudo apt-get install -y clang-format
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y clang-format-14
+          sudo update-alternatives --install /usr/bin/clang-format clang-format /usr/bin/clang-format-14 100
 
       - name: Check formatting
         run: |
-          find . -name '*.cpp' -o -name '*.hpp' -o -name '*.cu' -o -name '*.cuh' | \
+          find . \( -name '*.cpp' -o -name '*.hpp' -o -name '*.cu' -o -name '*.cuh' \) -not -path "./build/*" | \
           xargs clang-format --dry-run --Werror
 
   build:
@@ -31,66 +38,113 @@ jobs:
       matrix:
         config:
           - {
-              name: "Ubuntu Latest GCC",
+              name: "Ubuntu GCC",
               os: ubuntu-latest,
               build_type: "Release",
-              cc: "gcc",
-              cxx: "g++",
+              cc: "gcc-12",
+              cxx: "g++-12",
               cuda: false,
             }
           - {
-              name: "Ubuntu Latest GCC Debug",
+              name: "Ubuntu GCC Debug",
               os: ubuntu-latest,
               build_type: "Debug",
-              cc: "gcc",
-              cxx: "g++",
+              cc: "gcc-12",
+              cxx: "g++-12",
               cuda: false,
             }
           - {
-              name: "Ubuntu Latest Clang",
+              name: "Ubuntu Clang",
               os: ubuntu-latest,
               build_type: "Release",
-              cc: "clang",
-              cxx: "clang++",
+              cc: "clang-15",
+              cxx: "clang++-15",
               cuda: false,
             }
           - {
               name: "Ubuntu CUDA",
               os: ubuntu-latest,
               build_type: "Release",
-              cc: "gcc",
-              cxx: "g++",
+              cc: "gcc-12",
+              cxx: "g++-12",
               cuda: true,
+            }
+          - {
+              name: "macOS Latest",
+              os: macos-latest,
+              build_type: "Release",
+              cc: "clang",
+              cxx: "clang++",
+              cuda: false,
+            }
+          - {
+              name: "Windows MSVC",
+              os: windows-latest,
+              build_type: "Release",
+              cuda: false,
             }
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
         with:
           submodules: recursive
 
-      - name: Install dependencies
+      - name: Cache vcpkg
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ github.workspace }}/vcpkg
+            !${{ github.workspace }}/vcpkg/buildtrees
+            !${{ github.workspace }}/vcpkg/packages
+            !${{ github.workspace }}/vcpkg/downloads
+          key: vcpkg-${{ runner.os }}-${{ env.VCPKG_COMMIT }}
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
+
+      - name: Install CMake
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: ${{ env.CMAKE_VERSION }}
+
+      - name: Install Linux Dependencies
+        if: runner.os == 'Linux'
         run: |
           sudo apt-get update
           sudo apt-get install -y \
-            build-essential \
-            cmake \
-            libfmt-dev \
-            libgtest-dev
+            ninja-build \
+            ${{ matrix.config.cc }} \
+            ${{ matrix.config.cxx }} \
+            libboost-all-dev \
+            libtbb-dev
 
       - name: Install CUDA
         if: matrix.config.cuda
-        run: |
-          sudo apt-get install -y \
-            nvidia-cuda-toolkit \
-            nvidia-cuda-toolkit-gcc
+        uses: Jimver/cuda-toolkit@v0.2.11
+        with:
+          cuda: "12.2.0"
+          method: "network"
+          sub-packages: '["nvcc", "cudart", "cublas", "cufft", "curand", "cusolver", "cusparse"]'
 
-      - name: Configure CMake
+      - name: Configure CMake (Unix)
+        if: runner.os != 'Windows'
         run: |
-          cmake -B build \
+          cmake -B build -G Ninja \
             -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} \
             -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
             -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
-            -DUSE_CUDA=${{ matrix.config.cuda }}
+            -DUSE_CUDA=${{ matrix.config.cuda }} \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+
+      - name: Configure CMake (Windows)
+        if: runner.os == 'Windows'
+        run: |
+          cmake -B build \
+            -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} \
+            -DUSE_CUDA=${{ matrix.config.cuda }} \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
         run: cmake --build build --config ${{ matrix.config.build_type }} -j $(nproc)
@@ -103,25 +157,27 @@ jobs:
     name: Code Coverage
     needs: build
     runs-on: ubuntu-latest
-
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y \
-            build-essential \
-            cmake \
-            libfmt-dev \
-            libgtest-dev \
-            lcov
+          sudo apt-get install -y ninja-build lcov gcc-12 g++-12
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
 
       - name: Configure CMake
         run: |
-          cmake -B build \
+          cmake -B build -G Ninja \
             -DCMAKE_BUILD_TYPE=Debug \
-            -DNOVA_ENABLE_COVERAGE=ON
+            -DCMAKE_C_COMPILER=gcc-12 \
+            -DCMAKE_CXX_COMPILER=g++-12 \
+            -DENABLE_COVERAGE=ON \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
         run: cmake --build build -j $(nproc)
@@ -133,10 +189,11 @@ jobs:
       - name: Generate coverage report
         run: |
           lcov --capture --directory build --output-file coverage.info
-          lcov --remove coverage.info '/usr/*' --output-file coverage.info
+          lcov --remove coverage.info '/usr/*' '*/vcpkg/*' '*/tests/*' --output-file coverage.info
           lcov --list coverage.info
 
-      - name: Upload coverage report
+      - name: Upload to Codecov
         uses: codecov/codecov-action@v3
         with:
           files: ./coverage.info
+          fail_ci_if_error: true
