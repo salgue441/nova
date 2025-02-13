@@ -13,15 +13,15 @@
     },
     {
       "name": "boost-container",
-      "version>=": "1.83.0"
+      "version>=": "1.82.0"
     },
     {
       "name": "boost-system",
-      "version>=": "1.83.0"
+      "version>=": "1.82.0"
     },
     {
       "name": "boost-filesystem",
-      "version>=": "1.83.0"
+      "version>=": "1.82.0"
     }
   ],
   "builtin-baseline": "78b61582c9e093fda56a01ebb654be15a0033897",
