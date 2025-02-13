@@ -26,6 +26,12 @@ jobs:
         with:
           submodules: recursive
 
+      # Install build tools first
+      - name: Install Build Tools
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ninja-build g++-12
+
       - name: Cache vcpkg
         uses: actions/cache@v3
         with:
@@ -46,14 +52,6 @@ jobs:
         with:
           cmakeVersion: ${{ env.CMAKE_VERSION }}
 
-      - name: Install Dependencies
-        run: |
-          sudo apt-get update
-          sudo apt-get install -y \
-            ninja-build \
-            libboost-all-dev \
-            libtbb-dev
-
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
@@ -64,6 +62,8 @@ jobs:
         run: |
           cmake -B build -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_COMPILER=gcc-12 \
+            -DCMAKE_CXX_COMPILER=g++-12 \
             -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
