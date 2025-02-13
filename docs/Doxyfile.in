@@ -1,0 +1,87 @@
+# Project configuration
+PROJECT_NAME           = "Brezel Tensor Framework"
+PROJECT_NUMBER        = @PROJECT_VERSION@
+PROJECT_BRIEF        = "Modern C++20 Tensor Framework with CUDA Support"
+PROJECT_LOGO         = @CMAKE_CURRENT_SOURCE_DIR@/docs/logo.png
+
+# Output options
+OUTPUT_DIRECTORY     = @CMAKE_CURRENT_BINARY_DIR@/docs
+GENERATE_HTML        = YES
+GENERATE_LATEX       = NO
+HTML_OUTPUT         = html
+HTML_FILE_EXTENSION = .html
+
+# HTML styling
+HTML_EXTRA_STYLESHEET  = \
+    @CMAKE_CURRENT_SOURCE_DIR@/docs/theme/doxygen-awesome.css \
+    @CMAKE_CURRENT_SOURCE_DIR@/docs/theme/custom.css
+
+HTML_EXTRA_FILES    = \
+    @CMAKE_CURRENT_SOURCE_DIR@/docs/theme/doxygen-awesome-darkmode-toggle.js \
+    @CMAKE_CURRENT_SOURCE_DIR@/docs/theme/doxygen-awesome-fragment-copy-button.js \
+    @CMAKE_CURRENT_SOURCE_DIR@/docs/theme/doxygen-awesome-interactive-toc.js
+
+# Modern features
+HTML_COLORSTYLE     = LIGHT
+HTML_DYNAMIC_MENUS  = YES
+HTML_DYNAMIC_SECTIONS = YES
+GENERATE_TREEVIEW   = YES
+DISABLE_INDEX      = NO
+FULL_SIDEBAR       = YES
+OPTIMIZE_OUTPUT_FOR_C = NO
+MARKDOWN_SUPPORT   = YES
+USE_MDFILE_AS_MAINPAGE = @CMAKE_CURRENT_SOURCE_DIR@/docs/mainpage.md
+
+# Documentation settings
+RECURSIVE          = YES
+EXTRACT_ALL       = YES
+EXTRACT_PRIVATE   = NO
+EXTRACT_PACKAGE   = YES
+EXTRACT_STATIC    = YES
+CASE_SENSE_NAMES  = YES
+HIDE_SCOPE_NAMES  = NO
+SHOW_INCLUDE_FILES = YES
+SORT_BRIEF_DOCS   = YES
+SORT_MEMBERS_CTORS_1ST = YES
+SORT_GROUP_NAMES  = YES
+SORT_BY_SCOPE_NAME = YES
+
+# Source settings
+INPUT             = @CMAKE_SOURCE_DIR@/include \
+                   @CMAKE_SOURCE_DIR@/docs
+FILE_PATTERNS     = *.hpp *.cpp *.md
+EXCLUDE_PATTERNS  = */build/* */tests/* */examples/*
+EXCLUDE_SYMBOLS   = detail::* internal::*
+
+# Build settings
+BUILTIN_STL_SUPPORT = YES
+INLINE_SIMPLE_STRUCTS = YES
+SHOW_USED_FILES   = YES
+SHOW_FILES        = YES
+SHOW_NAMESPACES   = YES
+
+# Graphs and diagrams
+HAVE_DOT          = YES
+DOT_IMAGE_FORMAT  = SVG
+INTERACTIVE_SVG   = YES
+DOT_GRAPH_MAX_NODES = 100
+TEMPLATE_RELATIONS = YES
+CALL_GRAPH        = YES
+CALLER_GRAPH      = YES
+GRAPHICAL_HIERARCHY = YES
+DIRECTORY_GRAPH   = YES
+DOT_TRANSPARENT   = YES
+UML_LOOK         = YES
+
+# Advanced features
+GENERATE_XML      = YES
+XML_PROGRAMLISTING = YES
+GENERATE_TODOLIST = YES
+GENERATE_TESTLIST = YES
+GENERATE_BUGLIST  = YES
+GENERATE_DEPRECATEDLIST = YES
+
+# Search engine
+SEARCHENGINE      = YES
+SERVER_BASED_SEARCH = NO
+EXTERNAL_SEARCH   = NO
