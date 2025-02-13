@@ -8,24 +8,68 @@ on:
   schedule:
     - cron: "30 1 * * 0"
 
+env:
+  VCPKG_COMMIT: "78b61582c9e093fda56a01ebb654be15a0033897"
+  CMAKE_VERSION: "3.27.7"
+
 jobs:
   analyze:
     name: Analyze with CodeQL
     runs-on: ubuntu-latest
     permissions:
       security-events: write
+      actions: read
+      contents: read
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      - name: Cache vcpkg
+        uses: actions/cache@v3
+        with:
+          path: |
+            ${{ github.workspace }}/vcpkg
+            !${{ github.workspace }}/vcpkg/buildtrees
+            !${{ github.workspace }}/vcpkg/packages
+            !${{ github.workspace }}/vcpkg/downloads
+          key: vcpkg-${{ runner.os }}-${{ env.VCPKG_COMMIT }}
+
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
+
+      - name: Install CMake
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: ${{ env.CMAKE_VERSION }}
+
+      - name: Install Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ninja-build \
+            libboost-all-dev \
+            libtbb-dev
+
       - name: Initialize CodeQL
         uses: github/codeql-action/init@v3
         with:
           languages: cpp
+          queries: security-and-quality
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
-        run: |
-          cmake -B build
-          cmake --build build
+        run: cmake --build build --config Release -j $(nproc)
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@v2
+        uses: github/codeql-action/analyze@v3
+        with:
+          category: "/language:cpp"
