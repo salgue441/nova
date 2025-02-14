@@ -2,15 +2,15 @@
   "name": "brezel",
   "version": "0.1.0",
   "dependencies": [
-    { "name": "fmt", "version>": "10.0.0" },
-    { "name": "tbb", "version>": "2021.9.0" },
-    { "name": "boost-container", "version>": "1.82.0" },
-    { "name": "boost-system", "version>": "1.82.0" },
-    { "name": "boost-filesystem", "version>": "1.82.0" },
-    { "name": "tl-expected", "version>": "2021.10.17" },
-    { "name": "ninja", "version>": "1.10.2" },
-    { "name": "benchmark", "version>": "1.6.0" },
-    { "name": "googletest", "version>": "1.14.0" }
+    { "name": "fmt", "version>=": "10.0.0" },
+    { "name": "tbb", "version>=": "2021.9.0" },
+    { "name": "boost-container", "version>=": "1.82.0" },
+    { "name": "boost-system", "version>=": "1.82.0" },
+    { "name": "boost-filesystem", "version>=": "1.82.0" },
+    { "name": "tl-expected", "version>=": "2021.10.17" },
+    { "name": "ninja", "version>=": "1.10.2" },
+    { "name": "benchmark", "version>=": "1.6.0" },
+    { "name": "googletest", "version>=": "1.14.0" }
   ],
   "builtin-baseline": "78b61582c9e093fda56a01ebb654be15a0033897"
 }
