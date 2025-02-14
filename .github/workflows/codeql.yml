@@ -58,6 +58,10 @@ jobs:
           languages: cpp
           queries: security-and-quality
 
+      - name: Install dependencies with vcpkg
+        run: |
+          ./vcpkg/vcpkg install googletest:x64-linux ninja
+
       - name: Configure CMake
         run: |
           cmake -B build -G Ninja \
