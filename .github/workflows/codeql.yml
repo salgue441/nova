@@ -48,6 +48,7 @@ jobs:
           cd vcpkg
           git checkout ${{ env.VCPKG_COMMIT }}
           ./bootstrap-vcpkg.sh
+          ./vcpkg update  # This will fetch the latest port definitions
 
       - name: Install CMake
         uses: lukka/get-cmake@latest
