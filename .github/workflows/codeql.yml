@@ -43,9 +43,11 @@ jobs:
           key: vcpkg-${{ runner.os }}-${{ env.VCPKG_COMMIT }}
 
       - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
+        run: |
+          git clone https://github.com/microsoft/vcpkg.git
+          cd vcpkg
+          git checkout ${{ env.VCPKG_COMMIT }}
+          ./bootstrap-vcpkg.sh
 
       - name: Install CMake
         uses: lukka/get-cmake@latest
@@ -57,10 +59,6 @@ jobs:
         with:
           languages: cpp
           queries: security-and-quality
-
-      - name: Install dependencies with vcpkg
-        run: |
-          ./vcpkg/vcpkg install googletest:x64-linux ninja
 
       - name: Configure CMake
         run: |
