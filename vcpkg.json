@@ -1,16 +1,47 @@
 {
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "name": "brezel",
   "version": "0.1.0",
   "dependencies": [
-    "fmt",
-    "tbb",
-    "boost-container",
-    "boost-system",
-    "boost-filesystem",
-    "tl-expected",
-    "ninja",
-    "benchmark",
-    "googletest"
+    {
+      "name": "fmt",
+      "version>=": "10.1.1"
+    },
+    {
+      "name": "tbb",
+      "version>=": "2021.9.0"
+    },
+    {
+      "name": "boost-container",
+      "version>=": "1.83.0"
+    },
+    {
+      "name": "boost-system",
+      "version>=": "1.83.0"
+    },
+    {
+      "name": "boost-filesystem",
+      "version>=": "1.83.0"
+    },
+    {
+      "name": "tl-expected",
+      "version>=": "1.1.0"
+    }
   ],
-  "builtin-baseline": "78b61582c9e093fda56a01ebb654be15a0033897"
+  "builtin-baseline": "78b61582c9e093fda56a01ebb654be15a0033897",
+  "features": {
+    "tests": {
+      "description": "Build tests",
+      "dependencies": [
+        {
+          "name": "gtest",
+          "version>=": "1.14.0"
+        },
+        {
+          "name": "benchmark",
+          "version>=": "1.8.3"
+        }
+      ]
+    }
+  }
 }
