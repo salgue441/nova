@@ -4,6 +4,7 @@ add_executable(shape_test
   error_test.cpp
   shape_test.cpp
   strides_test.cpp
+  tensor_test.cpp
   main.cpp
 )
 
