@@ -22,6 +22,10 @@
     {
       "name": "boost-filesystem",
       "version>=": "1.82.0"
+    },
+    {
+      "name": "tl-expected",
+      "version>=": "2021.10.17"
     }
   ],
   "builtin-baseline": "78b61582c9e093fda56a01ebb654be15a0033897",
