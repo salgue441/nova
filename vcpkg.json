@@ -26,6 +26,18 @@
     {
       "name": "tl-expected",
       "version>=": "2021.10.17"
+    },
+    {
+      "name": "ninja",
+      "version>=": "1.10.2"
+    },
+    {
+      "name": "googletest",
+      "version>=": "1.11.0"
+    },
+    {
+      "name": "benchmark",
+      "version>=": "1.6.0"
     }
   ],
   "builtin-baseline": "78b61582c9e093fda56a01ebb654be15a0033897",
