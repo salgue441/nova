@@ -11,6 +11,7 @@ on:
 env:
   VCPKG_COMMIT: "78b61582c9e093fda56a01ebb654be15a0033897"
   CMAKE_VERSION: "3.27.7"
+  VCPKG_FEATURE_FLAGS: "manifests,versions"
 
 jobs:
   formatting:
@@ -97,7 +98,7 @@ jobs:
             !${{ github.workspace }}/vcpkg/buildtrees
             !${{ github.workspace }}/vcpkg/packages
             !${{ github.workspace }}/vcpkg/downloads
-          key: vcpkg-${{ runner.os }}-${{ env.VCPKG_COMMIT }}
+          key: vcpkg-${{ runner.os }}-${{ env.VCPKG_COMMIT }}-${{ hashFiles('vcpkg.json') }}
 
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
@@ -116,9 +117,7 @@ jobs:
           sudo apt-get install -y \
             ninja-build \
             ${{ matrix.config.cc }} \
-            ${{ matrix.config.cxx }} \
-            libboost-all-dev \
-            libtbb-dev
+            ${{ matrix.config.cxx }}
 
       - name: Install CUDA
         if: matrix.config.cuda
@@ -136,6 +135,8 @@ jobs:
             -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
             -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
             -DUSE_CUDA=${{ matrix.config.cuda }} \
+            -DVCPKG_MANIFEST_MODE=ON \
+            -DVCPKG_MANIFEST_FEATURES=tests \
             -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Configure CMake (Windows)
@@ -144,6 +145,8 @@ jobs:
           cmake -B build \
             -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} \
             -DUSE_CUDA=${{ matrix.config.cuda }} \
+            -DVCPKG_MANIFEST_MODE=ON \
+            -DVCPKG_MANIFEST_FEATURES=tests \
             -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
@@ -177,6 +180,8 @@ jobs:
             -DCMAKE_C_COMPILER=gcc-12 \
             -DCMAKE_CXX_COMPILER=g++-12 \
             -DENABLE_COVERAGE=ON \
+            -DVCPKG_MANIFEST_MODE=ON \
+            -DVCPKG_MANIFEST_FEATURES=tests \
             -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
 
       - name: Build
