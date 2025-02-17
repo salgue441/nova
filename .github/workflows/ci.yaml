@@ -121,7 +121,7 @@ jobs:
 
       - name: Install CUDA
         if: matrix.config.cuda
-        uses: Jimver/cuda-toolkit@v0.2.11
+        uses: Jimver/cuda-toolkit@v0.2.21
         with:
           cuda: "12.2.0"
           method: "network"
