@@ -2,6 +2,10 @@
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "name": "brezel",
   "version": "0.1.0",
+  "description": "Modern C++20 Tensor Framework with CUDA support",
+  "homepage": "https://github.com/salgue441/brezel-framework",
+  "documentation": "https://salgue441.github.io/brezel-framework",
+  "license": "MIT",
   "dependencies": [
     {
       "name": "fmt",
@@ -13,27 +17,35 @@
     },
     {
       "name": "boost-container",
-      "version>=": "1.80.0"
+      "version>=": "1.82.0"
     },
     {
       "name": "boost-system",
-      "version>=": "1.80.0"
+      "version>=": "1.82.0"
     },
     {
       "name": "boost-filesystem",
-      "version>=": "1.80.0"
+      "version>=": "1.82.0"
     },
     {
       "name": "boost-align",
-      "version>=": "1.80.0"
+      "version>=": "1.82.0"
     },
     {
       "name": "boost-stacktrace",
-      "version>=": "1.80.0"
+      "version>=": "1.82.0"
     },
     {
       "name": "boost-smart-ptr",
-      "version>=": "1.80.0"
+      "version>=": "1.82.0"
+    },
+    {
+      "name": "boost-circular-buffer",
+      "version>=": "1.82.0"
+    },
+    {
+      "name": "boost-format",
+      "version>=": "1.82.0"
     },
     {
       "name": "tl-expected",
@@ -72,7 +84,7 @@
       "dependencies": [
         {
           "name": "benchmark",
-          "version>=": "1.8.0"
+          "version>=": "1.8.3"
         }
       ]
     }
