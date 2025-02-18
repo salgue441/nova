@@ -34,7 +34,13 @@ jobs:
           sudo apt-get install -y \
             ninja-build \
             gcc-12 \
-            g++-12
+            g++-12 \
+            curl \
+            zip \
+            unzip \
+            tar \
+            pkg-config \
+            build-essential
 
       # Setup vcpkg using lukka/run-vcpkg action
       - name: Setup vcpkg
@@ -64,6 +70,8 @@ jobs:
             -DCMAKE_CXX_COMPILER=g++-12 \
             -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
             -DVCPKG_MANIFEST_MODE=ON \
+            -DVCPKG_FEATURE_FLAGS=versions,manifests \
+            -DVCPKG_INSTALLED_DIR=${{ github.workspace }}/build/vcpkg_installed \
             -DBUILD_TESTING=OFF
 
       - name: Build
