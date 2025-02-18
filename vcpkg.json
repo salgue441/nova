@@ -16,16 +16,9 @@
       "version>=": "2021.9.0"
     },
     {
-      "name": "boost-container",
-      "version>=": "1.82.0"
-    },
-    {
-      "name": "boost-system",
-      "version>=": "1.82.0"
-    },
-    {
-      "name": "boost-filesystem",
-      "version>=": "1.82.0"
+      "name": "boost",
+      "version>=": "1.82.0",
+      "features": ["container", "filesystem", "system", "stacktrace"]
     },
     {
       "name": "boost-align",
@@ -65,19 +58,7 @@
     },
     "cuda": {
       "description": "Add CUDA support",
-      "dependencies": [
-        {
-          "name": "cuda"
-        },
-        {
-          "name": "cub",
-          "version>=": "2.1.0"
-        },
-        {
-          "name": "cutlass",
-          "version>=": "3.1.0"
-        }
-      ]
+      "dependencies": []
     },
     "benchmarks": {
       "description": "Build benchmarks",

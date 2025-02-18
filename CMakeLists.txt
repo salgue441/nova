@@ -35,14 +35,34 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Find required packages provided by vcpkg
 find_package(fmt CONFIG REQUIRED)
 find_package(TBB CONFIG REQUIRED)
+
+# Find Boost - header-only libraries don't need specific components
 find_package(Boost 1.80.0 COMPONENTS
   container
   system
   filesystem
-  stacktrace
-  circular_buffer
   REQUIRED
 )
+
+# For header-only libraries, we just need to ensure they're installed
+# We can verify this by checking for some key headers
+if(NOT EXISTS "${Boost_INCLUDE_DIRS}/boost/circular_buffer.hpp")
+  message(FATAL_ERROR "boost/circular_buffer.hpp not found, make sure boost-circular-buffer is installed")
+endif()
+
+if(NOT EXISTS "${Boost_INCLUDE_DIRS}/boost/stacktrace.hpp")
+  message(FATAL_ERROR "boost/stacktrace.hpp not found, make sure boost-stacktrace is installed")
+endif()
+
+# Additional Boost headers we need
+if(NOT EXISTS "${Boost_INCLUDE_DIRS}/boost/align/aligned_allocator.hpp")
+  message(FATAL_ERROR "boost/align/aligned_allocator.hpp not found, make sure boost-align is installed")
+endif()
+
+if(NOT EXISTS "${Boost_INCLUDE_DIRS}/boost/smart_ptr/atomic_shared_ptr.hpp")
+  message(FATAL_ERROR "boost/smart_ptr/atomic_shared_ptr.hpp not found, make sure boost-smart-ptr is installed")
+endif()
+
 find_package(tl-expected CONFIG REQUIRED)
 find_package(Threads REQUIRED)
 
@@ -62,20 +82,55 @@ if(USE_CUDA)
     set(CMAKE_CUDA_ARCHITECTURES native)
     add_definitions(-DBREZEL_WITH_CUDA)
 
-    # Find CUDA-specific dependencies
+    # Find CUDA Toolkit
     find_package(CUDAToolkit REQUIRED)
 
-    # CUB for CUDA primitives (might be bundled with CUDA 11.0+)
-    if(CUDAToolkit_VERSION VERSION_LESS 11.0)
-      find_package(CUB CONFIG REQUIRED)
-    endif()
+    if(CUDAToolkit_FOUND)
+      message(STATUS "Found CUDA Toolkit ${CUDAToolkit_VERSION}")
+      include_directories(SYSTEM ${CUDAToolkit_INCLUDE_DIRS})
 
-    # CUTLASS for CUDA templates
-    find_package(CUTLASS CONFIG REQUIRED)
+      # Add CUDA-specific compile definitions based on capabilities
+      if(CUDAToolkit_VERSION_MAJOR GREATER_EQUAL 11)
+        add_compile_definitions(BREZEL_CUDA_11_PLUS)
+      endif()
+
+      # Check for additional CUDA libraries
+      if(TARGET CUDA::cudart)
+        message(STATUS "CUDA Runtime found")
+        add_compile_definitions(BREZEL_HAS_CUDART)
+      endif()
+
+      if(TARGET CUDA::cublas)
+        message(STATUS "cuBLAS found")
+        add_compile_definitions(BREZEL_HAS_CUBLAS)
+      endif()
+
+      if(TARGET CUDA::cusolver)
+        message(STATUS "cuSOLVER found")
+        add_compile_definitions(BREZEL_HAS_CUSOLVER)
+      endif()
+
+      # Check for CUB (might be bundled with newer CUDA)
+      if(CUDAToolkit_VERSION VERSION_GREATER_EQUAL 11.0)
+        message(STATUS "Using CUB from CUDA Toolkit")
+        add_compile_definitions(BREZEL_HAS_CUB)
+        set(USE_CUB OFF)
+      else()
+        set(USE_CUB ON)
+      endif()
+
+      # Enable CUTLASS if requested
+      option(USE_CUTLASS "Use NVIDIA CUTLASS for tensor operations" ON)
+    else()
+      message(FATAL_ERROR "CUDA Toolkit not found")
+    endif()
   else()
     message(FATAL_ERROR "CUDA requested but no CUDA compiler found")
   endif()
 endif()
+
+# Include additional dependencies
+include(Dependencies)
 
 # OpenMP support if requested
 if(USE_OPENMP)
@@ -190,6 +245,16 @@ message(STATUS "  Version:          ${PROJECT_VERSION}")
 message(STATUS "  Build type:       ${CMAKE_BUILD_TYPE}")
 message(STATUS "  Install prefix:   ${CMAKE_INSTALL_PREFIX}")
 message(STATUS "  CUDA support:     ${USE_CUDA}")
+
+if(USE_CUDA)
+  message(STATUS "  CUDA version:     ${CUDAToolkit_VERSION}")
+  message(STATUS "  CUTLASS enabled:  ${USE_CUTLASS}")
+
+  if(CUDAToolkit_VERSION VERSION_LESS 11.0)
+    message(STATUS "  CUB enabled:      ${USE_CUB}")
+  endif()
+endif()
+
 message(STATUS "  OpenMP support:   ${USE_OPENMP}")
 message(STATUS "  Testing enabled:  ${BUILD_TESTING}")
 message(STATUS "  Examples enabled: ${BUILD_EXAMPLES}")
