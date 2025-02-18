@@ -5,6 +5,7 @@ add_executable(shape_test
   shape_test.cpp
   strides_test.cpp
   tensor_test.cpp
+  autograd_test.cpp
   main.cpp
 )
 

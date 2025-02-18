@@ -93,6 +93,8 @@
     "csetjmp": "cpp",
     "strstream": "cpp",
     "coroutine": "cpp",
-    "future": "cpp"
+    "future": "cpp",
+    "__node_handle": "cpp",
+    "barrier": "cpp"
   }
 }

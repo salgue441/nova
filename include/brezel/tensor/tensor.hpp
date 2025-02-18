@@ -63,6 +63,13 @@ public:
 
     // Static factory methods
     /**
+     * @brief Creates an empty tensor with no elements
+     *
+     * @return Empty tensor
+     */
+    BREZEL_NODISCARD static Tensor create_empty() { return Tensor(); }
+
+    /**
      * @brief Creates a tensor filled with zeros
      *
      * @param shape Desired shape
@@ -70,6 +77,17 @@ public:
      */
     BREZEL_NODISCARD static Tensor zeros(const Shape& shape) {
         return Tensor(shape, T(0));
+    }
+
+    /**
+     * @brief Creates a default uninitialized tensor with a specific shape
+     *
+     * @param shape Shape of the tensor
+     * @return Uninitialized tensor with the specified shape
+     */
+    BREZEL_NODISCARD static Tensor default_tensor(
+        const Shape& shape = Shape()) {
+        return Tensor(shape);
     }
 
     /**
@@ -330,6 +348,16 @@ public:
     BREZEL_NODISCARD const_reference
     at(std::initializer_list<int64_t> indices) const {
         return at(std::span(indices));
+    }
+
+    // Empty
+    /**
+     * @brief Check if the tensor is empty (has no elements)
+     *
+     * @return true if the tensor is empty, false otherwise
+     */
+    BREZEL_NODISCARD bool empty() const noexcept {
+        return m_storage == nullptr || numel() == 0;
     }
 
     // Element-wise operations
