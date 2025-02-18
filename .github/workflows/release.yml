@@ -5,11 +5,64 @@ on:
     tags:
       - "v*"
 
+env:
+  VCPKG_COMMIT: "78b61582c9e093fda56a01ebb654be15a0033897"
+  CMAKE_VERSION: "3.27.7"
+  VCPKG_FEATURE_FLAGS: "manifests,versions"
+
 jobs:
   create-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+
+      # Install build dependencies for generating packages
+      - name: Install Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ninja-build \
+            gcc-12 \
+            g++-12 \
+            curl \
+            zip \
+            unzip \
+            tar \
+            pkg-config \
+            build-essential \
+            cmake
+
+      # Setup vcpkg
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
+
+      # Install CMake
+      - name: Install CMake
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: ${{ env.CMAKE_VERSION }}
+
+      # Build release packages
+      - name: Configure CMake
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_COMPILER=gcc-12 \
+            -DCMAKE_CXX_COMPILER=g++-12 \
+            -DBUILD_TESTING=OFF \
+            -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
+            -DVCPKG_MANIFEST_MODE=ON
+
+      - name: Build Package
+        run: |
+          cmake --build build --config Release
+          cd build && cpack -G ZIP -C Release
+
+      # Create GitHub release
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
@@ -20,3 +73,14 @@ jobs:
           release_name: Release ${{ github.ref }}
           draft: false
           prerelease: false
+
+      # Upload release assets
+      - name: Upload Release Asset
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./build/BrezelTensor-1.0.0.zip
+          asset_name: BrezelTensor-1.0.0.zip
+          asset_content_type: application/zip

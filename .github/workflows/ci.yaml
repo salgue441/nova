@@ -28,7 +28,7 @@ jobs:
 
       - name: Check formatting
         run: |
-          find . \( -name '*.cpp' -o -name '*.hpp' -o -name '*.cu' -o -name '*.cuh' \) -not -path "./build/*" | \
+          find . \( -name '*.cpp' -o -name '*.hpp' -o -name '*.cu' -o -name '*.cuh' \) -not -path "./build/*" -not -path "./vcpkg/*" | \
           xargs clang-format --dry-run --Werror
 
   build:
@@ -98,7 +98,7 @@ jobs:
             !${{ github.workspace }}/vcpkg/buildtrees
             !${{ github.workspace }}/vcpkg/packages
             !${{ github.workspace }}/vcpkg/downloads
-          key: vcpkg-${{ runner.os }}-${{ env.VCPKG_COMMIT }}-${{ hashFiles('vcpkg.json') }}
+          key: vcpkg-${{ runner.os }}-${{ env.VCPKG_COMMIT }}
 
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
@@ -119,6 +119,25 @@ jobs:
             ${{ matrix.config.cc }} \
             ${{ matrix.config.cxx }}
 
+      - name: Install Ubuntu Clang
+        if: runner.os == 'Linux' && matrix.config.cc == 'clang-15'
+        run: |
+          sudo apt-get install -y \
+            clang-15 \
+            libc++-15-dev \
+            libc++abi-15-dev
+
+      - name: Install vcpkg Dependencies
+        if: runner.os == 'Linux'
+        run: |
+          sudo apt-get install -y \
+            curl \
+            zip \
+            unzip \
+            tar \
+            pkg-config \
+            build-essential
+
       - name: Install CUDA
         if: matrix.config.cuda
         uses: Jimver/cuda-toolkit@v0.2.11
@@ -135,9 +154,8 @@ jobs:
             -DCMAKE_C_COMPILER=${{ matrix.config.cc }} \
             -DCMAKE_CXX_COMPILER=${{ matrix.config.cxx }} \
             -DUSE_CUDA=${{ matrix.config.cuda }} \
-            -DVCPKG_MANIFEST_MODE=ON \
-            -DVCPKG_MANIFEST_FEATURES=tests \
-            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
+            -DVCPKG_MANIFEST_MODE=ON
 
       - name: Configure CMake (Windows)
         if: runner.os == 'Windows'
@@ -145,12 +163,11 @@ jobs:
           cmake -B build \
             -DCMAKE_BUILD_TYPE=${{ matrix.config.build_type }} \
             -DUSE_CUDA=${{ matrix.config.cuda }} \
-            -DVCPKG_MANIFEST_MODE=ON \
-            -DVCPKG_MANIFEST_FEATURES=tests \
-            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
+            -DVCPKG_MANIFEST_MODE=ON
 
       - name: Build
-        run: cmake --build build --config ${{ matrix.config.build_type }} -j $(nproc)
+        run: cmake --build build --config ${{ matrix.config.build_type }} -j $(nproc 2>/dev/null || echo 4)
 
       - name: Test
         working-directory: build
@@ -162,11 +179,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
       - name: Install dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y ninja-build lcov gcc-12 g++-12
+          sudo apt-get install -y ninja-build lcov gcc-12 g++-12 curl zip unzip tar pkg-config build-essential
 
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
@@ -180,9 +199,8 @@ jobs:
             -DCMAKE_C_COMPILER=gcc-12 \
             -DCMAKE_CXX_COMPILER=g++-12 \
             -DENABLE_COVERAGE=ON \
-            -DVCPKG_MANIFEST_MODE=ON \
-            -DVCPKG_MANIFEST_FEATURES=tests \
-            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake
+            -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
+            -DVCPKG_MANIFEST_MODE=ON
 
       - name: Build
         run: cmake --build build -j $(nproc)

@@ -10,19 +10,60 @@ on:
       - ".github/workflows/docs.yml"
   workflow_dispatch:
 
+env:
+  VCPKG_COMMIT: "78b61582c9e093fda56a01ebb654be15a0033897"
+  CMAKE_VERSION: "3.27.7"
+  VCPKG_FEATURE_FLAGS: "manifests,versions"
+
 jobs:
   documentation:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          submodules: recursive
 
-      - name: Install Doxygen
-        run: sudo apt-get install -y doxygen graphviz
+      - name: Install Build Dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y \
+            ninja-build \
+            gcc-12 \
+            g++-12 \
+            doxygen \
+            graphviz \
+            curl \
+            zip \
+            unzip \
+            tar \
+            pkg-config \
+            build-essential
+
+      # Setup vcpkg using lukka/run-vcpkg action
+      - name: Setup vcpkg
+        uses: lukka/run-vcpkg@v11
+        with:
+          vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
+
+      # Install CMake
+      - name: Install CMake
+        uses: lukka/get-cmake@latest
+        with:
+          cmakeVersion: ${{ env.CMAKE_VERSION }}
+
+      - name: Configure CMake
+        run: |
+          cmake -B build -G Ninja \
+            -DCMAKE_BUILD_TYPE=Release \
+            -DCMAKE_C_COMPILER=gcc-12 \
+            -DCMAKE_CXX_COMPILER=g++-12 \
+            -DBUILD_DOCS=ON \
+            -DBUILD_TESTING=OFF \
+            -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
+            -DVCPKG_MANIFEST_MODE=ON
 
       - name: Generate Documentation
-        run: |
-          cmake -B build -DBUILD_DOCS=ON
-          cmake --build build --target docs
+        run: cmake --build build --target docs
 
       - name: Deploy to GitHub Pages
         uses: peaceiris/actions-gh-pages@v3

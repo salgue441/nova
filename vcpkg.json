@@ -24,6 +24,18 @@
       "version>=": "1.82.0"
     },
     {
+      "name": "boost-align",
+      "version>=": "1.82.0"
+    },
+    {
+      "name": "boost-stacktrace",
+      "version>=": "1.82.0"
+    },
+    {
+      "name": "boost-smart-ptr",
+      "version>=": "1.82.0"
+    },
+    {
       "name": "tl-expected",
       "version>=": "1.1.0"
     }
@@ -36,7 +48,28 @@
         {
           "name": "gtest",
           "version>=": "1.13.0"
+        }
+      ]
+    },
+    "cuda": {
+      "description": "Add CUDA support",
+      "dependencies": [
+        {
+          "name": "cuda"
         },
+        {
+          "name": "cub",
+          "version>=": "2.1.0"
+        },
+        {
+          "name": "cutlass",
+          "version>=": "3.1.0"
+        }
+      ]
+    },
+    "benchmarks": {
+      "description": "Build benchmarks",
+      "dependencies": [
         {
           "name": "benchmark",
           "version>=": "1.8.0"
