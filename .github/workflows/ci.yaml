@@ -45,6 +45,7 @@ jobs:
               cc: "gcc-12",
               cxx: "g++-12",
               cuda: false,
+              vcpkg_features: "tests",
             }
           - {
               name: "Ubuntu GCC Debug",
@@ -53,6 +54,7 @@ jobs:
               cc: "gcc-12",
               cxx: "g++-12",
               cuda: false,
+              vcpkg_features: "tests",
             }
           - {
               name: "Ubuntu Clang",
@@ -61,6 +63,7 @@ jobs:
               cc: "clang-15",
               cxx: "clang++-15",
               cuda: false,
+              vcpkg_features: "tests",
             }
           - {
               name: "Ubuntu CUDA",
@@ -69,6 +72,7 @@ jobs:
               cc: "gcc-12",
               cxx: "g++-12",
               cuda: true,
+              vcpkg_features: "tests,cuda",
             }
           - {
               name: "macOS Latest",
@@ -77,12 +81,14 @@ jobs:
               cc: "clang",
               cxx: "clang++",
               cuda: false,
+              vcpkg_features: "tests",
             }
           - {
               name: "Windows MSVC",
               os: windows-latest,
               build_type: "Release",
               cuda: false,
+              vcpkg_features: "tests",
             }
 
     steps:
@@ -98,7 +104,7 @@ jobs:
             !${{ github.workspace }}/vcpkg/buildtrees
             !${{ github.workspace }}/vcpkg/packages
             !${{ github.workspace }}/vcpkg/downloads
-          key: vcpkg-${{ runner.os }}-${{ env.VCPKG_COMMIT }}
+          key: vcpkg-${{ runner.os }}-${{ matrix.config.vcpkg_features }}-${{ env.VCPKG_COMMIT }}
 
       - name: Setup vcpkg
         uses: lukka/run-vcpkg@v11
@@ -156,7 +162,8 @@ jobs:
             -DUSE_CUDA=${{ matrix.config.cuda }} \
             -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
             -DVCPKG_MANIFEST_MODE=ON \
-            -DVCPKG_FEATURE_FLAGS=versions,manifests
+            -DVCPKG_FEATURE_FLAGS=versions,manifests \
+            -DVCPKG_INSTALL_OPTIONS="--x-feature=${{ matrix.config.vcpkg_features }}"
 
       - name: Configure CMake (Windows)
         if: runner.os == 'Windows'
@@ -166,7 +173,8 @@ jobs:
             -DUSE_CUDA=${{ matrix.config.cuda }} \
             -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
             -DVCPKG_MANIFEST_MODE=ON \
-            -DVCPKG_FEATURE_FLAGS=versions,manifests
+            -DVCPKG_FEATURE_FLAGS=versions,manifests \
+            -DVCPKG_INSTALL_OPTIONS="--x-feature=${{ matrix.config.vcpkg_features }}"
 
       - name: Build
         run: cmake --build build --config ${{ matrix.config.build_type }} -j $(nproc 2>/dev/null || echo 4)
@@ -203,7 +211,8 @@ jobs:
             -DENABLE_COVERAGE=ON \
             -DCMAKE_TOOLCHAIN_FILE=${{ github.workspace }}/vcpkg/scripts/buildsystems/vcpkg.cmake \
             -DVCPKG_MANIFEST_MODE=ON \
-            -DVCPKG_FEATURE_FLAGS=versions,manifests
+            -DVCPKG_FEATURE_FLAGS=versions,manifests \
+            -DVCPKG_INSTALL_OPTIONS="--x-feature=tests"
 
       - name: Build
         run: cmake --build build -j $(nproc)
