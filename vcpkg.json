@@ -13,27 +13,27 @@
     },
     {
       "name": "boost-container",
-      "version>=": "1.82.0"
+      "version>=": "1.80.0"
     },
     {
       "name": "boost-system",
-      "version>=": "1.82.0"
+      "version>=": "1.80.0"
     },
     {
       "name": "boost-filesystem",
-      "version>=": "1.82.0"
+      "version>=": "1.80.0"
     },
     {
       "name": "boost-align",
-      "version>=": "1.82.0"
+      "version>=": "1.80.0"
     },
     {
       "name": "boost-stacktrace",
-      "version>=": "1.82.0"
+      "version>=": "1.80.0"
     },
     {
       "name": "boost-smart-ptr",
-      "version>=": "1.82.0"
+      "version>=": "1.80.0"
     },
     {
       "name": "tl-expected",
