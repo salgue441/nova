@@ -1,0 +1,7 @@
+<map id="brezel::autograd::GradFunctionImpl&lt; Derived &gt;" name="brezel::autograd::GradFunctionImpl&lt; Derived &gt;">
+<area shape="rect" id="Node000001" title="Base template for creating operation&#45;specific gradient functions." alt="" coords="5,183,228,223"/>
+<area shape="rect" id="Node000002" href="$classbrezel_1_1autograd_1_1GradFunction.html" title="Base class for all gradient functions." alt="" coords="5,108,228,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,147,119,183,114,183,114,147"/>
+<area shape="rect" id="Node000003" href="$structbrezel_1_1autograd_1_1AutogradContext.html" title="Context for storing intermediate values required for gradient computation." alt="" coords="19,5,214,45"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="119,59,119,108,114,108,114,59"/>
+</map>

@@ -1,0 +1,49 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classbrezel_1_1autograd_1_1GradFunction.html" title="Base class for all gradient functions." alt="" coords="5,365,228,390"/>
+<area shape="rect" id="Node000001" href="$classbrezel_1_1autograd_1_1GradFunctionImpl.html" title=" " alt="" coords="276,5,499,45"/>
+<area shape="poly" id="edge1_Node000000_Node000001" title=" " alt="" coords="121,350,137,290,167,210,187,168,212,127,241,89,274,55,293,43,296,48,278,59,245,92,216,130,192,171,172,212,142,291,126,352"/>
+<area shape="rect" id="Node000003" href="$classbrezel_1_1autograd_1_1GradFunctionImpl.html" title=" " alt="" coords="276,69,499,109"/>
+<area shape="poly" id="edge3_Node000000_Node000003" title=" " alt="" coords="124,351,144,301,176,239,219,175,245,145,274,119,294,107,297,112,278,123,249,149,223,178,180,242,149,304,129,353"/>
+<area shape="rect" id="Node000005" href="$classbrezel_1_1autograd_1_1GradFunctionImpl.html" title=" " alt="" coords="276,133,499,173"/>
+<area shape="poly" id="edge5_Node000000_Node000005" title=" " alt="" coords="129,351,153,314,185,269,227,222,275,183,297,171,300,176,277,188,230,226,190,272,157,317,134,354"/>
+<area shape="rect" id="Node000007" href="$classbrezel_1_1autograd_1_1GradFunctionImpl.html" title=" " alt="" coords="276,197,499,237"/>
+<area shape="poly" id="edge7_Node000000_Node000007" title=" " alt="" coords="138,353,197,300,234,272,275,247,302,235,305,240,277,252,237,276,200,304,141,357"/>
+<area shape="rect" id="Node000009" href="$classbrezel_1_1autograd_1_1GradFunctionImpl.html" title=" " alt="" coords="276,261,499,301"/>
+<area shape="poly" id="edge9_Node000000_Node000009" title=" " alt="" coords="158,357,275,311,312,299,314,304,277,316,160,362"/>
+<area shape="rect" id="Node000011" href="$classbrezel_1_1autograd_1_1GradFunctionImpl.html" title=" " alt="" coords="276,325,499,365"/>
+<area shape="poly" id="edge11_Node000000_Node000011" title=" " alt="" coords="238,360,276,356,276,361,238,366"/>
+<area shape="rect" id="Node000013" href="$classbrezel_1_1autograd_1_1GradFunctionImpl.html" title=" " alt="" coords="276,389,499,429"/>
+<area shape="poly" id="edge13_Node000000_Node000013" title=" " alt="" coords="238,389,276,394,276,399,238,394"/>
+<area shape="rect" id="Node000015" href="$classbrezel_1_1autograd_1_1GradFunctionImpl.html" title=" " alt="" coords="276,453,499,493"/>
+<area shape="poly" id="edge15_Node000000_Node000015" title=" " alt="" coords="160,393,277,439,314,451,312,456,275,444,158,398"/>
+<area shape="rect" id="Node000017" href="$classbrezel_1_1autograd_1_1GradFunctionImpl.html" title=" " alt="" coords="276,517,499,557"/>
+<area shape="poly" id="edge17_Node000000_Node000017" title=" " alt="" coords="141,398,200,450,237,479,277,503,305,515,302,520,275,508,234,483,197,455,138,402"/>
+<area shape="rect" id="Node000019" href="$classbrezel_1_1autograd_1_1GradFunctionImpl.html" title=" " alt="" coords="276,581,499,621"/>
+<area shape="poly" id="edge19_Node000000_Node000019" title=" " alt="" coords="134,401,157,438,190,483,230,528,277,567,300,579,297,584,275,572,227,532,185,486,153,441,129,404"/>
+<area shape="rect" id="Node000021" href="$classbrezel_1_1autograd_1_1GradFunctionImpl.html" title=" " alt="" coords="276,645,499,685"/>
+<area shape="poly" id="edge21_Node000000_Node000021" title=" " alt="" coords="129,402,149,451,180,513,223,577,249,606,278,631,297,643,294,647,274,635,245,610,219,580,176,516,144,453,124,404"/>
+<area shape="rect" id="Node000023" href="$classbrezel_1_1autograd_1_1GradFunctionImpl.html" title="Base template for creating operation&#45;specific gradient functions." alt="" coords="276,709,499,749"/>
+<area shape="poly" id="edge23_Node000000_Node000023" title=" " alt="" coords="126,403,142,463,172,542,192,584,216,625,245,662,278,695,296,707,293,711,274,699,241,666,212,628,187,587,167,545,137,465,121,405"/>
+<area shape="rect" id="Node000002" href="$classbrezel_1_1autograd_1_1AddFunction.html" title="Gradient function for addition operation." alt="" coords="552,13,768,38"/>
+<area shape="poly" id="edge2_Node000001_Node000002" title=" " alt="" coords="513,23,552,23,552,28,513,28"/>
+<area shape="rect" id="Node000004" href="$classbrezel_1_1autograd_1_1ELUFunction.html" title="Gradient function for the ELU (Exponential Linear Unit) activation function." alt="" coords="552,77,768,102"/>
+<area shape="poly" id="edge4_Node000003_Node000004" title=" " alt="" coords="513,87,552,87,552,92,513,92"/>
+<area shape="rect" id="Node000006" href="$classbrezel_1_1autograd_1_1LeakyReLUFunction.html" title="Gradient function for the LeakyReLU activation function." alt="" coords="565,133,755,173"/>
+<area shape="poly" id="edge6_Node000005_Node000006" title=" " alt="" coords="513,151,564,151,564,156,513,156"/>
+<area shape="rect" id="Node000008" href="$classbrezel_1_1autograd_1_1MatMulFunction.html" title="Gradient function for matrix multiplication." alt="" coords="567,197,753,237"/>
+<area shape="poly" id="edge8_Node000007_Node000008" title=" " alt="" coords="512,215,567,215,567,220,512,220"/>
+<area shape="rect" id="Node000010" href="$classbrezel_1_1autograd_1_1MaxFunction.html" title="Gradient function for the Max reduction." alt="" coords="551,269,769,294"/>
+<area shape="poly" id="edge10_Node000009_Node000010" title=" " alt="" coords="513,279,551,279,551,284,513,284"/>
+<area shape="rect" id="Node000012" href="$classbrezel_1_1autograd_1_1MeanFunction.html" title="Gradient function for the Mean reduction." alt="" coords="547,333,773,358"/>
+<area shape="poly" id="edge12_Node000011_Node000012" title=" " alt="" coords="512,343,547,343,547,348,512,348"/>
+<area shape="rect" id="Node000014" href="$classbrezel_1_1autograd_1_1MultiplyFunction.html" title="Gradient function for multiply operation." alt="" coords="565,389,755,429"/>
+<area shape="poly" id="edge14_Node000013_Node000014" title=" " alt="" coords="512,407,565,407,565,412,512,412"/>
+<area shape="rect" id="Node000016" href="$classbrezel_1_1autograd_1_1ReLUFunction.html" title="Gradient function for the ReLU activation function." alt="" coords="547,461,773,486"/>
+<area shape="poly" id="edge16_Node000015_Node000016" title=" " alt="" coords="512,471,547,471,547,476,512,476"/>
+<area shape="rect" id="Node000018" href="$classbrezel_1_1autograd_1_1SigmoidFunction.html" title="Gradient function for the Sigmoid activation function." alt="" coords="565,517,755,557"/>
+<area shape="poly" id="edge18_Node000017_Node000018" title=" " alt="" coords="512,535,565,535,565,540,512,540"/>
+<area shape="rect" id="Node000020" href="$classbrezel_1_1autograd_1_1SumFunction.html" title="Gradient function for the Sum reduction." alt="" coords="550,589,770,614"/>
+<area shape="poly" id="edge20_Node000019_Node000020" title=" " alt="" coords="512,599,550,599,550,604,512,604"/>
+<area shape="rect" id="Node000022" href="$classbrezel_1_1autograd_1_1TanhFunction.html" title="Gradient function for the Tanh activation function." alt="" coords="549,653,771,678"/>
+<area shape="poly" id="edge22_Node000021_Node000022" title=" " alt="" coords="512,663,549,663,549,668,512,668"/>
+</map>

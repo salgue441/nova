@@ -1,0 +1,9 @@
+<map id="brezel::autograd::MaxFunction" name="brezel::autograd::MaxFunction">
+<area shape="rect" id="Node000001" title="Gradient function for the Max reduction." alt="" coords="7,272,226,297"/>
+<area shape="rect" id="Node000002" href="$classbrezel_1_1autograd_1_1GradFunctionImpl.html" title=" " alt="" coords="5,183,228,223"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="119,236,119,272,114,272,114,236"/>
+<area shape="rect" id="Node000003" href="$classbrezel_1_1autograd_1_1GradFunction.html" title="Base class for all gradient functions." alt="" coords="5,108,228,133"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="119,147,119,183,114,183,114,147"/>
+<area shape="rect" id="Node000004" href="$structbrezel_1_1autograd_1_1AutogradContext.html" title="Context for storing intermediate values required for gradient computation." alt="" coords="19,5,214,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="119,59,119,108,114,108,114,59"/>
+</map>

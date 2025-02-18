@@ -1,0 +1,17 @@
+<map id="brezel::core::error::Error" name="brezel::core::error::Error">
+<area shape="rect" id="Node000001" title="Base exception class with rich context and diagnostic information." alt="" coords="168,101,305,141"/>
+<area shape="rect" id="Node000003" href="$classbrezel_1_1core_1_1error_1_1LogicError.html" title="Logic error class for programming errors that could be detected at compile time." alt="" coords="353,69,491,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="318,105,352,99,353,104,319,110"/>
+<area shape="rect" id="Node000006" href="$classbrezel_1_1core_1_1error_1_1RuntimeError.html" title="Runtime error class for errors that can only be detected at runtime." alt="" coords="353,133,491,173"/>
+<area shape="poly" id="edge5_Node000001_Node000006" title=" " alt="" coords="319,133,353,139,352,144,318,138"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="5,109,120,134"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="134,119,168,119,168,124,134,124"/>
+<area shape="rect" id="Node000004" href="$classbrezel_1_1core_1_1error_1_1InvalidArgument.html" title="Invalid argument error with argument information storage." alt="" coords="539,5,678,45"/>
+<area shape="poly" id="edge3_Node000003_Node000004" title=" " alt="" coords="493,62,549,43,551,48,495,67"/>
+<area shape="rect" id="Node000005" href="$classbrezel_1_1core_1_1error_1_1OutOfRange.html" title="Out of range error with range boundary storage." alt="" coords="540,69,677,109"/>
+<area shape="poly" id="edge4_Node000003_Node000005" title=" " alt="" coords="505,87,540,87,540,92,505,92"/>
+<area shape="rect" id="Node000007" href="$classbrezel_1_1core_1_1error_1_1InvalidOperation.html" title="Invalid operation error with operation history." alt="" coords="539,133,678,173"/>
+<area shape="poly" id="edge6_Node000006_Node000007" title=" " alt="" coords="504,151,539,151,539,156,504,156"/>
+<area shape="rect" id="Node000008" href="$classbrezel_1_1core_1_1error_1_1NotImplemented.html" title="Not implemented error for unimplemented functionality." alt="" coords="539,197,679,237"/>
+<area shape="poly" id="edge7_Node000006_Node000008" title=" " alt="" coords="495,175,551,195,549,200,493,180"/>
+</map>

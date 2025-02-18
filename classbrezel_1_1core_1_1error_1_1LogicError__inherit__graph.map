@@ -1,0 +1,11 @@
+<map id="brezel::core::error::LogicError" name="brezel::core::error::LogicError">
+<area shape="rect" id="Node000001" title="Logic error class for programming errors that could be detected at compile time." alt="" coords="87,167,225,207"/>
+<area shape="rect" id="Node000004" href="$classbrezel_1_1core_1_1error_1_1InvalidArgument.html" title="Invalid argument error with argument information storage." alt="" coords="5,255,144,295"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="130,219,95,256,91,253,127,215"/>
+<area shape="rect" id="Node000005" href="$classbrezel_1_1core_1_1error_1_1OutOfRange.html" title="Out of range error with range boundary storage." alt="" coords="169,255,306,295"/>
+<area shape="poly" id="edge4_Node000001_Node000005" title=" " alt="" coords="185,215,221,253,217,256,182,219"/>
+<area shape="rect" id="Node000002" href="$classbrezel_1_1core_1_1error_1_1Error.html" title="Base exception class with rich context and diagnostic information." alt="" coords="87,79,225,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="159,133,159,166,153,166,153,133"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="99,5,213,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="159,44,159,79,153,79,153,44"/>
+</map>

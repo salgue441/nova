@@ -1,0 +1,5 @@
+<map id="brezel::autograd::Variable" name="brezel::autograd::Variable">
+<area shape="rect" id="Node000001" title="Tensor with autograd capabilities." alt="" coords="5,93,195,119"/>
+<area shape="rect" id="Node000002" title=" " alt="" coords="13,5,187,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="103,59,103,93,97,93,97,59"/>
+</map>

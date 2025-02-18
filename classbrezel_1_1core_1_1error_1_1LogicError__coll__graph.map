@@ -1,0 +1,7 @@
+<map id="brezel::core::error::LogicError" name="brezel::core::error::LogicError">
+<area shape="rect" id="Node000001" title="Logic error class for programming errors that could be detected at compile time." alt="" coords="5,167,143,207"/>
+<area shape="rect" id="Node000002" href="$classbrezel_1_1core_1_1error_1_1Error.html" title="Base exception class with rich context and diagnostic information." alt="" coords="5,79,143,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,133,77,166,71,166,71,133"/>
+<area shape="rect" id="Node000003" title=" " alt="" coords="17,5,131,31"/>
+<area shape="poly" id="edge2_Node000002_Node000003" title=" " alt="" coords="77,44,77,79,71,79,71,44"/>
+</map>
