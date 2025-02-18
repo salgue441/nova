@@ -35,9 +35,20 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 # Find required packages provided by vcpkg
 find_package(fmt CONFIG REQUIRED)
 find_package(TBB CONFIG REQUIRED)
-find_package(Boost 1.80.0 COMPONENTS container system filesystem REQUIRED)
+find_package(Boost 1.80.0 COMPONENTS
+  container
+  system
+  filesystem
+  stacktrace
+  circular_buffer
+  REQUIRED
+)
 find_package(tl-expected CONFIG REQUIRED)
 find_package(Threads REQUIRED)
+
+# Make fmt available globally to replace std::format
+add_compile_definitions(FMT_HEADER_ONLY)
+include_directories(SYSTEM ${fmt_INCLUDE_DIRS})
 
 # CUDA setup and validation if requested
 if(USE_CUDA)

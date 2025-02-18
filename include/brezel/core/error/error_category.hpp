@@ -1,10 +1,10 @@
 #pragma once
 
+#include <fmt/format.h>
 #include <tbb/concurrent_unordered_map.h>
 
 #include <boost/container/flat_map.hpp>
 #include <brezel/core/macros.hpp>
-#include <format>
 #include <memory>
 #include <shared_mutex>
 #include <string_view>
@@ -149,7 +149,7 @@ public:
         if (auto it = messages.find(code); it != messages.end())
             return std::string{it->second};
 
-        return std::format("Unknown error code: {}", code);
+        return fmt::format("Unknown error code: {}", code);
     }
 
     /**
@@ -203,7 +203,7 @@ public:
         if (auto it = messages.find(code); it != messages.end())
             return std::string{it->second};
 
-        return std::format("Unknown error code: {}", code);
+        return fmt::format("Unknown error code: {}", code);
     }
 
     /**

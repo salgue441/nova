@@ -27,8 +27,10 @@ public:
     };
 
     /// @brief Default constructor creates a success (0) error code
-    BREZEL_NODISCARD constexpr ErrorCode() noexcept = default;
-    constexpr ErrorCode(const ErrorCode& other) noexcept
+    BREZEL_NODISCARD ErrorCode() noexcept = default;
+
+    // Copy constructor (not constexpr due to unique_ptr)
+    ErrorCode(const ErrorCode& other) noexcept
         : m_code(other.m_code), m_category(other.m_category) {
         if (other.m_context)
             m_context = std::make_unique<Context>(*other.m_context);
@@ -44,8 +46,7 @@ public:
      * @param code Numeric error code
      * @param category Error category
      */
-    BREZEL_NODISCARD constexpr ErrorCode(int code,
-                                         const ErrorCategory& category) noexcept
+    BREZEL_NODISCARD ErrorCode(int code, const ErrorCategory& category) noexcept
         : m_code(code), m_category(&category) {}
 
     /**
@@ -53,7 +54,7 @@ public:
      *
      * @param code Runtime error code
      */
-    BREZEL_NODISCARD constexpr ErrorCode(RuntimeCategory::Code code) noexcept
+    BREZEL_NODISCARD ErrorCode(RuntimeCategory::Code code) noexcept
         : m_code(static_cast<int>(code)),
           m_category(&RuntimeCategory::instance()) {}
 
@@ -62,7 +63,7 @@ public:
      *
      * @param code Logic error code
      */
-    BREZEL_NODISCARD constexpr ErrorCode(LogicCategory::Code code) noexcept
+    BREZEL_NODISCARD ErrorCode(LogicCategory::Code code) noexcept
         : m_code(static_cast<int>(code)),
           m_category(&LogicCategory::instance()) {}
 
@@ -72,7 +73,7 @@ public:
      *
      * @return Error code value
      */
-    BREZEL_NODISCARD BREZEL_FORCE_INLINE constexpr int value() const noexcept {
+    BREZEL_NODISCARD BREZEL_FORCE_INLINE int value() const noexcept {
         return m_code;
     }
 
@@ -81,8 +82,8 @@ public:
      *
      * @return Reference to error category
      */
-    BREZEL_NODISCARD BREZEL_FORCE_INLINE constexpr const ErrorCategory&
-    category() const noexcept {
+    BREZEL_NODISCARD BREZEL_FORCE_INLINE const ErrorCategory& category()
+        const noexcept {
         return *m_category;
     }
 
@@ -135,7 +136,7 @@ public:
      *
      * @return true if error code is non-zero
      */
-    BREZEL_NODISCARD BREZEL_FORCE_INLINE constexpr explicit operator bool()
+    BREZEL_NODISCARD BREZEL_FORCE_INLINE explicit operator bool()
         const noexcept {
         return value() != 0;
     }
@@ -143,8 +144,7 @@ public:
     /**
      * @brief Three-way comparison operator
      */
-    BREZEL_NODISCARD constexpr auto operator<=>(
-        const ErrorCode& other) const noexcept {
+    BREZEL_NODISCARD auto operator<=>(const ErrorCode& other) const noexcept {
         if (auto cmp = &category() <=> &other.category(); cmp != 0)
             return cmp;
 
@@ -156,8 +156,7 @@ public:
      *
      * @param other Other ErrorCode to check
      */
-    BREZEL_NODISCARD constexpr bool operator==(
-        const ErrorCode& other) const noexcept {
+    BREZEL_NODISCARD bool operator==(const ErrorCode& other) const noexcept {
         return *this <=> other == 0;
     }
 
