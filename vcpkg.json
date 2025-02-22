@@ -8,27 +8,27 @@
   "dependencies": [
     {
       "name": "fmt",
-      "version>=": "10.1.1"
+      "version>=": "10.0.0"
     },
     {
       "name": "tbb",
-      "version>=": "2021.9.0"
+      "version>=": "2021.10.0"
     },
     {
       "name": "boost-container",
-      "version>=": "1.83.0"
+      "version>=": "1.82.0"
     },
     {
       "name": "boost-system",
-      "version>=": "1.83.0"
+      "version>=": "1.82.0"
     },
     {
       "name": "boost-filesystem",
-      "version>=": "1.83.0"
+      "version>=": "1.82.0"
     },
     {
       "name": "boost-stacktrace",
-      "version>=": "1.83.0"
+      "version>=": "1.82.0"
     }
   ],
   "features": {
