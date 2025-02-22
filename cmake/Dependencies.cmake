@@ -7,11 +7,11 @@ find_package(TBB CONFIG REQUIRED)
 find_package(tl-expected CONFIG REQUIRED)
 
 if(NOT TARGET TBB::tbb)
-  message(FATAL_ERROR "TBB targets not available. Please install TBB through vcpkg: vcpkg install tbb:${VCPKG_TARGET_TRIPLET}")
+  message(FATAL_ERROR "TBB targets not available. Please install TBB system-wide.")
 endif()
 
 # Boost dependencies
-set(BOOST_MIN_VERSION "1.86.0")
+set(BOOST_MIN_VERSION "1.83.0")
 find_package(Boost ${BOOST_MIN_VERSION} COMPONENTS
   container
   system
@@ -34,20 +34,20 @@ endif()
 function(brezel_validate_dependencies)
   # Core dependencies check
   if(NOT TARGET fmt::fmt)
-    message(FATAL_ERROR "fmt library not found. Install via: vcpkg install fmt:${VCPKG_TARGET_TRIPLET}")
+    message(FATAL_ERROR "fmt library not found. Please install fmt system-wide.")
   endif()
 
   if(NOT TARGET TBB::tbb)
-    message(FATAL_ERROR "TBB library not found. Install via: vcpkg install tbb:${VCPKG_TARGET_TRIPLET}")
+    message(FATAL_ERROR "TBB library not found. Please install TBB system-wide.")
   endif()
 
   if(NOT Boost_FOUND)
-    message(FATAL_ERROR "Boost libraries not found. Install via: vcpkg install boost-container boost-system boost-filesystem:${VCPKG_TARGET_TRIPLET}")
+    message(FATAL_ERROR "Boost libraries not found. Please install Boost system-wide.")
   endif()
 
   # Testing checks
   if(BUILD_TESTING AND NOT TARGET GTest::gtest)
-    message(FATAL_ERROR "GoogleTest not found. Install via: vcpkg install gtest:${VCPKG_TARGET_TRIPLET}")
+    message(FATAL_ERROR "GoogleTest not found. Please install GTest system-wide.")
   endif()
 
   message(STATUS "All dependencies validated successfully")

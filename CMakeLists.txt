@@ -27,24 +27,6 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-# Setup vcpkg if available
-if(DEFINED ENV{VCPKG_ROOT} AND NOT DEFINED CMAKE_TOOLCHAIN_FILE)
-  set(CMAKE_TOOLCHAIN_FILE "$ENV{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
-    CACHE STRING "Vcpkg toolchain file")
-endif()
-
-# Find required Boost components
-find_package(Boost ${BOOST_MIN_VERSION} REQUIRED COMPONENTS
-  container
-  system
-  filesystem
-  stacktrace_backtrace)
-
-# Find other required packages
-find_package(fmt CONFIG REQUIRED)
-find_package(TBB CONFIG REQUIRED)
-find_package(Threads REQUIRED)
-
 # Add the main header-only library
 add_subdirectory(include)
 
