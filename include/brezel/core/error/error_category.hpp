@@ -1,110 +1,57 @@
 #pragma once
 
-#include <fmt/format.h>
 #include <tbb/concurrent_unordered_map.h>
 
-#include <boost/container/flat_map.hpp>
+#include <brezel/core/error/error_fwd.hpp>
 #include <brezel/core/macros.hpp>
-#include <memory>
-#include <shared_mutex>
+#include <string>
 #include <string_view>
+#include <system_error>
 
 namespace brezel::core::error {
 /**
- * @brief Abstract base class for error categories using type erasure pattern
+ * @brief Base class for error categories
  *
- * @details Thread-safe error category base class with efficient message
- * caching and concurrent access support.
  */
 class BREZEL_API ErrorCategory {
 public:
-    /// @brief Virtual destructor
     virtual ~ErrorCategory() = default;
 
-    /**
-     * @brief Gets the category name
-     * @return Category name view
-     */
     BREZEL_NODISCARD virtual std::string_view name() const noexcept = 0;
-
-    /**
-     * @brief Gets the error message for a code
-     *
-     * @param code Error code
-     * @return Error message
-     */
-    BREZEL_NODISCARD virtual const std::string& message(int code) const = 0;
+    BREZEL_NODISCARD virtual std::string message(int code) const = 0;
 
 protected:
     ErrorCategory() = default;
-    BREZEL_IMMOVABLE(ErrorCategory);
-    BREZEL_UNCOPYABLE(ErrorCategory);
+    ErrorCategory(const ErrorCategory&) = delete;
+    ErrorCategory& operator=(const ErrorCategory&) = delete;
+    ErrorCategory(ErrorCategory&&) = delete;
+    ErrorCategory& operator=(ErrorCategory&&) = delete;
 
-    /// @brief Thread-safe message cache
     mutable tbb::concurrent_unordered_map<int, std::string> m_message_cache;
 };
 
 /**
- * @brief Template base class for implementing error categories
- * @tparam Derived CRTP derived class type
- */
-template <typename Derived>
-class BREZEL_API ErrorCategoryImpl : public ErrorCategory {
-public:
-    /**
-     * @brief Gets the category name
-     * @return Category name view
-     */
-    BREZEL_NODISCARD std::string_view name() const noexcept override {
-        return Derived::category_name;
-    }
-
-    /**
-     * @brief Gets the error message with caching
-     *
-     * @param code Error code
-     * @return Error message
-     */
-    BREZEL_NODISCARD const std::string& message(int code) const override {
-        auto it = m_message_cache.find(code);
-        if (it != m_message_cache.end()) {
-            return it->second;
-        }
-
-        return m_message_cache
-            .insert({code, static_cast<const Derived*>(this)->do_message(code)})
-            .first->second;
-    }
-
-protected:
-    ErrorCategoryImpl() = default;
-};
-
-/**
  * @brief System error category for OS-related errors
+ *
  */
-class BREZEL_API SystemCategory final
-    : public ErrorCategoryImpl<SystemCategory> {
+class BREZEL_API SystemCategory final : public ErrorCategory {
 public:
-    static constexpr std::string_view category_name = "System";
-
-    /**
-     * @brief Gets the message for a system error code
-     *
-     * @param code System error code
-     * @return Error message
-     */
-    BREZEL_NODISCARD std::string do_message(int code) const {
-        return std::system_category().message(code);
-    }
-
-    /**
-     * @brief Gets the singleton instance
-     * @return Category instance
-     */
-    BREZEL_NODISCARD static const SystemCategory& instance() noexcept {
+    static const SystemCategory& instance() noexcept {
         static const SystemCategory category;
         return category;
+    }
+
+    BREZEL_NODISCARD std::string_view name() const noexcept override {
+        return "System";
+    }
+
+    BREZEL_NODISCARD std::string message(int code) const override {
+        auto it = m_message_cache.find(code);
+        if (it != m_message_cache.end())
+            return it->second;
+
+        auto msg = std::system_category().message(code);
+        return m_message_cache.insert({code, std::move(msg)}).first->second;
     }
 
 private:
@@ -112,12 +59,10 @@ private:
 };
 
 /**
- * @brief Runtime error category for general runtime errors
+ * @brief Runtime error category for runtime errors
  */
-class BREZEL_API RuntimeCategory final
-    : public ErrorCategoryImpl<RuntimeCategory> {
+class BREZEL_API RuntimeCategory final : public ErrorCategory {
 public:
-    /// @brief Runtime error codes
     enum class Code {
         Success = 0,
         Unknown,
@@ -128,37 +73,56 @@ public:
         IoError
     };
 
-    static constexpr std::string_view category_name = "Runtime";
-
-    /**
-     * @brief Gets the message for a runtime error code
-     *
-     * @param code Runtime error code
-     * @return Error message
-     */
-    BREZEL_NODISCARD std::string do_message(int code) const {
-        static const boost::container::flat_map<int, std::string_view> messages{
-            {static_cast<int>(Code::Success), "Success"},
-            {static_cast<int>(Code::Unknown), "Unknown runtime error"},
-            {static_cast<int>(Code::InvalidOperation), "Invalid operation"},
-            {static_cast<int>(Code::OutOfMemory), "Out of memory"},
-            {static_cast<int>(Code::InvalidState), "Invalid state"},
-            {static_cast<int>(Code::Timeout), "Operation timed out"},
-            {static_cast<int>(Code::IoError), "I/O error"}};
-
-        if (auto it = messages.find(code); it != messages.end())
-            return std::string{it->second};
-
-        return fmt::format("Unknown error code: {}", code);
-    }
-
-    /**
-     * @brief Gets the singleton instance
-     * @return Category instance
-     */
-    BREZEL_NODISCARD static const RuntimeCategory& instance() noexcept {
+    static const RuntimeCategory& instance() noexcept {
         static const RuntimeCategory category;
         return category;
+    }
+
+    BREZEL_NODISCARD std::string_view name() const noexcept override {
+        return "Runtime";
+    }
+
+    BREZEL_NODISCARD std::string message(int code) const override {
+        auto it = m_message_cache.find(code);
+        if (it != m_message_cache.end()) 
+            return it->second;
+        
+
+        std::string msg;
+        switch (static_cast<Code>(code)) {
+            case Code::Success:
+                msg = "Success";
+                break;
+
+            case Code::Unknown:
+                msg = "Unknown runtime error";
+                break;
+
+            case Code::InvalidOperation:
+                msg = "Invalid operation";
+                break;
+
+            case Code::OutOfMemory:
+                msg = "Out of memory";
+                break;
+
+            case Code::InvalidState:
+                msg = "Invalid state";
+                break;
+
+            case Code::Timeout:
+                msg = "Operation timed out";
+                break;
+
+            case Code::IoError:
+                msg = "I/O error";
+                break;
+
+            default:
+                msg = "Unknown error code: " + std::to_string(code);
+        }
+
+        return m_message_cache.insert({code, std::move(msg)}).first->second;
     }
 
 private:
@@ -166,53 +130,75 @@ private:
 };
 
 /**
- * @brief Logic error category for programming errors
+ * @brief Logic error category for logical/programming errors
  */
-class BREZEL_API LogicCategory final : public ErrorCategoryImpl<LogicCategory> {
+class BREZEL_API LogicCategory final : public ErrorCategory {
 public:
-    /// @brief Logic error codes
     enum class Code {
         Success = 0,
         Unknown,
         InvalidArgument,
         OutOfRange,
         InvalidCast,
-        DivideByZero,
         NullPointer,
         InvalidState,
+        InvalidOperation
     };
 
-    static constexpr std::string_view category_name = "Logic";
-
-    /**
-     * @brief Gets the message for a logic error code
-     * @param code Logic error code
-     * @return Error message
-     */
-    BREZEL_NODISCARD std::string do_message(int code) const {
-        static const boost::container::flat_map<int, std::string_view> messages{
-            {static_cast<int>(Code::Success), "Success"},
-            {static_cast<int>(Code::Unknown), "Unknown logic error"},
-            {static_cast<int>(Code::InvalidArgument), "Invalid argument"},
-            {static_cast<int>(Code::OutOfRange), "Out of range"},
-            {static_cast<int>(Code::InvalidCast), "Invalid type cast"},
-            {static_cast<int>(Code::DivideByZero), "Division by zero"},
-            {static_cast<int>(Code::NullPointer), "Null pointer dereference"},
-            {static_cast<int>(Code::InvalidState), "Invalid state"}};
-
-        if (auto it = messages.find(code); it != messages.end())
-            return std::string{it->second};
-
-        return fmt::format("Unknown error code: {}", code);
-    }
-
-    /**
-     * @brief Gets the singleton instance
-     * @return Category instance
-     */
-    BREZEL_NODISCARD static const LogicCategory& instance() noexcept {
+    static const LogicCategory& instance() noexcept {
         static const LogicCategory category;
         return category;
+    }
+
+    BREZEL_NODISCARD std::string_view name() const noexcept override {
+        return "Logic";
+    }
+
+    BREZEL_NODISCARD std::string message(int code) const override {
+        auto it = m_message_cache.find(code);
+        if (it != m_message_cache.end()) 
+            return it->second;
+        
+
+        std::string msg;
+        switch (static_cast<Code>(code)) {
+            case Code::Success:
+                msg = "Success";
+                break;
+
+            case Code::Unknown:
+                msg = "Unknown logic error";
+                break;
+
+            case Code::InvalidArgument:
+                msg = "Invalid argument";
+                break;
+
+            case Code::OutOfRange:
+                msg = "Out of range";
+                break;
+
+            case Code::InvalidCast:
+                msg = "Invalid type cast";
+                break;
+
+            case Code::NullPointer:
+                msg = "Null pointer dereference";
+                break;
+
+            case Code::InvalidState:
+                msg = "Invalid state";
+                break;
+
+            case Code::InvalidOperation:
+                msg = "Invalid operation";
+                break;
+
+            default:
+                msg = "Unknown error code: " + std::to_string(code);
+        }
+
+        return m_message_cache.insert({code, std::move(msg)}).first->second;
     }
 
 private:

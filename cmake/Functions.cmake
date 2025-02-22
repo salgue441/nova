@@ -22,7 +22,7 @@ function(brezel_add_library target_name)
     add_library(${target_name} ${ARG_SOURCES})
   endif()
 
-  add_library(BrezelTensor::${target_name} ALIAS ${target_name})
+  add_library(Brezel::${target_name} ALIAS ${target_name})
 
   # Set target properties
   if(NOT ARG_INTERFACE)

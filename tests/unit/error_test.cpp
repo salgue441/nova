@@ -49,12 +49,12 @@ TEST_F(ErrorTest, ErrorNotes) {
 }
 
 TEST_F(ErrorTest, ErrorHistoryTracking) {
-    auto initial_count = std::ranges::distance(Error::error_history());
+    auto initial_count = std::ranges::distance(Error::error_history);
 
     try {
         throw RuntimeError("Test error");
     } catch (const RuntimeError&) {
-        auto final_count = std::ranges::distance(Error::error_history());
+        auto final_count = std::ranges::distance(Error::error_history);
         EXPECT_EQ(final_count, initial_count + 1);
     }
 }
@@ -63,7 +63,7 @@ TEST_F(ErrorTest, ThreadSafeErrorTracking) {
     constexpr int kThreads = 8;
     std::vector<std::future<void>> futures;
 
-    auto initial_count = std::ranges::distance(Error::error_history());
+    auto initial_count = std::ranges::distance(Error::error_history);
 
     // Create barrier to synchronize threads
     std::barrier sync_point(kThreads + 1);
@@ -85,7 +85,7 @@ TEST_F(ErrorTest, ThreadSafeErrorTracking) {
         future.wait();
     }
 
-    auto final_count = std::ranges::distance(Error::error_history());
+    auto final_count = std::ranges::distance(Error::error_history);
     EXPECT_EQ(final_count, initial_count + kThreads);
 }
 

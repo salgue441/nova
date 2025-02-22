@@ -1,65 +1,64 @@
 #pragma once
 
-#include <boost/container/small_vector.hpp>
 #include <brezel/core/error/error.hpp>
 #include <brezel/core/macros.hpp>
 #include <numeric>
 #include <ranges>
 #include <span>
-#include <sstream>
-#include <string>
+#include <vector>
 
 namespace brezel::tensor {
+
 /**
  * @brief Represents the shape of a tensor.
  * @details Provides a lightweight wrapper around dimensions with validation
- * and common shape operations. Uses small vector optimization for efficiency.
+ * and common shape operations.
  */
 class BREZEL_API Shape {
 public:
-    using Container = boost::container::small_vector<int64_t, 4>;
+    using Container = std::vector<int64_t>;
     using iterator = Container::iterator;
     using const_iterator = Container::const_iterator;
 
     /**
      * @brief Creates an empty shape (scalar)
-     *
      */
-    BREZEL_NODISCARD Shape() = default;
+    Shape() = default;
 
     /**
      * @brief Creates a shape from initializer list
-     *
      * @param dims Dimension sizes
      * @throws LogicError if any dimension is negative
      */
-    BREZEL_NODISCARD Shape(std::initializer_list<int64_t> dims) {
-        for (auto dim : dims)
-            BREZEL_ENSURE(dim >= 0, "Negative dimension {} is invalid", dim);
-
-        m_dims.insert(m_dims.end(), dims.begin(), dims.end());
+    Shape(std::initializer_list<int64_t> dims) {
+        m_dims.reserve(dims.size());
+        for (auto d : dims) {
+            if (d < 0) {
+                throw core::error::LogicError(
+                    "Negative dimension {} is invalid", d);
+            }
+            m_dims.push_back(d);
+        }
     }
 
     /**
      * @brief Creates a shape from a range of dimensions
-     *
      * @tparam Range Range type supporting std::ranges::range
      * @param dims Range of dimensions
      * @throws LogicError if any dimension is negative
      */
     template <std::ranges::range Range>
-    BREZEL_NODISCARD explicit Shape(const Range& dims) {
-        std::vector<int64_t> converted;
-        converted.reserve(std::ranges::distance(dims));
+    explicit Shape(const Range& dims) {
+        using brezel::core::error::LogicError;
 
-        for (auto dim : dims) {
-            const int64_t value = static_cast<int64_t>(dim);
-            BREZEL_ENSURE(value >= 0, "Negative dimension {} is invalid", dim);
-
-            converted.push_back(value);
+        m_dims.reserve(std::ranges::distance(dims));
+        for (auto d : dims) {
+            const int64_t value = static_cast<int64_t>(d);
+            if (value < 0) {
+                throw LogicError("Negative dimension {} is invalid", value);
+            }
+            m_dims.push_back(value);
         }
-
-        m_dims.insert(m_dims.end(), converted.begin(), converted.end());
     }
 
     // Element access
@@ -69,31 +68,28 @@ public:
     }
 
     BREZEL_NODISCARD int64_t& at(size_t idx) {
-        BREZEL_ENSURE(idx < m_dims.size(),
-                      "Index {} out of range for shape with {} dimensions", idx,
-                      m_dims.size());
-
+        if (idx >= m_dims.size()) {
+            throw core::error::LogicError(
+                "Index {} out of range for shape with {} dimensions", idx,
+                m_dims.size());
+        }
         return m_dims[idx];
     }
 
     BREZEL_NODISCARD const int64_t& at(size_t idx) const {
-        BREZEL_ENSURE(idx < m_dims.size(),
-                      "Index {} out of range for shape with {} dimensions", idx,
-                      m_dims.size());
-
+        if (idx >= m_dims.size()) {
+            throw core::error::LogicError(
+                "Index {} out of range for shape with {} dimensions", idx,
+                m_dims.size());
+        }
         return m_dims[idx];
     }
 
     // Iterators
-    BREZEL_NODISCARD iterator begin() noexcept { return m_dims.begin(); }
-    BREZEL_NODISCARD const_iterator begin() const noexcept {
-        return m_dims.begin();
-    }
-
-    BREZEL_NODISCARD iterator end() noexcept { return m_dims.end(); }
-    BREZEL_NODISCARD const_iterator end() const noexcept {
-        return m_dims.end();
-    }
+    BREZEL_NODISCARD auto begin() noexcept { return m_dims.begin(); }
+    BREZEL_NODISCARD auto begin() const noexcept { return m_dims.begin(); }
+    BREZEL_NODISCARD auto end() noexcept { return m_dims.end(); }
+    BREZEL_NODISCARD auto end() const noexcept { return m_dims.end(); }
 
     // Capacity
     BREZEL_NODISCARD bool empty() const noexcept { return m_dims.empty(); }
@@ -104,24 +100,31 @@ public:
      * @return Product of all dimensions
      */
     BREZEL_NODISCARD size_t numel() const noexcept {
+        if (empty())
+            return 1;
         return std::accumulate(begin(), end(), size_t{1}, std::multiplies<>());
     }
 
     // Modifiers
     void clear() noexcept { m_dims.clear(); }
+
     void push_back(int64_t dim) {
-        BREZEL_ENSURE(dim >= 0, "Negative dimension {} is invalid", dim);
+        if (dim < 0) {
+            throw core::error::LogicError("Negative dimension {} is invalid",
+                                          dim);
+        }
         m_dims.push_back(dim);
     }
 
     void pop_back() {
-        BREZEL_ENSURE(!empty(), "Cannot pop from empty shape");
+        if (empty()) {
+            throw core::error::LogicError("Cannot pop from empty shape");
+        }
         m_dims.pop_back();
     }
 
     /**
      * @brief Broadcasts this shape with another
-     *
      * @param other Shape to broadcast with
      * @return New broadcasted shape
      * @throws LogicError if shapes cannot be broadcast together
@@ -129,20 +132,19 @@ public:
     BREZEL_NODISCARD Shape broadcast_with(const Shape& other) const {
         if (empty())
             return other;
-
         if (other.empty())
             return *this;
-
         if (*this == other)
             return *this;
 
-        BREZEL_ENSURE(is_broadcastable_with(other),
-                      "Shapes {} and {} cannot be broadcast together",
-                      to_string(), other.to_string());
+        if (!is_broadcastable_with(other)) {
+            throw core::error::LogicError(
+                "Shapes {} and {} cannot be broadcast together", to_string(),
+                other.to_string());
+        }
 
-        const size_t max_dims = std::max(size(), other.size());
         Shape result;
-
+        const size_t max_dims = std::max(size(), other.size());
         result.m_dims.reserve(max_dims);
 
         // Right-to-left processing
@@ -154,14 +156,12 @@ public:
         while (it1 != end1 && it2 != end2) {
             const int64_t dim1 = *it1;
             const int64_t dim2 = *it2;
-
             result.m_dims.push_back(dim1 == 1 ? dim2 : dim1);
-
             ++it1;
             ++it2;
         }
 
-        while (it2 != end1) {
+        while (it1 != end1) {
             result.m_dims.push_back(*it1);
             ++it1;
         }
@@ -177,7 +177,6 @@ public:
 
     /**
      * @brief Checks if this shape can be broadcast with another
-     *
      * @param other Shape to check
      * @return true if shapes are broadcast-compatible
      */
@@ -193,7 +192,6 @@ public:
         while (it1 != end1 && it2 != end2) {
             if (*it1 != *it2 && *it1 != 1 && *it2 != 1)
                 return false;
-
             ++it1;
             ++it2;
         }
@@ -202,31 +200,27 @@ public:
     }
 
     /**
-     * @brief Gets string representation
+     * @brief Gets string representation of shape
      * @return Shape as string
      */
     BREZEL_NODISCARD std::string to_string() const {
         if (empty())
             return "()";
 
-        std::ostringstream oss;
-        oss << "(";
-
+        std::string result = "(";
         for (size_t i = 0; i < size(); ++i) {
             if (i > 0)
-                oss << ", ";
-
-            oss << m_dims[i];
+                result += ", ";
+            result += std::to_string(m_dims[i]);
         }
-
-        oss << ")";
-        return oss.str();
+        result += ")";
+        return result;
     }
 
-    // Comparison operator
     bool operator==(const Shape& other) const noexcept = default;
 
 private:
     Container m_dims;
 };
+
 }  // namespace brezel::tensor

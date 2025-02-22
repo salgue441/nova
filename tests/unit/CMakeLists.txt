@@ -15,6 +15,9 @@ target_link_libraries(shape_test
   GTest::gtest
   GTest::gtest_main
   fmt::fmt
+  TBB::tbb
+  Boost::container
+  Boost::stacktrace_backtrace
 )
 
 if(UNIX AND NOT APPLE)

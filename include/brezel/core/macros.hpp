@@ -167,7 +167,7 @@ namespace brezel::detail {
 #define BREZEL_ASSERT(condition, message)                                   \
     do {                                                                    \
         if (BREZEL_PREDICT_FALSE(!(condition))) {                           \
-            ::BREZEL::detail::assert_failure(#condition, message, __FILE__, \
+            ::brezel::detail::assert_failure(#condition, message, __FILE__, \
                                              __LINE__);                     \
         }                                                                   \
     } while (0)
@@ -213,3 +213,4 @@ namespace brezel::detail {
 // Optimization control
 #define BREZEL_OPTIMIZE(level) [[gnu::optimize(level)]]
 #define BREZEL_NO_OPTIMIZE [[gnu::optimize("O0")]]
+

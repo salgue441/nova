@@ -216,8 +216,7 @@ run_test() {
   local test_file="$1"
   local test_name
   test_name=$(basename "$test_file")
-  local output_file
-  output_file=$(mktemp)
+  local output_file="${CONFIG[OUTPUT_DIR]}/${test_name}_output.txt"
   local status=0
 
   # Prepare test command
@@ -226,7 +225,10 @@ run_test() {
   [[ "${CONFIG[VERBOSE]}" == "ON" ]] && cmd+=("--gtest_color=yes" "--gtest_print_time=1")
   [[ "${CONFIG[OUTPUT_XML]}" == "ON" ]] && cmd+=("--gtest_output=xml:${CONFIG[OUTPUT_DIR]}/${test_name}.xml")
 
-  # Run test
+  # Ensure output directory exists
+  mkdir -p "${CONFIG[OUTPUT_DIR]}"
+
+  # Run test and capture output
   printf "Running %s..." "$test_name"
   if ! "${cmd[@]}" >"$output_file" 2>&1; then
     status=1
@@ -241,7 +243,6 @@ run_test() {
     [[ "${CONFIG[VERBOSE]}" == "ON" ]] && cat "$output_file"
   fi
 
-  rm "$output_file"
   return $status
 }
 
@@ -250,8 +251,7 @@ run_benchmark() {
   local bench_file="$1"
   local bench_name
   bench_name=$(basename "$bench_file")
-  local output_file
-  output_file=$(mktemp)
+  local output_file="${CONFIG[OUTPUT_DIR]}/${bench_name}_output.txt" # Always write to this file
   local status=0
 
   # Prepare benchmark command
@@ -261,7 +261,10 @@ run_benchmark() {
   cmd+=("--benchmark_out=${CONFIG[OUTPUT_DIR]}/${bench_name}.json")
   cmd+=("--benchmark_out_format=json")
 
-  # Run benchmark
+  # Ensure output directory exists
+  mkdir -p "${CONFIG[OUTPUT_DIR]}"
+
+  # Run benchmark and capture output
   printf "Running %s..." "$bench_name"
   if ! "${cmd[@]}" >"$output_file" 2>&1; then
     status=1
@@ -272,7 +275,6 @@ run_benchmark() {
     cat "$output_file"
   fi
 
-  rm "$output_file"
   return $status
 }
 

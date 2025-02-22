@@ -1,0 +1,114 @@
+[0;32m[==========] [mRunning 44 tests from 7 test suites.
+[0;32m[----------] [mGlobal test environment set-up.
+[0;32m[----------] [m6 tests from ErrorCategoryTest
+[0;32m[ RUN      ] [mErrorCategoryTest.SystemCategoryBasics
+[0;32m[       OK ] [mErrorCategoryTest.SystemCategoryBasics (0 ms)
+[0;32m[ RUN      ] [mErrorCategoryTest.RuntimeCategoryBasics
+[0;32m[       OK ] [mErrorCategoryTest.RuntimeCategoryBasics (0 ms)
+[0;32m[ RUN      ] [mErrorCategoryTest.LogicCategoryBasics
+[0;32m[       OK ] [mErrorCategoryTest.LogicCategoryBasics (0 ms)
+[0;32m[ RUN      ] [mErrorCategoryTest.MessageCachingConcurrent
+[0;32m[       OK ] [mErrorCategoryTest.MessageCachingConcurrent (0 ms)
+[0;32m[ RUN      ] [mErrorCategoryTest.CategorySingletonThreadSafety
+[0;32m[       OK ] [mErrorCategoryTest.CategorySingletonThreadSafety (0 ms)
+[0;32m[ RUN      ] [mErrorCategoryTest.ImmovableUncopyable
+[0;32m[       OK ] [mErrorCategoryTest.ImmovableUncopyable (0 ms)
+[0;32m[----------] [m6 tests from ErrorCategoryTest (0 ms total)
+
+[0;32m[----------] [m6 tests from ErrorCodeTest
+[0;32m[ RUN      ] [mErrorCodeTest.DefaultConstruction
+[0;32m[       OK ] [mErrorCodeTest.DefaultConstruction (0 ms)
+[0;32m[ RUN      ] [mErrorCodeTest.CategoryConstructionAndAccess
+[0;32m[       OK ] [mErrorCodeTest.CategoryConstructionAndAccess (0 ms)
+[0;32m[ RUN      ] [mErrorCodeTest.ThreadSafeMessageCaching
+[0;32m[       OK ] [mErrorCodeTest.ThreadSafeMessageCaching (0 ms)
+[0;32m[ RUN      ] [mErrorCodeTest.ContextManagement
+[0;32m[       OK ] [mErrorCodeTest.ContextManagement (0 ms)
+[0;32m[ RUN      ] [mErrorCodeTest.CopyAndMove
+[0;32m[       OK ] [mErrorCodeTest.CopyAndMove (0 ms)
+[0;32m[ RUN      ] [mErrorCodeTest.Comparison
+[0;32m[       OK ] [mErrorCodeTest.Comparison (0 ms)
+[0;32m[----------] [m6 tests from ErrorCodeTest (0 ms total)
+
+[0;32m[----------] [m8 tests from ErrorTest
+[0;32m[ RUN      ] [mErrorTest.RuntimeErrorConstruction
+[0;32m[       OK ] [mErrorTest.RuntimeErrorConstruction (0 ms)
+[0;32m[ RUN      ] [mErrorTest.ErrorWithCode
+[0;32m[       OK ] [mErrorTest.ErrorWithCode (0 ms)
+[0;32m[ RUN      ] [mErrorTest.ErrorNotes
+[0;32m[       OK ] [mErrorTest.ErrorNotes (0 ms)
+[0;32m[ RUN      ] [mErrorTest.ErrorHistoryTracking
+[0;32m[       OK ] [mErrorTest.ErrorHistoryTracking (0 ms)
+[0;32m[ RUN      ] [mErrorTest.ThreadSafeErrorTracking
+[0;32m[       OK ] [mErrorTest.ThreadSafeErrorTracking (0 ms)
+[0;32m[ RUN      ] [mErrorTest.ErrorMacros
+[0;32m[       OK ] [mErrorTest.ErrorMacros (0 ms)
+[0;32m[ RUN      ] [mErrorTest.MovedError
+[0;32m[       OK ] [mErrorTest.MovedError (0 ms)
+[0;32m[ RUN      ] [mErrorTest.ResultHandling
+[0;32m[       OK ] [mErrorTest.ResultHandling (0 ms)
+[0;32m[----------] [m8 tests from ErrorTest (0 ms total)
+
+[0;32m[----------] [m9 tests from ShapeTest
+[0;32m[ RUN      ] [mShapeTest.DefaultConstructor
+[0;32m[       OK ] [mShapeTest.DefaultConstructor (0 ms)
+[0;32m[ RUN      ] [mShapeTest.InitializerListConstructor
+[0;32m[       OK ] [mShapeTest.InitializerListConstructor (0 ms)
+[0;32m[ RUN      ] [mShapeTest.RangeConstructor
+[0;32m[       OK ] [mShapeTest.RangeConstructor (0 ms)
+[0;32m[ RUN      ] [mShapeTest.NegativeDimensionsTest
+[0;32m[       OK ] [mShapeTest.NegativeDimensionsTest (0 ms)
+[0;32m[ RUN      ] [mShapeTest.NegativeDimensionsRange
+[0;32m[       OK ] [mShapeTest.NegativeDimensionsRange (0 ms)
+[0;32m[ RUN      ] [mShapeTest.NegativeDimensionsPushBack
+[0;32m[       OK ] [mShapeTest.NegativeDimensionsPushBack (0 ms)
+[0;32m[ RUN      ] [mShapeTest.AccessOperations
+[0;32m[       OK ] [mShapeTest.AccessOperations (0 ms)
+[0;32m[ RUN      ] [mShapeTest.ModifierOperations
+[0;32m[       OK ] [mShapeTest.ModifierOperations (0 ms)
+[0;32m[ RUN      ] [mShapeTest.NumelCalculation
+[0;32m[       OK ] [mShapeTest.NumelCalculation (0 ms)
+[0;32m[----------] [m9 tests from ShapeTest (0 ms total)
+
+[0;32m[----------] [m9 tests from StridesTest
+[0;32m[ RUN      ] [mStridesTest.DefaultConstructor
+[0;32m[       OK ] [mStridesTest.DefaultConstructor (0 ms)
+[0;32m[ RUN      ] [mStridesTest.ConstructFromShape
+[0;32m[       OK ] [mStridesTest.ConstructFromShape (0 ms)
+[0;32m[ RUN      ] [mStridesTest.InitializerListConstructor
+[0;32m[       OK ] [mStridesTest.InitializerListConstructor (0 ms)
+[0;32m[ RUN      ] [mStridesTest.AccessOperations
+[0;32m[       OK ] [mStridesTest.AccessOperations (0 ms)
+[0;32m[ RUN      ] [mStridesTest.LinearIndexCalculation
+[0;32m[       OK ] [mStridesTest.LinearIndexCalculation (0 ms)
+[0;32m[ RUN      ] [mStridesTest.ContiguityCheck
+[0;32m[       OK ] [mStridesTest.ContiguityCheck (0 ms)
+[0;32m[ RUN      ] [mStridesTest.StringRepresentation
+[0;32m[       OK ] [mStridesTest.StringRepresentation (0 ms)
+[0;32m[ RUN      ] [mStridesTest.ComparisonOperators
+[0;32m[       OK ] [mStridesTest.ComparisonOperators (0 ms)
+[0;32m[ RUN      ] [mStridesTest.IteratorSupport
+[0;32m[       OK ] [mStridesTest.IteratorSupport (0 ms)
+[0;32m[----------] [m9 tests from StridesTest (0 ms total)
+
+[0;32m[----------] [m5 tests from TensorTest
+[0;32m[ RUN      ] [mTensorTest.DefaultCreation
+[0;32m[       OK ] [mTensorTest.DefaultCreation (0 ms)
+[0;32m[ RUN      ] [mTensorTest.Creation
+[0;32m[       OK ] [mTensorTest.Creation (0 ms)
+[0;32m[ RUN      ] [mTensorTest.ZeroCreation
+[0;32m[       OK ] [mTensorTest.ZeroCreation (0 ms)
+[0;32m[ RUN      ] [mTensorTest.OnesCreation
+[0;32m[       OK ] [mTensorTest.OnesCreation (0 ms)
+[0;32m[ RUN      ] [mTensorTest.EyeCreation
+[0;32m[       OK ] [mTensorTest.EyeCreation (0 ms)
+[0;32m[----------] [m5 tests from TensorTest (0 ms total)
+
+[0;32m[----------] [m1 test from AutogradTest
+[0;32m[ RUN      ] [mAutogradTest.BasicAdd
+[0;32m[       OK ] [mAutogradTest.BasicAdd (0 ms)
+[0;32m[----------] [m1 test from AutogradTest (0 ms total)
+
+[0;32m[----------] [mGlobal test environment tear-down
+[0;32m[==========] [m44 tests from 7 test suites ran. (2 ms total)
+[0;32m[  PASSED  ] [m44 tests.

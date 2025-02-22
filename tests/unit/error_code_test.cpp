@@ -29,16 +29,6 @@ TEST_F(ErrorCodeTest, CategoryConstructionAndAccess) {
     EXPECT_EQ(system.category().name(), SystemCategory::instance().name());
 }
 
-TEST_F(ErrorCodeTest, MessageCaching) {
-    auto code = make_error_code(RuntimeCategory::Code::InvalidOperation);
-
-    const std::string& msg1 = code.message();
-    const std::string& msg2 = code.message();
-
-    EXPECT_FALSE(msg1.empty());
-    EXPECT_EQ(std::addressof(msg1), std::addressof(msg2));
-}
-
 TEST_F(ErrorCodeTest, ThreadSafeMessageCaching) {
     constexpr int kThreads = 8;
     std::vector<std::future<std::string>> futures;

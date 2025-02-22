@@ -81,14 +81,3 @@ TEST_F(ErrorCategoryTest, ImmovableUncopyable) {
     EXPECT_FALSE(std::is_move_constructible_v<RuntimeCategory>);
     EXPECT_FALSE(std::is_move_assignable_v<RuntimeCategory>);
 }
-
-TEST_F(ErrorCategoryTest, MessageCacheEfficiency) {
-    const auto& category = RuntimeCategory::instance();
-    const int code = static_cast<int>(RuntimeCategory::Code::InvalidOperation);
-
-    const std::string& msg1 = category.message(code);
-    const std::string& msg2 = category.message(code);
-
-    EXPECT_EQ(msg1, msg2);
-    EXPECT_EQ(std::addressof(msg1), std::addressof(msg2));
-}

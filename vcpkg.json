@@ -2,14 +2,13 @@
   "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "name": "brezel",
   "version": "0.1.0",
-  "description": "Modern C++20 Tensor Framework with CUDA support",
-  "homepage": "https://github.com/salgue441/brezel-framework",
-  "documentation": "https://salgue441.github.io/brezel-framework",
-  "license": "MIT",
+  "description": "Modern C++20 Tensor Framework",
+  "homepage": "https://github.com/yourusername/brezel",
+  "builtin-baseline": "fc5118086f5db341ee4ab3a7d4d64c0f39896270",
   "dependencies": [
     {
       "name": "fmt",
-      "version>=": "10.0.0"
+      "version>=": "10.1.1"
     },
     {
       "name": "tbb",
@@ -17,57 +16,32 @@
     },
     {
       "name": "boost-container",
-      "version>=": "1.82.0"
+      "version>=": "1.83.0"
     },
     {
       "name": "boost-system",
-      "version>=": "1.82.0"
+      "version>=": "1.83.0"
     },
     {
       "name": "boost-filesystem",
-      "version>=": "1.82.0"
-    },
-    {
-      "name": "boost-align",
-      "version>=": "1.82.0"
+      "version>=": "1.83.0"
     },
     {
       "name": "boost-stacktrace",
-      "version>=": "1.82.0"
-    },
-    {
-      "name": "boost-smart-ptr",
-      "version>=": "1.82.0"
-    },
-    {
-      "name": "boost-circular-buffer",
-      "version>=": "1.82.0"
-    },
-    {
-      "name": "boost-format",
-      "version>=": "1.82.0"
-    },
-    {
-      "name": "tl-expected",
-      "version>=": "1.1.0"
+      "version>=": "1.83.0"
     }
   ],
-  "builtin-baseline": "78b61582c9e093fda56a01ebb654be15a0033897",
   "features": {
     "tests": {
       "description": "Build tests",
       "dependencies": [
         {
           "name": "gtest",
-          "version>=": "1.13.0"
+          "version>=": "1.14.0"
         }
       ]
     },
-    "cuda": {
-      "description": "Add CUDA support",
-      "dependencies": []
-    },
-    "benchmarks": {
+    "benchmark": {
       "description": "Build benchmarks",
       "dependencies": [
         {

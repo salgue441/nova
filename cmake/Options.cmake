@@ -46,17 +46,6 @@ if(USE_AVX)
   endif()
 endif()
 
-# Sanitizer configuration
-if(ENABLE_SANITIZER)
-  if(CMAKE_CXX_COMPILER_ID MATCHES "GNU|Clang")
-    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -fsanitize=address -fsanitize=undefined")
-    set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -fsanitize=address -fsanitize=undefined")
-  else()
-    message(WARNING "Sanitizer support not available for current compiler. Disabling.")
-    set(ENABLE_SANITIZER OFF)
-  endif()
-endif()
-
 # LTO configuration
 if(ENABLE_LTO)
   include(CheckIPOSupported)

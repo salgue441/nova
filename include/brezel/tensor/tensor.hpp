@@ -161,12 +161,12 @@ public:
      * @param n Size of the identity matrix
      * @return Tensor Resulting identity matrix
      */
-    BREZEL_NODISCARD static Tensor eye(size_t n) {
+    BREZEL_NODISCARD static Tensor eye(int64_t n) {
         Tensor result(Shape({n, n}), T(0));
 
-        tbb::parallel_for(tbb::blocked_range<size_t>(0, n, kDefaultBlockSize),
-                          [&](const tbb::blocked_range<size_t>& range) {
-                              for (size_t i = range.begin(); i < range.end();
+        tbb::parallel_for(tbb::blocked_range<int64_t>(0, n, kDefaultBlockSize),
+                          [&](const tbb::blocked_range<int64_t>& range) {
+                              for (int64_t i = range.begin(); i < range.end();
                                    ++i)
                                   result.at({i, i}) = T(1);
                           });
@@ -336,6 +336,7 @@ public:
      * @throws LogicError if indices are out of bounds
      */
     BREZEL_NODISCARD reference at(std::initializer_list<int64_t> indices) {
+        validate_indices(indices);
         return at(std::span(indices));
     }
 
@@ -347,6 +348,7 @@ public:
      */
     BREZEL_NODISCARD const_reference
     at(std::initializer_list<int64_t> indices) const {
+        validate_indices(indices);
         return at(std::span(indices));
     }
 
@@ -1939,25 +1941,10 @@ public:
      * @param value Value to format
      * @return precision Decimal precision
      */
-    static std::string format_float(T value, int precision = 4) {
+    constexpr std::string format_float(T value, int precision = 4) {
         std::stringstream ss;
 
-        if (std::abs(value) < 1e-8) {
-            ss << "0.";
-            for (int i = 0; i < precision - 1; ++i)
-                ss << "0";
-        } else {
-            ss << std::fixed << std::setprecision(precision) << value;
-            std::string str = ss.str();
-            size_t decimal_pos = str.find('.');
-
-            if (decimal_pos != std::string::npos) {
-                str = str.substr(0, decimal_pos + precision + 1);
-            }
-
-            return str;
-        }
-
+        ss << std::fixed << std::setprecision(precision) << value;
         return ss.str();
     }
 
@@ -2332,8 +2319,8 @@ private:
      * number of dimensions
      * @throw LogicError if the indices are out of bounds
      */
-    void validate_indices(std::span<const int64_t> indices) const {
-        BREZEL_ENSURE(indices.size() == ndim(),
+    void validate_indices(std::span<const int64_t> indices) const noexcept {
+               BREZEL_ENSURE(indices.size() == ndim(),
                       "Expected {} indices but got {}", ndim(), indices.size());
 
         for (size_t i = 0; i < indices.size(); ++i) {
