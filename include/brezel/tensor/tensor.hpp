@@ -933,15 +933,43 @@ public:
      * @throw LogicError if the dimensions are not broadcastable
      */
     BREZEL_NODISCARD Tensor broadcast_to(const Shape& target_shape) const {
-        BREZEL_ENSURE(target_shape.numel() == numel(),
-                      "Target shape must have the same number of elements");
-
-        for (size_t i = 0; i < ndim(); ++i) {
-            BREZEL_ENSURE(m_shape[i] == target_shape[i] || m_shape[i] == 1,
-                          "Dimension mismatch for broadcasting");
+        if (!m_shape.is_broadcastable_with(target_shape)) {
+            throw core::error::LogicError(
+                "Shapes {} and {} cannot be broadcast together",
+                m_shape.to_string(), target_shape.to_string());
         }
 
-        return reshape(target_shape);
+        if (m_shape == target_shape) {
+            return *this;
+        }
+
+        Tensor result(target_shape);
+        const size_t n = result.numel();
+
+        tbb::parallel_for(
+            tbb::blocked_range<size_t>(0, n, kDefaultBlockSize),
+            [&](const tbb::blocked_range<size_t>& range) {
+                for (size_t i = range.begin(); i < range.end(); ++i) {
+                    boost::container::small_vector<int64_t, 4> target_indices(
+                        target_shape.size());
+                    size_t temp = i;
+                    for (int64_t j = target_shape.size() - 1; j >= 0; --j) {
+                        target_indices[j] = temp % target_shape[j];
+                        temp /= target_shape[j];
+                    }
+
+                    boost::container::small_vector<int64_t, 4> source_indices(
+                        m_shape.size());
+                    for (size_t j = 0; j < m_shape.size(); ++j) {
+                        source_indices[j] =
+                            m_shape[j] == 1 ? 0 : target_indices[j];
+                    }
+
+                    result.data()[i] = at(source_indices);
+                }
+            });
+
+        return result;
     }
 
     /**
@@ -1230,48 +1258,119 @@ public:
     }
 
     /**
-     * @brief Computes the QR decomposition of a matrix
+     * @brief Computes the QR decomposition using Modified Gram-Schmidt process
      *
-     * @return std::pair<Tensor, Tensor> Q and R matrices
-     * @throw LogicError if the tensor is not 2D
+     * @details Decomposes matrix A into A = QR where:
+     *          Q is orthogonal (Q^T Q = I)
+     *          R is upper triangular
+     *
+     * @return std::pair<Tensor, Tensor> {Q, R} where Q is orthogonal and R is
+     * upper triangular
+     * @throw LogicError if tensor is not 2D
+     */
+    /**
+     * @brief Computes the QR decomposition of a matrix using Classical
+     * Gram-Schmidt
+     * @return std::pair<Tensor, Tensor> {Q, R} where Q is orthogonal and R is
+     * upper triangular
      */
     BREZEL_NODISCARD std::pair<Tensor, Tensor> qr() const {
         BREZEL_ENSURE(ndim() == 2, "QR decomposition requires a 2D tensor");
 
-        const size_t n = m_shape[0];
-        const size_t m = m_shape[1];
+        const auto m = static_cast<int64_t>(m_shape[0]);  // rows
+        const auto n = static_cast<int64_t>(m_shape[1]);  // cols
 
-        Tensor q = *this;
-        Tensor r({m, m}, T(0));
+        // Initialize Q and R
+        auto q = Tensor<T>(Shape({m, n}));  // Will hold orthonormal vectors
+        auto r = Tensor<T>(Shape({n, n}), T(0));  // Upper triangular matrix
 
-        for (size_t k = 0; k < n; k++) {
+        // For tracking the current column vector being processed
+        std::vector<T> v(m);
+
+        // Process each column
+        for (int64_t j = 0; j < n; ++j) {
+            // Get current column from input matrix
+            for (int64_t i = 0; i < m; ++i) {
+                v[i] = data()[i * n + j];
+            }
+
+            // First compute R entries by projecting onto previous vectors
+            for (int64_t k = 0; k < j; ++k) {
+                // Compute r_kj = q_k^T * a_j
+                T rkj = T(0);
+                for (int64_t i = 0; i < m; ++i) {
+                    rkj += q.data()[i * n + k] * v[i];
+                }
+                r.data()[k * n + j] = rkj;
+
+                // Subtract projection from v
+                for (int64_t i = 0; i < m; ++i) {
+                    v[i] -= rkj * q.data()[i * n + k];
+                }
+            }
+
+            // Compute the norm of the remaining vector
             T norm = T(0);
-
-            for (size_t i = 0; i < m; i++)
-                norm += q.data()[i * n + k] * q.data()[i * n + k];
-
+            for (int64_t i = 0; i < m; ++i) {
+                norm += v[i] * v[i];
+            }
             norm = std::sqrt(norm);
-            r.data()[k * m + k] = norm;
 
-            BREZEL_ENSURE(norm > T(1e-10), "Matrix is rank defficient");
+            // Check for linear dependence
+            if (norm < T(1e-10)) {
+                throw core::error::LogicError(
+                    "Matrix is numerically rank deficient");
+            }
 
-            for (size_t i = 0; i < m; i++)
-                q.data()[i * n + k] /= norm;
+            // Set diagonal entry in R
+            r.data()[j * n + j] = norm;
 
-            for (size_t j = k + 1; j < n; j++) {
-                T dot = T(0);
-
-                for (size_t i = 0; i < m; i++)
-                    dot += q.data()[i * n + k] * data()[i * n + j];
-
-                r.data()[k * m + j] = dot;
-
-                for (size_t i = 0; i < m; i++)
-                    data()[i * n + j] -= dot * q.data()[i * n + k];
+            // Normalize the vector and store in Q
+            T inv_norm = T(1) / norm;
+            for (int64_t i = 0; i < m; ++i) {
+                q.data()[i * n + j] = v[i] * inv_norm;
             }
         }
 
-        return std::make_pair(q, r);
+// Verify orthogonality of Q in debug mode
+#ifdef BREZEL_DEBUG
+        // Check Q^T * Q ≈ I
+        auto qT = q.transpose();
+        auto qTq = qT.matmul(q);
+        auto I = Tensor<T>::eye(n);
+
+        // Print Q matrix for debugging
+        std::cout << "\nQ matrix:\n";
+        q.print();
+        std::cout << "\nQ^T * Q:\n";
+        qTq.print();
+        std::cout << "\nExpected I:\n";
+        I.print();
+
+        bool is_orthogonal = qTq.allclose(I, T(1e-5), T(1e-5));
+        if (!is_orthogonal) {
+            T max_deviation = T(0);
+            for (int64_t i = 0; i < n * n; ++i) {
+                T expected = (i / n == i % n) ? T(1) : T(0);
+                T actual = qTq.data()[i];
+                max_deviation =
+                    std::max(max_deviation, std::abs(actual - expected));
+            }
+            std::cout << "\nMax deviation from identity: " << max_deviation
+                      << "\n";
+            throw core::error::LogicError(
+                "Q is not orthogonal in QR decomposition");
+        }
+
+        // Verify Q * R = A
+        auto qr_product = q.matmul(r);
+        if (!qr_product.allclose(*this, T(1e-5), T(1e-5))) {
+            throw core::error::LogicError(
+                "QR decomposition failed numerical validation");
+        }
+#endif
+
+        return std::make_pair(std::move(q), std::move(r));
     }
 
     /**
@@ -1683,34 +1782,55 @@ public:
 
     // Utility functions
     /**
-     * @brief Checks if two tensors are approximately equal
+     * @brief Checks if two tensors are approximately equal within tolerance
      *
      * @param other Tensor to compare with
      * @param rtol Relative tolerance
      * @param atol Absolute tolerance
-     * @return bool true if tensors are approximately equal, false otherwise
+     * @return bool true if tensors are approximately equal
      */
-    bool allclose(const Tensor& other, T rtol = 1e-5, T atol = 1e-8) const {
-        BREZEL_ENSURE(m_shape == other.m_shape, "Tensor shapes must match");
+    BREZEL_NODISCARD bool allclose(const Tensor& other, T rtol = T(1e-5),
+                                   T atol = T(1e-8)) const {
+        if (m_shape != other.m_shape)
+            return false;
+
+        if (empty() && other.empty())
+            return true;
+
+        if (empty() || other.empty())
+            return false;
+
         const size_t n = numel();
+        bool all_close = true;
+        T max_diff = T(0);
 
-        return tbb::parallel_reduce(
-            tbb::blocked_range<size_t>(0, n, kDefaultBlockSize), true,
-            [&](const tbb::blocked_range<size_t>& range, bool init) {
-                if (!init)
-                    return false;
+        for (size_t i = 0; i < n; ++i) {
+            const T a = data()[i];
+            const T b = other.data()[i];
+            const T abs_diff = std::abs(a - b);
+            const T scale = std::max(std::abs(a), std::abs(b));
+            const T tol = atol + rtol * scale;
 
-                for (size_t i = range.begin(); i < range.end(); ++i) {
-                    T abs_diff = std::abs(data()[i] - other.data()[i]);
-                    T tolerance = atol + rtol * std::abs(other.data()[i]);
+            if (abs_diff > tol) {
+                all_close = false;
+                max_diff = std::max(max_diff, abs_diff);
+#ifdef BREZEL_DEBUG
+                std::cout << "\nNon-matching elements at index " << i << ":"
+                          << "\nValue 1: " << a << "\nValue 2: " << b
+                          << "\nAbsolute difference: " << abs_diff
+                          << "\nTolerance: " << tol << "\n";
+#endif
+                break;
+            }
+        }
 
-                    if (abs_diff > tolerance)
-                        return false;
-                }
+#ifdef BREZEL_DEBUG
+        if (!all_close) {
+            std::cout << "Maximum difference: " << max_diff << "\n";
+        }
+#endif
 
-                return true;
-            },
-            std::logical_and<bool>());
+        return all_close;
     }
 
     /**
@@ -1838,6 +1958,86 @@ public:
         return result;
     }
 
+    /**
+     * @brief Computes the determinant of a square matrix
+     *
+     * @details Uses LU decomposition for larger matrices
+     *
+     * @return T Result of the determinant calculation
+     * @throw LogicError if the tensor is not a square matrix
+     */
+    BREZEL_NODISCARD T det() const {
+        BREZEL_ENSURE(ndim() == 2, "Determinant requires a 2D tensor");
+        BREZEL_ENSURE(m_shape[0] == m_shape[1], "Matrix must be squared");
+
+        const size_t n = m_shape[0];
+        if (n == 1)
+            return data()[0];
+
+        if (n == 2)
+            return data()[0] * data()[3] - data()[1] * data()[2];
+
+        if (n == 3)
+            return data()[0] * (data()[4] * data()[8] - data()[5] * data()[7]) -
+                   data()[1] * (data()[3] * data()[8] - data()[5] * data()[6]) +
+                   data()[2] * (data()[3] * data()[7] - data()[4] * data()[6]);
+
+        Tensor lu = *this;
+        T det_val = T(1);
+        std::vector<int64_t> pivots(n);
+
+        for (size_t i = 0; i < n; i++)
+            pivots[i] = i;
+
+        // LU decomposition with partial pivoting
+        for (size_t k = 0; k < n - 1; k++) {
+            T max_val = std::abs(lu.data()[k * n + k]);
+            size_t max_idx = k;
+
+            for (size_t i = k + 1; i < n; i++) {
+                T val = std::abs(lu.data()[i * n + k]);
+
+                if (val > max_val) {
+                    max_val = val;
+                    max_idx = i;
+                }
+            }
+
+            if (std::abs(max_val) < std::numeric_limits<T>::epsilon())
+                return T(0);
+
+            if (max_idx != k) {
+                for (size_t j = 0; j < n; j++)
+                    std::swap(lu.data()[k * n + j], lu.data()[max_idx * n + j]);
+
+                std::swap(pivots[k], pivots[max_idx]);
+                det_val = -det_val;  // Change sign when we swap rows
+            }
+
+            for (size_t i = k + 1; i < n; i++) {
+                T mult = lu.data()[i * n + k] / lu.data()[k * n + k];
+                lu.data()[i * n + k] = mult;
+
+                for (size_t j = k + 1; j < n; j++)
+                    lu.data()[i * n + j] -= mult * lu.data()[k * n + j];
+            }
+        }
+
+        for (size_t i = 0; i < n; i++)
+            det_val *= lu.data()[i * n + i];
+
+        return det_val;
+    }
+
+    /**
+     * @brief Checks if the matrix is singular (determinant is zero)
+     *
+     * @return bool True if matrix is singular
+     */
+    BREZEL_NODISCARD bool is_singular() const {
+        return std::abs(det()) < std::numeric_limits<T>::epsilon();
+    }
+
     // Accessors
     /**
      * @brief Gets the raw data pointer
@@ -1939,11 +2139,12 @@ public:
      * @brief Formats a floating point number for display
      *
      * @param value Value to format
-     * @return precision Decimal precision
+     * @param precision Decimal precision
+     * @return std::string Formatted string
      */
-    constexpr std::string format_float(T value, int precision = 4) {
+    BREZEL_NODISCARD static std::string format_float(T value,
+                                                     int precision = 4) {
         std::stringstream ss;
-
         ss << std::fixed << std::setprecision(precision) << value;
         return ss.str();
     }
@@ -1962,16 +2163,15 @@ public:
 
         for (size_t i = 0; i < ndim(); ++i) {
             ss << m_shape[i];
-
             if (i < ndim() - 1)
                 ss << ", ";
         }
 
         ss << "], ";
         ss << "strides=[";
+
         for (size_t i = 0; i < ndim(); ++i) {
             ss << m_strides[i];
-
             if (i < ndim() - 1)
                 ss << ", ";
         }
@@ -1980,12 +2180,10 @@ public:
 
         if (numel() == 0)
             ss << "[]";
-
         else if (ndim() == 0)
-            ss << format_float(data()[0]);
-
+            ss << Tensor::format_float(data()[0]);
         else
-            print_tensor_data(ss, 0, std::vector<size_t>(), max_items);
+            print_tensor_data(ss, 0, std::vector<int64_t>(), max_items);
 
         ss << "\nMemory: " << (numel() * sizeof(T)) / 1024.0 << " KB, ";
         ss << "Contiguous: " << (is_contiguous() ? "True" : "False") << ")";
@@ -2040,7 +2238,38 @@ public:
     }
 
     // Comparison operator
-    BREZEL_NODISCARD bool operator==(const Tensor& other) const = default;
+    BREZEL_NODISCARD bool operator==(const Tensor& other) const {
+        if (this == &other)
+            return true;
+
+        if (m_shape != other.m_shape)
+            return false;
+
+        if (numel() != other.numel())
+            return false;
+
+        if (empty() && other.empty())
+            return true;
+
+        if (empty() || other.empty())
+            return false;
+
+        const size_t n = numel();
+        return tbb::parallel_reduce(
+            tbb::blocked_range<size_t>(0, n, kDefaultBlockSize), true,
+            [&](const tbb::blocked_range<size_t>& range, bool init) {
+                if (!init)
+                    return false;
+
+                for (size_t i = range.begin(); i < range.end(); ++i) {
+                    if (data()[i] != other.data()[i])
+                        return false;
+                }
+
+                return true;
+            },
+            std::logical_and<bool>());
+    }
 
     // Arithmetic operators
     Tensor operator+(const Tensor& other) const { return add(other); }
@@ -2319,8 +2548,8 @@ private:
      * number of dimensions
      * @throw LogicError if the indices are out of bounds
      */
-    void validate_indices(std::span<const int64_t> indices) const noexcept {
-               BREZEL_ENSURE(indices.size() == ndim(),
+    void validate_indices(std::span<const int64_t> indices) const {
+        BREZEL_ENSURE(indices.size() == ndim(),
                       "Expected {} indices but got {}", ndim(), indices.size());
 
         for (size_t i = 0; i < indices.size(); ++i) {
@@ -2335,31 +2564,30 @@ private:
      *
      */
     void print_tensor_data(std::stringstream& ss, size_t dim,
-                           std::vector<size_t> indices,
+                           std::vector<int64_t> indices,
                            size_t max_items) const {
         if (dim == ndim()) {
-            ss << format_float(at(indices));
+            ss << Tensor::format_float(at(std::span<const int64_t>(indices)));
             return;
         }
 
         ss << "[";
-        size_t dim_size = m_shape[dim];
-        bool truncated = false;
+        size_t size_to_print = m_shape[dim];
+        const bool truncated = size_to_print > 2 * max_items;
 
-        if (dim_size > 2 * max_items) {
-            dim_size = max_items;
-            truncated = true;
+        if (truncated) {
+            size_to_print = max_items;
         }
 
-        for (size_t i = 0; i < dim_size; ++i) {
-            indices.push_back(i);
+        for (size_t i = 0; i < size_to_print; ++i) {
+            indices.push_back(static_cast<int64_t>(i));
             print_tensor_data(ss, dim + 1, indices, max_items);
             indices.pop_back();
 
-            if (i < dim_size - 1)
+            if (i < size_to_print - 1)
                 ss << ", ";
 
-            if (truncated && i == dim_size - 1)
+            if (truncated && i == size_to_print - 1)
                 ss << ", ...";
         }
 
