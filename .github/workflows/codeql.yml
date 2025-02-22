@@ -33,8 +33,8 @@ jobs:
           sudo apt-get update
           sudo apt-get install -y \
             ninja-build \
-            gcc-12 \
-            g++-12 \
+            gcc \
+            g++ \
             curl \
             zip \
             unzip \
@@ -66,8 +66,8 @@ jobs:
         run: |
           cmake -B build -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_C_COMPILER=gcc-12 \
-            -DCMAKE_CXX_COMPILER=g++-12 \
+            -DCMAKE_C_COMPILER=gcc \
+            -DCMAKE_CXX_COMPILER=g++ \
             -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
             -DVCPKG_MANIFEST_MODE=ON \
             -DVCPKG_FEATURE_FLAGS=versions,manifests \

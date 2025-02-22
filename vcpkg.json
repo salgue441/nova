@@ -1,5 +1,4 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
   "name": "brezel",
   "version": "0.1.0",
   "description": "Modern C++20 Tensor Framework",
@@ -16,19 +15,19 @@
     },
     {
       "name": "boost-container",
-      "version>=": "1.82.0"
+      "version>=": "1.86.0"
     },
     {
       "name": "boost-system",
-      "version>=": "1.82.0"
+      "version>=": "1.86.0"
     },
     {
       "name": "boost-filesystem",
-      "version>=": "1.82.0"
+      "version>=": "1.86.0"
     },
     {
       "name": "boost-stacktrace",
-      "version>=": "1.82.0"
+      "version>=": "1.86.0"
     }
   ],
   "features": {

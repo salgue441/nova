@@ -11,12 +11,19 @@ if(NOT TARGET TBB::tbb)
 endif()
 
 # Boost dependencies
-set(BOOST_MIN_VERSION "1.80.0")
+set(BOOST_MIN_VERSION "1.86.0")
 find_package(Boost ${BOOST_MIN_VERSION} COMPONENTS
   container
   system
   filesystem
+  stacktrace_backtrace
   REQUIRED)
+
+if(Boost_FOUND)
+  message(STATUS "Boost version: ${Boost_VERSION}")
+  message(STATUS "Boost includes: ${Boost_INCLUDE_DIRS}")
+  message(STATUS "Boost libraries: ${Boost_LIBRARIES}")
+endif()
 
 # Testing dependencies
 if(BUILD_TESTING)
