@@ -1,4 +1,4 @@
-[0;32m[==========] [mRunning 57 tests from 7 test suites.
+[0;32m[==========] [mRunning 44 tests from 7 test suites.
 [0;32m[----------] [mGlobal test environment set-up.
 [0;32m[----------] [m6 tests from ErrorCategoryTest
 [0;32m[ RUN      ] [mErrorCategoryTest.SystemCategoryBasics
@@ -13,7 +13,7 @@
 [0;32m[       OK ] [mErrorCategoryTest.CategorySingletonThreadSafety (0 ms)
 [0;32m[ RUN      ] [mErrorCategoryTest.ImmovableUncopyable
 [0;32m[       OK ] [mErrorCategoryTest.ImmovableUncopyable (0 ms)
-[0;32m[----------] [m6 tests from ErrorCategoryTest (0 ms total)
+[0;32m[----------] [m6 tests from ErrorCategoryTest (1 ms total)
 
 [0;32m[----------] [m6 tests from ErrorCodeTest
 [0;32m[ RUN      ] [mErrorCodeTest.DefaultConstruction
@@ -91,72 +91,24 @@
 [0;32m[       OK ] [mStridesTest.IteratorSupport (0 ms)
 [0;32m[----------] [m9 tests from StridesTest (0 ms total)
 
-[0;32m[----------] [m18 tests from TensorTest
-[0;32m[ RUN      ] [mTensorTest.DefaultCreation
-[0;32m[       OK ] [mTensorTest.DefaultCreation (0 ms)
-[0;32m[ RUN      ] [mTensorTest.Creation
-[0;32m[       OK ] [mTensorTest.Creation (0 ms)
-[0;32m[ RUN      ] [mTensorTest.ZeroCreation
-[0;32m[       OK ] [mTensorTest.ZeroCreation (0 ms)
-[0;32m[ RUN      ] [mTensorTest.OnesCreation
-[0;32m[       OK ] [mTensorTest.OnesCreation (0 ms)
-[0;32m[ RUN      ] [mTensorTest.EyeCreation
-[0;32m[       OK ] [mTensorTest.EyeCreation (0 ms)
-[0;32m[ RUN      ] [mTensorTest.RandomCreation
-[0;32m[       OK ] [mTensorTest.RandomCreation (0 ms)
-[0;32m[ RUN      ] [mTensorTest.ElementAccess
-[0;32m[       OK ] [mTensorTest.ElementAccess (0 ms)
-[0;32m[ RUN      ] [mTensorTest.ElementWiseOperations
-[0;32m[       OK ] [mTensorTest.ElementWiseOperations (0 ms)
-[0;32m[ RUN      ] [mTensorTest.Broadcasting
-[0;32m[       OK ] [mTensorTest.Broadcasting (0 ms)
-[0;32m[ RUN      ] [mTensorTest.Reduction
-[0;32m[       OK ] [mTensorTest.Reduction (0 ms)
-[0;32m[ RUN      ] [mTensorTest.Reshape
-[0;32m[       OK ] [mTensorTest.Reshape (0 ms)
-[0;32m[ RUN      ] [mTensorTest.Transpose
-[0;32m[       OK ] [mTensorTest.Transpose (0 ms)
-[0;32m[ RUN      ] [mTensorTest.MatrixMultiplication
-[0;32m[       OK ] [mTensorTest.MatrixMultiplication (0 ms)
-[0;32m[ RUN      ] [mTensorTest.Comparison
+[0;32m[----------] [m5 tests from TensorConceptTest
+[0;32m[ RUN      ] [mTensorConceptTest.ScalarTypeConstruction
+[0;32m[       OK ] [mTensorConceptTest.ScalarTypeConstruction (0 ms)
+[0;32m[ RUN      ] [mTensorConceptTest.NumericTypeConstraints
+[0;32m[       OK ] [mTensorConceptTest.NumericTypeConstraints (0 ms)
+[0;32m[ RUN      ] [mTensorConceptTest.FloatTypeConstraints
+[0;32m[       OK ] [mTensorConceptTest.FloatTypeConstraints (0 ms)
+[0;32m[ RUN      ] [mTensorConceptTest.TypeCheckUtility
+[0;32m[       OK ] [mTensorConceptTest.TypeCheckUtility (0 ms)
+[0;32m[ RUN      ] [mTensorConceptTest.SupportedOperations
+[0;32m[       OK ] [mTensorConceptTest.SupportedOperations (0 ms)
+[0;32m[----------] [m5 tests from TensorConceptTest (0 ms total)
 
-Non-matching elements at index 0:
-Value 1: 1
-Value 2: 2
-Absolute difference: 1
-Tolerance: 2.001e-05
-Maximum difference: 1
-[0;32m[       OK ] [mTensorTest.Comparison (0 ms)
-[0;32m[ RUN      ] [mTensorTest.TypeConversion
-[0;32m[       OK ] [mTensorTest.TypeConversion (0 ms)
-[0;32m[ RUN      ] [mTensorTest.ViewOperations
-[0;32m[       OK ] [mTensorTest.ViewOperations (0 ms)
-[0;32m[ RUN      ] [mTensorTest.StatisticalOperations
-[0;32m[       OK ] [mTensorTest.StatisticalOperations (0 ms)
-[0;32m[ RUN      ] [mTensorTest.LinearAlgebra
-
-Q matrix:
-Tensor<f>(shape=[2, 2], strides=[2, 1], [[0.3162, 0.9487], [0.9487, -0.3162]]
-
-Memory: 0.015625 KB, Contiguous: True)
-
-Q^T * Q:
-Tensor<f>(shape=[2, 2], strides=[2, 1], [[1.0000, 0.0000], [0.0000, 1.0000]]
-
-Memory: 0.015625 KB, Contiguous: True)
-
-Expected I:
-Tensor<f>(shape=[2, 2], strides=[2, 1], [[1.0000, 0.0000], [0.0000, 1.0000]]
-
-Memory: 0.015625 KB, Contiguous: True)
-[0;32m[       OK ] [mTensorTest.LinearAlgebra (0 ms)
-[0;32m[----------] [m18 tests from TensorTest (0 ms total)
-
-[0;32m[----------] [m1 test from AutogradTest
-[0;32m[ RUN      ] [mAutogradTest.BasicAdd
-[0;32m[       OK ] [mAutogradTest.BasicAdd (0 ms)
-[0;32m[----------] [m1 test from AutogradTest (0 ms total)
+[0;32m[----------] [m1 test from TensorExpressionsTest
+[0;32m[ RUN      ] [mTensorExpressionsTest.BasicExpression
+[0;32m[       OK ] [mTensorExpressionsTest.BasicExpression (0 ms)
+[0;32m[----------] [m1 test from TensorExpressionsTest (0 ms total)
 
 [0;32m[----------] [mGlobal test environment tear-down
-[0;32m[==========] [m57 tests from 7 test suites ran. (3 ms total)
-[0;32m[  PASSED  ] [m57 tests.
+[0;32m[==========] [m44 tests from 7 test suites ran. (3 ms total)
+[0;32m[  PASSED  ] [m44 tests.

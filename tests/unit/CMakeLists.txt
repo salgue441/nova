@@ -4,8 +4,8 @@ add_executable(shape_test
   error_test.cpp
   shape_test.cpp
   strides_test.cpp
-  tensor_test.cpp
-  autograd_test.cpp
+  tensor_concept_test.cpp
+  tensor_expression_test.cpp
   main.cpp
 )
 

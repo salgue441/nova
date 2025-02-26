@@ -95,6 +95,7 @@
     "coroutine": "cpp",
     "future": "cpp",
     "__node_handle": "cpp",
-    "barrier": "cpp"
+    "barrier": "cpp",
+    "valarray": "cpp"
   }
 }

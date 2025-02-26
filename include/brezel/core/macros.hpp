@@ -161,29 +161,6 @@ namespace brezel::detail {
     Class(const Class&) = delete; \
     Class& operator=(const Class&) = delete
 
-// Debug utilities with enhanced error reporting
-#ifdef BREZEL_CONFIG_DEBUG
-#define BREZEL_DEBUG_ONLY(x) x
-#define BREZEL_ASSERT(condition, message)                                   \
-    do {                                                                    \
-        if (BREZEL_PREDICT_FALSE(!(condition))) {                           \
-            ::brezel::detail::assert_failure(#condition, message, __FILE__, \
-                                             __LINE__);                     \
-        }                                                                   \
-    } while (0)
-
-#define BREZEL_VERIFY(condition, message) BREZEL_ASSERT(condition, message)
-#else
-#define BREZEL_DEBUG_ONLY(x)
-#define BREZEL_ASSERT(condition, message) ((void)0)
-#define BREZEL_VERIFY(condition, message)         \
-    do {                                          \
-        if (BREZEL_PREDICT_FALSE(!(condition))) { \
-            std::terminate();                     \
-        }                                         \
-    } while (0)
-#endif
-
 // API visibility with platform-specific attributes
 #if defined(BREZEL_PLATFORM_WINDOWS)
 #define BREZEL_API_EXPORT __declspec(dllexport)
@@ -214,3 +191,31 @@ namespace brezel::detail {
 #define BREZEL_OPTIMIZE(level) [[gnu::optimize(level)]]
 #define BREZEL_NO_OPTIMIZE [[gnu::optimize("O0")]]
 
+// Debug configuration
+#if defined(BREZEL_ENABLE_DEBUG) || defined(_DEBUG)
+#define BREZEL_DEBUG_MODE
+#endif
+
+// Debug utilities with enhanced error reporting - only enabled when explicitly
+// requested
+#ifdef BREZEL_DEBUG_MODE
+#define BREZEL_DEBUG_ONLY(x) x
+#define BREZEL_ASSERT(condition, message)                                   \
+    do {                                                                    \
+        if (BREZEL_PREDICT_FALSE(!(condition))) {                           \
+            ::brezel::detail::assert_failure(#condition, message, __FILE__, \
+                                             __LINE__);                     \
+        }                                                                   \
+    } while (0)
+
+#define BREZEL_VERIFY(condition, message) BREZEL_ASSERT(condition, message)
+#else
+#define BREZEL_DEBUG_ONLY(x)
+#define BREZEL_ASSERT(condition, message) ((void)0)
+#define BREZEL_VERIFY(condition, message)         \
+    do {                                          \
+        if (BREZEL_PREDICT_FALSE(!(condition))) { \
+            std::terminate();                     \
+        }                                         \
+    } while (0)
+#endif

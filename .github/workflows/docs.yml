@@ -11,9 +11,7 @@ on:
   workflow_dispatch:
 
 env:
-  VCPKG_COMMIT: "78b61582c9e093fda56a01ebb654be15a0033897"
-  CMAKE_VERSION: "3.27.7"
-  VCPKG_FEATURE_FLAGS: "manifests,versions"
+  CMAKE_VERSION: "3.28.3"
 
 jobs:
   documentation:
@@ -29,23 +27,20 @@ jobs:
         run: |
           sudo apt-get update
           sudo apt-get install -y \
+            libboost-all-dev \
+            libfmt-dev \
+            libtbb-dev \
+            libgtest-dev \
             ninja-build \
-            gcc-12 \
-            g++-12 \
+            build-essential \
+            cmake \
             doxygen \
             graphviz \
             curl \
             zip \
             unzip \
             tar \
-            pkg-config \
-            build-essential
-
-      # Setup vcpkg using lukka/run-vcpkg action
-      - name: Setup vcpkg
-        uses: lukka/run-vcpkg@v11
-        with:
-          vcpkgGitCommitId: ${{ env.VCPKG_COMMIT }}
+            pkg-config
 
       # Install CMake
       - name: Install CMake
@@ -62,13 +57,9 @@ jobs:
         run: |
           cmake -B build -G Ninja \
             -DCMAKE_BUILD_TYPE=Release \
-            -DCMAKE_C_COMPILER=gcc-12 \
-            -DCMAKE_CXX_COMPILER=g++-12 \
             -DBUILD_DOCS=ON \
             -DBUILD_TESTING=OFF \
-            -DDOXYGEN_EXECUTABLE=$(which doxygen) \
-            -DCMAKE_TOOLCHAIN_FILE=$VCPKG_ROOT/scripts/buildsystems/vcpkg.cmake \
-            -DVCPKG_MANIFEST_MODE=ON
+            -DDOXYGEN_EXECUTABLE=$(which doxygen)
 
       # Use direct Doxygen command if CMake fails
       - name: Generate Documentation
