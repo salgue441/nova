@@ -96,6 +96,9 @@
     "future": "cpp",
     "__node_handle": "cpp",
     "barrier": "cpp",
-    "valarray": "cpp"
+    "valarray": "cpp",
+    "*.ipp": "cpp",
+    "__bit_reference": "cpp",
+    "ios": "cpp"
   }
 }

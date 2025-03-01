@@ -87,7 +87,7 @@ TEST_F(ShapeTest, AccessOperations) {
 
     // Test at() with invalid indices
     try {
-        shape.at(3);
+        [[maybe_unused]] auto& val = shape.at(3);
         FAIL() << "Expected LogicError";
     } catch (const LogicError& e) {
         EXPECT_STREQ(e.what(),

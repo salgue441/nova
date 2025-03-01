@@ -76,7 +76,7 @@ public:
     }
 
     BREZEL_NODISCARD constexpr int value() const noexcept { return m_code; }
-    BREZEL_NODISCARD const ErrorCategory& category() const noexcept {
+    BREZEL_NODISCARD constexpr const ErrorCategory& category() const noexcept {
         return *m_category;
     }
 

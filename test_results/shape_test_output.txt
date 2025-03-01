@@ -1,4 +1,4 @@
-[0;32m[==========] [mRunning 44 tests from 7 test suites.
+[0;32m[==========] [mRunning 47 tests from 6 test suites.
 [0;32m[----------] [mGlobal test environment set-up.
 [0;32m[----------] [m6 tests from ErrorCategoryTest
 [0;32m[ RUN      ] [mErrorCategoryTest.SystemCategoryBasics
@@ -91,24 +91,27 @@
 [0;32m[       OK ] [mStridesTest.IteratorSupport (0 ms)
 [0;32m[----------] [m9 tests from StridesTest (0 ms total)
 
-[0;32m[----------] [m5 tests from TensorConceptTest
-[0;32m[ RUN      ] [mTensorConceptTest.ScalarTypeConstruction
-[0;32m[       OK ] [mTensorConceptTest.ScalarTypeConstruction (0 ms)
-[0;32m[ RUN      ] [mTensorConceptTest.NumericTypeConstraints
-[0;32m[       OK ] [mTensorConceptTest.NumericTypeConstraints (0 ms)
-[0;32m[ RUN      ] [mTensorConceptTest.FloatTypeConstraints
-[0;32m[       OK ] [mTensorConceptTest.FloatTypeConstraints (0 ms)
-[0;32m[ RUN      ] [mTensorConceptTest.TypeCheckUtility
-[0;32m[       OK ] [mTensorConceptTest.TypeCheckUtility (0 ms)
-[0;32m[ RUN      ] [mTensorConceptTest.SupportedOperations
-[0;32m[       OK ] [mTensorConceptTest.SupportedOperations (0 ms)
-[0;32m[----------] [m5 tests from TensorConceptTest (0 ms total)
-
-[0;32m[----------] [m1 test from TensorExpressionsTest
-[0;32m[ RUN      ] [mTensorExpressionsTest.BasicExpression
-[0;32m[       OK ] [mTensorExpressionsTest.BasicExpression (0 ms)
-[0;32m[----------] [m1 test from TensorExpressionsTest (0 ms total)
+[0;32m[----------] [m9 tests from LayoutTest
+[0;32m[ RUN      ] [mLayoutTest.DefaultConstructor
+[0;32m[       OK ] [mLayoutTest.DefaultConstructor (0 ms)
+[0;32m[ RUN      ] [mLayoutTest.ShapeConstructor
+[0;32m[       OK ] [mLayoutTest.ShapeConstructor (0 ms)
+[0;32m[ RUN      ] [mLayoutTest.StridesConstructor
+[0;32m[       OK ] [mLayoutTest.StridesConstructor (0 ms)
+[0;32m[ RUN      ] [mLayoutTest.FormatConstructor
+[0;32m[       OK ] [mLayoutTest.FormatConstructor (0 ms)
+[0;32m[ RUN      ] [mLayoutTest.LinearIndexing
+[0;32m[       OK ] [mLayoutTest.LinearIndexing (0 ms)
+[0;32m[ RUN      ] [mLayoutTest.IndexToCoordinates
+[0;32m[       OK ] [mLayoutTest.IndexToCoordinates (0 ms)
+[0;32m[ RUN      ] [mLayoutTest.IsContiguous
+[0;32m[       OK ] [mLayoutTest.IsContiguous (0 ms)
+[0;32m[ RUN      ] [mLayoutTest.Transpose
+[0;32m[       OK ] [mLayoutTest.Transpose (0 ms)
+[0;32m[ RUN      ] [mLayoutTest.Permute
+[0;32m[       OK ] [mLayoutTest.Permute (0 ms)
+[0;32m[----------] [m9 tests from LayoutTest (0 ms total)
 
 [0;32m[----------] [mGlobal test environment tear-down
-[0;32m[==========] [m44 tests from 7 test suites ran. (3 ms total)
-[0;32m[  PASSED  ] [m44 tests.
+[0;32m[==========] [m47 tests from 6 test suites ran. (3 ms total)
+[0;32m[  PASSED  ] [m47 tests.

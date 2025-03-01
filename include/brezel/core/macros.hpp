@@ -10,10 +10,21 @@ namespace brezel::detail {
 }  // namespace brezel::detail
 
 // Version information
+#ifndef BREZEL_VERSION_MAJOR
 #define BREZEL_VERSION_MAJOR 0
+#endif
+
+#ifndef BREZEL_VERSION_MINOR
 #define BREZEL_VERSION_MINOR 1
+#endif
+
+#ifndef BREZEL_VERSION_PATCH
 #define BREZEL_VERSION_PATCH 0
+#endif
+
+#ifndef BREZEL_VERSION_STRING
 #define BREZEL_VERSION_STRING "0.1.0"
+#endif
 
 // Function attributes
 #define BREZEL_NODISCARD [[nodiscard]]
