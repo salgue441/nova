@@ -31,6 +31,7 @@ jobs:
             libfmt-dev \
             libtbb-dev \
             libgtest-dev \
+            libeigen3-dev \
             ninja-build \
             build-essential \
             cmake \
