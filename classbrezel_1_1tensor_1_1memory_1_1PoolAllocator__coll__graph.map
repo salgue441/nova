@@ -1,0 +1,5 @@
+<map id="brezel::tensor::memory::PoolAllocator" name="brezel::tensor::memory::PoolAllocator">
+<area shape="rect" id="Node000001" title="Memory pool allocator for efficient small&#45;block allocation." alt="" coords="5,93,180,133"/>
+<area shape="rect" id="Node000002" href="$classbrezel_1_1tensor_1_1memory_1_1IAllocator.html" title="Base allocator interface." alt="" coords="5,5,180,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="95,59,95,93,90,93,90,59"/>
+</map>

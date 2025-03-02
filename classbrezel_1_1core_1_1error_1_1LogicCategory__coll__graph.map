@@ -1,0 +1,5 @@
+<map id="brezel::core::error::LogicCategory" name="brezel::core::error::LogicCategory">
+<area shape="rect" id="Node000001" title="Logic error category for logical/programming errors." alt="" coords="5,93,143,133"/>
+<area shape="rect" id="Node000002" href="$classbrezel_1_1core_1_1error_1_1ErrorCategory.html" title="Base class for error categories." alt="" coords="5,5,143,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="77,59,77,93,71,93,71,59"/>
+</map>

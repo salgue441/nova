@@ -1,0 +1,11 @@
+var searchData=
+[
+  ['offset_0',['offset',['../classbrezel_1_1tensor_1_1StridedIndex.html#aa5d819f6fa91def55eb1840195da1a62',1,'brezel::tensor::StridedIndex::offset()'],['../classbrezel_1_1tensor_1_1LayoutDescriptor.html#a4fc64561fb2a3ba29a25440ce09571d6',1,'brezel::tensor::LayoutDescriptor::offset()']]],
+  ['operator_20bool_1',['operator bool',['../classbrezel_1_1tensor_1_1memory_1_1AllocatedPtr.html#af8ff0f0b587faa480799e42109b4bc17',1,'brezel::tensor::memory::AllocatedPtr::operator bool()'],['../classbrezel_1_1tensor_1_1SharedStorage.html#ae68f38796ae8f3ef2a1a9b3803e8d119',1,'brezel::tensor::SharedStorage::operator bool()']]],
+  ['operator_21_3d_2',['operator!=',['../classbrezel_1_1tensor_1_1LayoutDescriptor.html#aa1cc3efce1e29c43d2d368305a20f78e',1,'brezel::tensor::LayoutDescriptor']]],
+  ['operator_2a_3',['operator*',['../classbrezel_1_1tensor_1_1memory_1_1AllocatedPtr.html#a7a11b43316bcd9171bb24aa755160a18',1,'brezel::tensor::memory::AllocatedPtr']]],
+  ['operator_2d_3e_4',['operator-&gt;',['../classbrezel_1_1tensor_1_1memory_1_1AllocatedPtr.html#a1c4f245388411e3248dc4ab0a27a5a5a',1,'brezel::tensor::memory::AllocatedPtr']]],
+  ['operator_3d_5',['operator=',['../classbrezel_1_1tensor_1_1Storage.html#ae9988fc2a1a99836c270973fdf159484',1,'brezel::tensor::Storage::operator=(const Storage &amp;other)'],['../classbrezel_1_1tensor_1_1Storage.html#ae7cbaeb0f1cd8d4aaf55634a8db94bc1',1,'brezel::tensor::Storage::operator=(Storage &amp;&amp;other) noexcept'],['../classbrezel_1_1tensor_1_1SharedStorage.html#a6d9621fc54270f1b639addf15cf9772a',1,'brezel::tensor::SharedStorage::operator=(const SharedStorage &amp;other)'],['../classbrezel_1_1tensor_1_1SharedStorage.html#a15f047b422d323df96aae150b7bd01e9',1,'brezel::tensor::SharedStorage::operator=(SharedStorage &amp;&amp;other) noexcept']]],
+  ['operator_3d_3d_6',['operator==',['../classbrezel_1_1tensor_1_1LayoutDescriptor.html#acc2c9e5663dbb929d324f409fc156d50',1,'brezel::tensor::LayoutDescriptor']]],
+  ['operator_5b_5d_7',['operator[]',['../classbrezel_1_1tensor_1_1Storage.html#a17f7b0d1005666f1651d47d96a0b890c',1,'brezel::tensor::Storage::operator[](size_t idx) noexcept'],['../classbrezel_1_1tensor_1_1Storage.html#a69301ad205280d845176e51fa5452950',1,'brezel::tensor::Storage::operator[](size_t idx) const noexcept']]]
+];

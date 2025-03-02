@@ -1,0 +1,7 @@
+var searchData=
+[
+  ['allocate_0',['allocate',['../classbrezel_1_1tensor_1_1memory_1_1IAllocator.html#ac1fd7d1d7fa59bc5a61d34f0910f3d3f',1,'brezel::tensor::memory::IAllocator::allocate()'],['../classbrezel_1_1tensor_1_1memory_1_1DefaultAllocator.html#aa3bf6f9d2cf27790906e17f1131e6059',1,'brezel::tensor::memory::DefaultAllocator::allocate()'],['../classbrezel_1_1tensor_1_1memory_1_1PoolAllocator.html#ad6bef86bb62441c79d1559721d1b5f6d',1,'brezel::tensor::memory::PoolAllocator::allocate()']]],
+  ['allocatedptr_1',['allocatedptr',['../classbrezel_1_1tensor_1_1memory_1_1AllocatedPtr.html#a29c91ce7d50e4218bb5aa236dbe9743b',1,'brezel::tensor::memory::AllocatedPtr::AllocatedPtr() noexcept'],['../classbrezel_1_1tensor_1_1memory_1_1AllocatedPtr.html#a0608893c60443d16be07ba850177f351',1,'brezel::tensor::memory::AllocatedPtr::AllocatedPtr(pointer ptr, IAllocator *allocator=nullptr, size_t size=0) noexcept']]],
+  ['allocator_2',['allocator',['../classbrezel_1_1tensor_1_1memory_1_1AllocatedPtr.html#a7ff5086adfb45b27c9a3e0d94e1e58f4',1,'brezel::tensor::memory::AllocatedPtr::allocator()'],['../classbrezel_1_1tensor_1_1Storage.html#a856d0aed96dba94f51e39a87963c2b31',1,'brezel::tensor::Storage::allocator() const noexcept']]],
+  ['at_3',['at',['../classbrezel_1_1tensor_1_1Storage.html#ac4bc54faf3cc0d5dbfd97c92d3c8ebae',1,'brezel::tensor::Storage::at(size_t idx)'],['../classbrezel_1_1tensor_1_1Storage.html#a18768b555297eca4e32d374af4c267d5',1,'brezel::tensor::Storage::at(size_t idx) const']]]
+];
