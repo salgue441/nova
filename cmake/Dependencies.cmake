@@ -13,6 +13,7 @@ FetchContent_MakeAvailable(tl-expected)
 find_package(Threads REQUIRED)
 find_package(fmt CONFIG REQUIRED)
 find_package(TBB CONFIG REQUIRED)
+find_package(Eigen3 3.3 REQUIRED)
 
 if(NOT TARGET TBB::tbb)
   message(FATAL_ERROR "TBB targets not available. Please install TBB system-wide.")
@@ -56,6 +57,10 @@ function(brezel_validate_dependencies)
   # Testing checks
   if(BUILD_TESTING AND NOT TARGET GTest::gtest)
     message(FATAL_ERROR "GoogleTest not found. Please install GTest system-wide.")
+  endif()
+
+  if(NOT Eigen3_FOUND)
+    message(FATAL_ERROR "Eigen3 library not found. Please install libeigen3-dev")
   endif()
 
   message(STATUS "All dependencies validated successfully")

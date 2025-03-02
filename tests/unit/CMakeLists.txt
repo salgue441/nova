@@ -7,6 +7,7 @@ add_executable(shape_test
   layout_test.cpp
   memory_manager_test.cpp
   storage_test.cpp
+  optimized_math_test.cpp
   main.cpp
 )
 

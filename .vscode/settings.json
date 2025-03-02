@@ -99,6 +99,8 @@
     "valarray": "cpp",
     "*.ipp": "cpp",
     "__bit_reference": "cpp",
-    "ios": "cpp"
+    "ios": "cpp",
+    "__locale": "cpp",
+    "locale": "cpp"
   }
 }

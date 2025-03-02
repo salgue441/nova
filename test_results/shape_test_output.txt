@@ -1,4 +1,4 @@
-[0;32m[==========] [mRunning 80 tests from 8 test suites.
+[0;32m[==========] [mRunning 91 tests from 9 test suites.
 [0;32m[----------] [mGlobal test environment set-up.
 [0;32m[----------] [m6 tests from ErrorCategoryTest
 [0;32m[ RUN      ] [mErrorCategoryTest.SystemCategoryBasics
@@ -182,8 +182,33 @@
 [0;32m[       OK ] [mStorageTest.MakeStorageFunctions (0 ms)
 [0;32m[ RUN      ] [mStorageTest.MultithreadedSharedStorage
 [0;32m[       OK ] [mStorageTest.MultithreadedSharedStorage (0 ms)
-[0;32m[----------] [m24 tests from StorageTest (1 ms total)
+[0;32m[----------] [m24 tests from StorageTest (0 ms total)
+
+[0;32m[----------] [m11 tests from OptimizedMathTest
+[0;32m[ RUN      ] [mOptimizedMathTest.FastExp
+[0;32m[       OK ] [mOptimizedMathTest.FastExp (0 ms)
+[0;32m[ RUN      ] [mOptimizedMathTest.FastLog
+[0;32m[       OK ] [mOptimizedMathTest.FastLog (0 ms)
+[0;32m[ RUN      ] [mOptimizedMathTest.FastSqrt
+[0;32m[       OK ] [mOptimizedMathTest.FastSqrt (0 ms)
+[0;32m[ RUN      ] [mOptimizedMathTest.FastTanh
+[0;32m[       OK ] [mOptimizedMathTest.FastTanh (0 ms)
+[0;32m[ RUN      ] [mOptimizedMathTest.FastSigmoid
+[0;32m[       OK ] [mOptimizedMathTest.FastSigmoid (0 ms)
+[0;32m[ RUN      ] [mOptimizedMathTest.FastReLU
+[0;32m[       OK ] [mOptimizedMathTest.FastReLU (0 ms)
+[0;32m[ RUN      ] [mOptimizedMathTest.FastLeakyReLU
+[0;32m[       OK ] [mOptimizedMathTest.FastLeakyReLU (0 ms)
+[0;32m[ RUN      ] [mOptimizedMathTest.FastPowInteger
+[0;32m[       OK ] [mOptimizedMathTest.FastPowInteger (0 ms)
+[0;32m[ RUN      ] [mOptimizedMathTest.FastPowFloat
+[0;32m[       OK ] [mOptimizedMathTest.FastPowFloat (0 ms)
+[0;32m[ RUN      ] [mOptimizedMathTest.FastAbs
+[0;32m[       OK ] [mOptimizedMathTest.FastAbs (0 ms)
+[0;32m[ RUN      ] [mOptimizedMathTest.FastInvSqrt
+[0;32m[       OK ] [mOptimizedMathTest.FastInvSqrt (0 ms)
+[0;32m[----------] [m11 tests from OptimizedMathTest (0 ms total)
 
 [0;32m[----------] [mGlobal test environment tear-down
-[0;32m[==========] [m80 tests from 8 test suites ran. (5 ms total)
-[0;32m[  PASSED  ] [m80 tests.
+[0;32m[==========] [m91 tests from 9 test suites ran. (4 ms total)
+[0;32m[  PASSED  ] [m91 tests.
