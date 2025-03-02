@@ -29,6 +29,7 @@ target_link_libraries(brezel
   fmt::fmt
   Threads::Threads
   TBB::tbb
+  TBB::tbbmalloc
   Boost::container
   Boost::system
   Boost::filesystem

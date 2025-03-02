@@ -1,4 +1,4 @@
-[0;32m[==========] [mRunning 47 tests from 6 test suites.
+[0;32m[==========] [mRunning 80 tests from 8 test suites.
 [0;32m[----------] [mGlobal test environment set-up.
 [0;32m[----------] [m6 tests from ErrorCategoryTest
 [0;32m[ RUN      ] [mErrorCategoryTest.SystemCategoryBasics
@@ -112,6 +112,78 @@
 [0;32m[       OK ] [mLayoutTest.Permute (0 ms)
 [0;32m[----------] [m9 tests from LayoutTest (0 ms total)
 
+[0;32m[----------] [m9 tests from MemoryManagerTest
+[0;32m[ RUN      ] [mMemoryManagerTest.DefaultAllocator
+[0;32m[       OK ] [mMemoryManagerTest.DefaultAllocator (0 ms)
+[0;32m[ RUN      ] [mMemoryManagerTest.AlignedAllocator
+[0;32m[       OK ] [mMemoryManagerTest.AlignedAllocator (0 ms)
+[0;32m[ RUN      ] [mMemoryManagerTest.ZeroMemoryFlag
+[0;32m[       OK ] [mMemoryManagerTest.ZeroMemoryFlag (0 ms)
+[0;32m[ RUN      ] [mMemoryManagerTest.PoolAllocator
+[0;32m[       OK ] [mMemoryManagerTest.PoolAllocator (0 ms)
+[0;32m[ RUN      ] [mMemoryManagerTest.PoolAllocatorGrowth
+[0;32m[       OK ] [mMemoryManagerTest.PoolAllocatorGrowth (0 ms)
+[0;32m[ RUN      ] [mMemoryManagerTest.AllocatedPtr
+[0;32m[       OK ] [mMemoryManagerTest.AllocatedPtr (0 ms)
+[0;32m[ RUN      ] [mMemoryManagerTest.AllocatedPtrWithArgs
+[0;32m[       OK ] [mMemoryManagerTest.AllocatedPtrWithArgs (0 ms)
+[0;32m[ RUN      ] [mMemoryManagerTest.AllocatedArray
+[0;32m[       OK ] [mMemoryManagerTest.AllocatedArray (0 ms)
+[0;32m[ RUN      ] [mMemoryManagerTest.AllocatedArrayWithValue
+[0;32m[       OK ] [mMemoryManagerTest.AllocatedArrayWithValue (0 ms)
+[0;32m[----------] [m9 tests from MemoryManagerTest (0 ms total)
+
+[0;32m[----------] [m24 tests from StorageTest
+[0;32m[ RUN      ] [mStorageTest.DefaultConstructorCreatesEmptyStorage
+[0;32m[       OK ] [mStorageTest.DefaultConstructorCreatesEmptyStorage (0 ms)
+[0;32m[ RUN      ] [mStorageTest.ConstructWithSize
+[0;32m[       OK ] [mStorageTest.ConstructWithSize (0 ms)
+[0;32m[ RUN      ] [mStorageTest.ConstructWithSizeAndValue
+[0;32m[       OK ] [mStorageTest.ConstructWithSizeAndValue (0 ms)
+[0;32m[ RUN      ] [mStorageTest.CopyConstruction
+[0;32m[       OK ] [mStorageTest.CopyConstruction (0 ms)
+[0;32m[ RUN      ] [mStorageTest.MoveConstruction
+[0;32m[       OK ] [mStorageTest.MoveConstruction (0 ms)
+[0;32m[ RUN      ] [mStorageTest.CopyAssignment
+[0;32m[       OK ] [mStorageTest.CopyAssignment (0 ms)
+[0;32m[ RUN      ] [mStorageTest.MoveAssignment
+[0;32m[       OK ] [mStorageTest.MoveAssignment (0 ms)
+[0;32m[ RUN      ] [mStorageTest.ElementAccess
+[0;32m[       OK ] [mStorageTest.ElementAccess (0 ms)
+[0;32m[ RUN      ] [mStorageTest.Resize
+[0;32m[       OK ] [mStorageTest.Resize (0 ms)
+[0;32m[ RUN      ] [mStorageTest.FillMethod
+[0;32m[       OK ] [mStorageTest.FillMethod (0 ms)
+[0;32m[ RUN      ] [mStorageTest.CloneMethod
+[0;32m[       OK ] [mStorageTest.CloneMethod (0 ms)
+[0;32m[ RUN      ] [mStorageTest.CreateFromExistingData
+[0;32m[       OK ] [mStorageTest.CreateFromExistingData (0 ms)
+[0;32m[ RUN      ] [mStorageTest.DeviceTypeTest
+[0;32m[       OK ] [mStorageTest.DeviceTypeTest (0 ms)
+[0;32m[ RUN      ] [mStorageTest.SharedStorageDefaultConstructor
+[0;32m[       OK ] [mStorageTest.SharedStorageDefaultConstructor (0 ms)
+[0;32m[ RUN      ] [mStorageTest.SharedStorageFromUniquePtr
+[0;32m[       OK ] [mStorageTest.SharedStorageFromUniquePtr (0 ms)
+[0;32m[ RUN      ] [mStorageTest.SharedStorageCopy
+[0;32m[       OK ] [mStorageTest.SharedStorageCopy (0 ms)
+[0;32m[ RUN      ] [mStorageTest.SharedStorageMove
+[0;32m[       OK ] [mStorageTest.SharedStorageMove (0 ms)
+[0;32m[ RUN      ] [mStorageTest.SharedStorageCopyAssignment
+[0;32m[       OK ] [mStorageTest.SharedStorageCopyAssignment (0 ms)
+[0;32m[ RUN      ] [mStorageTest.SharedStorageMoveAssignment
+[0;32m[       OK ] [mStorageTest.SharedStorageMoveAssignment (0 ms)
+[0;32m[ RUN      ] [mStorageTest.SharedStorageGetTyped
+[0;32m[       OK ] [mStorageTest.SharedStorageGetTyped (0 ms)
+[0;32m[ RUN      ] [mStorageTest.SharedStorageClone
+[0;32m[       OK ] [mStorageTest.SharedStorageClone (0 ms)
+[0;32m[ RUN      ] [mStorageTest.SharedStorageResize
+[0;32m[       OK ] [mStorageTest.SharedStorageResize (0 ms)
+[0;32m[ RUN      ] [mStorageTest.MakeStorageFunctions
+[0;32m[       OK ] [mStorageTest.MakeStorageFunctions (0 ms)
+[0;32m[ RUN      ] [mStorageTest.MultithreadedSharedStorage
+[0;32m[       OK ] [mStorageTest.MultithreadedSharedStorage (0 ms)
+[0;32m[----------] [m24 tests from StorageTest (1 ms total)
+
 [0;32m[----------] [mGlobal test environment tear-down
-[0;32m[==========] [m47 tests from 6 test suites ran. (3 ms total)
-[0;32m[  PASSED  ] [m47 tests.
+[0;32m[==========] [m80 tests from 8 test suites ran. (5 ms total)
+[0;32m[  PASSED  ] [m80 tests.

@@ -9,6 +9,7 @@
 #include <cstddef>
 #include <memory>
 #include <mutex>
+#include <unordered_set>
 #include <vector>
 
 #if defined(BREZEL_PLATFORM_WINDOWS)
@@ -123,6 +124,21 @@ public:
  */
 class BREZEL_API DefaultAllocator : public IAllocator {
 public:
+    // Constructor
+    DefaultAllocator() = default;
+
+    // Destructor to ensure proper cleanup
+    ~DefaultAllocator() {
+        // Clean up any remaining allocations
+        for (auto& ptr : m_aligned_allocations) {
+#if defined(BREZEL_PLATFORM_WINDOWS)
+            _aligned_free(ptr);
+#else
+            free(ptr);
+#endif
+        }
+    }
+
     /**
      * @brief Allocate memory block with cache alignment
      *
@@ -155,6 +171,12 @@ public:
                     align_val);
             }
 #endif
+
+            // Track aligned allocations
+            if (ptr) {
+                std::lock_guard<std::mutex> lock(m_mutex);
+                m_aligned_allocations.insert(ptr);
+            }
         }
 
         if (!ptr) {
@@ -189,11 +211,24 @@ public:
             m_allocated_bytes -= std::min(m_allocated_bytes, size);
         }
 
+        // Check if this was an aligned allocation
+        {
+            std::lock_guard<std::mutex> lock(m_mutex);
+            auto it = m_aligned_allocations.find(ptr);
+            if (it != m_aligned_allocations.end()) {
 #if defined(BREZEL_PLATFORM_WINDOWS)
-        _aligned_free(ptr);
+                _aligned_free(ptr);
 #else
-        free(ptr);
+                free(ptr);
 #endif
+                m_aligned_allocations.erase(it);
+                return;
+            }
+        }
+
+        // Use TBB deallocator for regular allocations
+        tbb::scalable_allocator<std::byte>().deallocate(
+            static_cast<std::byte*>(ptr), size);
     }
 
     /**
@@ -208,6 +243,7 @@ public:
 private:
     mutable std::mutex m_mutex;
     size_t m_allocated_bytes = 0;
+    std::unordered_set<void*> m_aligned_allocations;
 };
 
 /**
@@ -294,7 +330,7 @@ public:
             if (ptr_addr >= block_addr &&
                 ptr_addr < block_addr + m_blocks_per_chunk * m_block_size) {
                 found = true;
-                return;
+                break;
             }
         }
 
@@ -615,7 +651,8 @@ BREZEL_NODISCARD AllocatedPtr<T> make_allocated_array(
     T* array = static_cast<T*>(memory);
 
     if constexpr (std::is_trivially_constructible_v<T>) {
-        if (std::memcmp(&init_val, &T(), sizeof(T)) == 0) {
+        T default_val = T();
+        if (std::memcmp(&init_val, &default_val, sizeof(T)) == 0) {
             std::memset(array, 0, total_size);
         } else {
             for (size_t i = 0; i < count; ++i) {
