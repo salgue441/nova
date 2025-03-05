@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
 
 #include <brezel/core/error/error.hpp>
-#include <brezel/tensor/strides.hpp>
+#include <brezel/tensor/stride.hpp>
 #include <vector>
 
 using namespace brezel::tensor;

@@ -1,6 +1,6 @@
 #include <gtest/gtest.h>
 
-#include <brezel/tensor/tensor_concept.hpp>
+#include <brezel/tensor/detail/tensor_concept.hpp>
 #include <cmath>
 #include <string>
 #include <vector>
