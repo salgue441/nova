@@ -1,0 +1,7 @@
+<map id="Graphical Class Hierarchy" name="Graphical Class Hierarchy">
+<area shape="rect" id="Node000000" href="$classbrezel_1_1tensor_1_1detail_1_1TensorBase.html" title="Base class for tensor operations providing a common interface for different tensor implementations." alt="" coords="5,23,161,63"/>
+<area shape="rect" id="Node000001" href="$classbrezel_1_1tensor_1_1Tensor.html" title="A final class representing a multi&#45;dimensional array (tensor) with type&#45;safe operations." alt="" coords="225,5,424,31"/>
+<area shape="poly" id="edge4_Node000000_Node000001" title=" " alt="" coords="175,31,225,26,226,31,175,36"/>
+<area shape="rect" id="Node000002" href="$classbrezel_1_1tensor_1_1TensorView.html" title=" " alt="" coords="209,55,440,80"/>
+<area shape="poly" id="edge5_Node000000_Node000002" title=" " alt="" coords="175,50,210,53,209,59,175,55"/>
+</map>

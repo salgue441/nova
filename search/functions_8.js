@@ -1,0 +1,6 @@
+var searchData=
+[
+  ['layout_0',['layout',['../classbrezel_1_1tensor_1_1LayoutDescriptor.html#a3ffe62a716699d72a3a40f84e93144ea',1,'brezel::tensor::LayoutDescriptor::layout()'],['../classbrezel_1_1tensor_1_1Tensor.html#aa4c22dde82af99aef3a4784bebc3f651',1,'brezel::tensor::Tensor::layout()'],['../classbrezel_1_1tensor_1_1TensorView.html#a038fab4ede0f1f152fce55762b77332d',1,'brezel::tensor::TensorView::layout()']]],
+  ['layoutdescriptor_1',['layoutdescriptor',['../classbrezel_1_1tensor_1_1LayoutDescriptor.html#a030e0117c103c3596b70fd20a932ada7',1,'brezel::tensor::LayoutDescriptor::LayoutDescriptor(const Shape &amp;shape, MemoryLayout layout=MemoryLayout::RowMajor)'],['../classbrezel_1_1tensor_1_1LayoutDescriptor.html#a24b4f51161b99fd3b62bfc8381bc21f0',1,'brezel::tensor::LayoutDescriptor::LayoutDescriptor(const Shape &amp;shape, std::span&lt; const int64_t &gt; strides)'],['../classbrezel_1_1tensor_1_1LayoutDescriptor.html#a20782466ee39f7e8fe3d796ab11da776',1,'brezel::tensor::LayoutDescriptor::LayoutDescriptor(const Shape &amp;shape, MemoryFormat format, DeviceType device=DeviceType::CPU)']]],
+  ['linspace_2',['linspace',['../classbrezel_1_1tensor_1_1Tensor.html#a58aa79996f6ea5a23c22fb6202ddb047',1,'brezel::tensor::Tensor']]]
+];

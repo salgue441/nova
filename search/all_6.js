@@ -1,0 +1,10 @@
+var searchData=
+[
+  ['get_0',['get',['../classbrezel_1_1tensor_1_1memory_1_1AllocatedPtr.html#ad81e12823f776f3c2d4a430b84f67fb0',1,'brezel::tensor::memory::AllocatedPtr']]],
+  ['get_5fallocated_5fbytes_1',['get_allocated_bytes',['../classbrezel_1_1tensor_1_1memory_1_1IAllocator.html#a1ad1a026d02e067c7baaf650a9889a94',1,'brezel::tensor::memory::IAllocator::get_allocated_bytes()'],['../classbrezel_1_1tensor_1_1memory_1_1DefaultAllocator.html#a7a1996bc734c2d97712204bc87d9915a',1,'brezel::tensor::memory::DefaultAllocator::get_allocated_bytes()'],['../classbrezel_1_1tensor_1_1memory_1_1PoolAllocator.html#abfccdd600a3684c3b4ea4ad215a06341',1,'brezel::tensor::memory::PoolAllocator::get_allocated_bytes()']]],
+  ['get_5fgenerator_2',['get_generator',['../classbrezel_1_1tensor_1_1detail_1_1ThreadLocalRandomGeneratorFactory.html#a3cfc0f4579f2e55ce33e9bccccb07cce',1,'brezel::tensor::detail::ThreadLocalRandomGeneratorFactory::get_generator()'],['../classbrezel_1_1tensor_1_1detail_1_1ThreadLocalNormalGeneratorFactory.html#a2583069d544e77a57ae04d97c4033e96',1,'brezel::tensor::detail::ThreadLocalNormalGeneratorFactory::get_generator()']]],
+  ['get_5findices_3',['get_indices',['../classbrezel_1_1tensor_1_1LayoutDescriptor.html#a8869264bf26a7beced9d532bf4f524cd',1,'brezel::tensor::LayoutDescriptor']]],
+  ['get_5flinear_5findex_4',['get_linear_index',['../classbrezel_1_1tensor_1_1LayoutDescriptor.html#af880d06b237b131d0da25012a3677521',1,'brezel::tensor::LayoutDescriptor::get_linear_index()'],['../classbrezel_1_1tensor_1_1Strides.html#a892acfa8ef119f1340118a30dfe177ab',1,'brezel::tensor::Strides::get_linear_index()']]],
+  ['get_5fpool_5fallocator_5',['get_pool_allocator',['../classbrezel_1_1tensor_1_1memory_1_1MemoryManager.html#ab45dbd62f6df5913675994f5a4b6bef7',1,'brezel::tensor::memory::MemoryManager']]],
+  ['get_5ftotal_5fallocated_5fbytes_6',['get_total_allocated_bytes',['../classbrezel_1_1tensor_1_1memory_1_1MemoryManager.html#a9e7b15506e84812dec1f8ccc72737612',1,'brezel::tensor::memory::MemoryManager']]]
+];

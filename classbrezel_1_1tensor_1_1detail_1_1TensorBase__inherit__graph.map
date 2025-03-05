@@ -1,0 +1,7 @@
+<map id="brezel::tensor::detail::TensorBase&lt; T &gt;" name="brezel::tensor::detail::TensorBase&lt; T &gt;">
+<area shape="rect" id="Node000001" title="Base class for tensor operations providing a common interface for different tensor implementations." alt="" coords="145,5,301,45"/>
+<area shape="rect" id="Node000002" href="$classbrezel_1_1tensor_1_1Tensor.html" title="A final class representing a multi&#45;dimensional array (tensor) with type&#45;safe operations." alt="" coords="5,93,204,119"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="184,55,124,95,121,91,181,51"/>
+<area shape="rect" id="Node000003" href="$classbrezel_1_1tensor_1_1TensorView.html" title=" " alt="" coords="228,93,459,119"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="265,51,327,91,324,95,262,55"/>
+</map>
