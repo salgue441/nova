@@ -1,0 +1,9 @@
+<map id="brezel::core::error::ErrorCategory" name="brezel::core::error::ErrorCategory">
+<area shape="rect" id="Node000001" title="Base class for error categories." alt="" coords="5,69,143,109"/>
+<area shape="rect" id="Node000002" href="$classbrezel_1_1core_1_1error_1_1LogicCategory.html" title="Logic error category for logical/programming errors." alt="" coords="194,5,331,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="146,62,202,43,204,48,147,67"/>
+<area shape="rect" id="Node000003" href="$classbrezel_1_1core_1_1error_1_1RuntimeCategory.html" title="Runtime error category for runtime errors." alt="" coords="191,69,335,109"/>
+<area shape="poly" id="edge2_Node000001_Node000003" title=" " alt="" coords="157,87,190,87,190,92,157,92"/>
+<area shape="rect" id="Node000004" href="$classbrezel_1_1core_1_1error_1_1SystemCategory.html" title="System error category for OS&#45;related errors." alt="" coords="193,133,332,173"/>
+<area shape="poly" id="edge3_Node000001_Node000004" title=" " alt="" coords="147,111,204,131,202,136,146,116"/>
+</map>

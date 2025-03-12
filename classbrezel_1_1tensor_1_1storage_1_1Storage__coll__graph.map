@@ -1,0 +1,5 @@
+<map id="brezel::tensor::storage::Storage&lt; T &gt;" name="brezel::tensor::storage::Storage&lt; T &gt;">
+<area shape="rect" id="Node000001" title="Typed storage implementation for tensor data." alt="" coords="5,93,173,133"/>
+<area shape="rect" id="Node000002" href="$classbrezel_1_1tensor_1_1storage_1_1StorageBase.html" title="Base storage class for tensor data." alt="" coords="5,5,173,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,59,92,93,87,93,87,59"/>
+</map>

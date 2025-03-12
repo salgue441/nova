@@ -1,0 +1,5 @@
+<map id="brezel::tensor::storage::SharedStorageBase" name="brezel::tensor::storage::SharedStorageBase">
+<area shape="rect" id="Node000001" title="Reference&#45;counted shared storage wrapper." alt="" coords="5,5,173,45"/>
+<area shape="rect" id="Node000002" href="$classbrezel_1_1tensor_1_1storage_1_1SharedStorage.html" title="Typed shared storage implementation." alt="" coords="5,93,173,133"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="92,59,92,93,87,93,87,59"/>
+</map>

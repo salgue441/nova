@@ -1,0 +1,5 @@
+<map id="brezel::tensor::shape::Broadcasting::BroadcastPlan" name="brezel::tensor::shape::Broadcasting::BroadcastPlan">
+<area shape="rect" id="Node000001" title="Broadcast iteration plan for optimized execution." alt="" coords="5,108,221,148"/>
+<area shape="rect" id="Node000002" href="$classbrezel_1_1tensor_1_1shape_1_1Shape.html" title="Represents the shape of a tensor." alt="" coords="34,5,193,45"/>
+<area shape="poly" id="edge1_Node000001_Node000002" title=" " alt="" coords="116,59,116,108,111,108,111,59"/>
+</map>

@@ -1,0 +1,18 @@
+var searchData=
+[
+  ['imag_0',['imag',['../classbrezel_1_1tensor_1_1utils_1_1dispatch_1_1TypeErased.html#a1c6cb533088b030a783f28dc4cc6aa6c',1,'brezel::tensor::utils::dispatch::TypeErased']]],
+  ['info_1',['info',['../classbrezel_1_1tensor_1_1parallel_1_1Task.html#ab10cd166a9a08ed0be34aa080fb49d25',1,'brezel::tensor::parallel::Task']]],
+  ['initialize_2',['initialize',['../classbrezel_1_1tensor_1_1parallel_1_1TaskSystem.html#a1f626260eb466dd30dde62c0a6627a7a',1,'brezel::tensor::parallel::TaskSystem::initialize()'],['../classbrezel_1_1tensor_1_1parallel_1_1ThreadPool.html#a87744f8185fe6cec5aa2b99e81295170',1,'brezel::tensor::parallel::ThreadPool::initialize()']]],
+  ['instance_3',['instance',['../classbrezel_1_1tensor_1_1parallel_1_1TaskSystem.html#ac6b51b36e0b84a8df6f024cca26a8400',1,'brezel::tensor::parallel::TaskSystem::instance()'],['../classbrezel_1_1tensor_1_1storage_1_1MemoryPool.html#ac974b7710834622b9423842fa3a01cfb',1,'brezel::tensor::storage::MemoryPool::instance()']]],
+  ['is_5fbroadcastable_5fwith_4',['is_broadcastable_with',['../classbrezel_1_1tensor_1_1shape_1_1Shape.html#a7fc3cd87a3984ae5fad243b48f579d13',1,'brezel::tensor::shape::Shape']]],
+  ['is_5fcanceled_5',['is_canceled',['../classbrezel_1_1tensor_1_1parallel_1_1Task.html#ae44ebdd3e6c9094529af54767182f453',1,'brezel::tensor::parallel::Task']]],
+  ['is_5fcomplex_6',['is_complex',['../classbrezel_1_1tensor_1_1utils_1_1dispatch_1_1TypeErased.html#a94f73295ee93be7b6923b6ba67598f30',1,'brezel::tensor::utils::dispatch::TypeErased']]],
+  ['is_5fcontiguous_7',['is_contiguous',['../classbrezel_1_1tensor_1_1storage_1_1StorageBase.html#a74b3b71f777142c3788c3218cd14d161',1,'brezel::tensor::storage::StorageBase::is_contiguous()'],['../classbrezel_1_1tensor_1_1storage_1_1Storage.html#a8959244d0b2e68004fca056fd8e1f5b5',1,'brezel::tensor::storage::Storage::is_contiguous()'],['../classbrezel_1_1tensor_1_1shape_1_1Strides.html#a04987233ec72e6c90a9fb68b441ad335',1,'brezel::tensor::shape::Strides::is_contiguous(const Shape &amp;shape) const noexcept']]],
+  ['is_5ff_5fcontiguous_8',['is_f_contiguous',['../classbrezel_1_1tensor_1_1shape_1_1Strides.html#a393c1d92d8469550db68033c52752386',1,'brezel::tensor::shape::Strides']]],
+  ['is_5fnull_9',['is_null',['../classbrezel_1_1tensor_1_1storage_1_1TypeErasedStorage.html#a603b30502b615e19ce21a5168d42900a',1,'brezel::tensor::storage::TypeErasedStorage']]],
+  ['is_5fread_5fonly_10',['is_read_only',['../classbrezel_1_1tensor_1_1storage_1_1SharedStorage.html#a5b4cc65071153abea8fd3464c338eb42',1,'brezel::tensor::storage::SharedStorage::is_read_only()'],['../classbrezel_1_1tensor_1_1storage_1_1Storage.html#a2d540fd2fb957b7e44b95344e45c9502',1,'brezel::tensor::storage::Storage::is_read_only()']]],
+  ['is_5freshapable_5fto_11',['is_reshapable_to',['../classbrezel_1_1tensor_1_1shape_1_1Shape.html#a7387d519f731a61307d445bf4482a4a3',1,'brezel::tensor::shape::Shape']]],
+  ['is_5fshared_12',['is_shared',['../classbrezel_1_1tensor_1_1storage_1_1SharedStorageBase.html#a39696526ed639ef2fd0c86dd3bece07b',1,'brezel::tensor::storage::SharedStorageBase::is_shared()'],['../classbrezel_1_1tensor_1_1storage_1_1SharedStorage.html#ac704cc60d46c6112602ab1b15f111c5a',1,'brezel::tensor::storage::SharedStorage::is_shared()']]],
+  ['is_5ftype_13',['is_type',['../classbrezel_1_1tensor_1_1storage_1_1TypeErasedStorage.html#a072a18efb91bb6af7a3f0bfcfcd46c45',1,'brezel::tensor::storage::TypeErasedStorage']]],
+  ['is_5fvalid_5fbroadcast_5findex_14',['is_valid_broadcast_index',['../classbrezel_1_1tensor_1_1shape_1_1Broadcasting.html#ac107ac827af95e0da1d43ed1f934bdd2',1,'brezel::tensor::shape::Broadcasting']]]
+];
