@@ -1,8 +1,8 @@
-[0;32m[==========] [mRunning 91 tests from 9 test suites.
+[0;32m[==========] [mRunning 31 tests from 4 test suites.
 [0;32m[----------] [mGlobal test environment set-up.
 [0;32m[----------] [m6 tests from ErrorCategoryTest
 [0;32m[ RUN      ] [mErrorCategoryTest.SystemCategoryBasics
-[0;32m[       OK ] [mErrorCategoryTest.SystemCategoryBasics (0 ms)
+[0;32m[       OK ] [mErrorCategoryTest.SystemCategoryBasics (1 ms)
 [0;32m[ RUN      ] [mErrorCategoryTest.RuntimeCategoryBasics
 [0;32m[       OK ] [mErrorCategoryTest.RuntimeCategoryBasics (0 ms)
 [0;32m[ RUN      ] [mErrorCategoryTest.LogicCategoryBasics
@@ -13,7 +13,7 @@
 [0;32m[       OK ] [mErrorCategoryTest.CategorySingletonThreadSafety (0 ms)
 [0;32m[ RUN      ] [mErrorCategoryTest.ImmovableUncopyable
 [0;32m[       OK ] [mErrorCategoryTest.ImmovableUncopyable (0 ms)
-[0;32m[----------] [m6 tests from ErrorCategoryTest (1 ms total)
+[0;32m[----------] [m6 tests from ErrorCategoryTest (2 ms total)
 
 [0;32m[----------] [m6 tests from ErrorCodeTest
 [0;32m[ RUN      ] [mErrorCodeTest.DefaultConstruction
@@ -40,149 +40,14 @@
 [0;32m[ RUN      ] [mErrorTest.ErrorHistoryTracking
 [0;32m[       OK ] [mErrorTest.ErrorHistoryTracking (0 ms)
 [0;32m[ RUN      ] [mErrorTest.ThreadSafeErrorTracking
-[0;32m[       OK ] [mErrorTest.ThreadSafeErrorTracking (0 ms)
+[0;32m[       OK ] [mErrorTest.ThreadSafeErrorTracking (2 ms)
 [0;32m[ RUN      ] [mErrorTest.ErrorMacros
 [0;32m[       OK ] [mErrorTest.ErrorMacros (0 ms)
 [0;32m[ RUN      ] [mErrorTest.MovedError
 [0;32m[       OK ] [mErrorTest.MovedError (0 ms)
 [0;32m[ RUN      ] [mErrorTest.ResultHandling
 [0;32m[       OK ] [mErrorTest.ResultHandling (0 ms)
-[0;32m[----------] [m8 tests from ErrorTest (0 ms total)
-
-[0;32m[----------] [m9 tests from ShapeTest
-[0;32m[ RUN      ] [mShapeTest.DefaultConstructor
-[0;32m[       OK ] [mShapeTest.DefaultConstructor (0 ms)
-[0;32m[ RUN      ] [mShapeTest.InitializerListConstructor
-[0;32m[       OK ] [mShapeTest.InitializerListConstructor (0 ms)
-[0;32m[ RUN      ] [mShapeTest.RangeConstructor
-[0;32m[       OK ] [mShapeTest.RangeConstructor (0 ms)
-[0;32m[ RUN      ] [mShapeTest.NegativeDimensionsTest
-[0;32m[       OK ] [mShapeTest.NegativeDimensionsTest (0 ms)
-[0;32m[ RUN      ] [mShapeTest.NegativeDimensionsRange
-[0;32m[       OK ] [mShapeTest.NegativeDimensionsRange (0 ms)
-[0;32m[ RUN      ] [mShapeTest.NegativeDimensionsPushBack
-[0;32m[       OK ] [mShapeTest.NegativeDimensionsPushBack (0 ms)
-[0;32m[ RUN      ] [mShapeTest.AccessOperations
-[0;32m[       OK ] [mShapeTest.AccessOperations (0 ms)
-[0;32m[ RUN      ] [mShapeTest.ModifierOperations
-[0;32m[       OK ] [mShapeTest.ModifierOperations (0 ms)
-[0;32m[ RUN      ] [mShapeTest.NumelCalculation
-[0;32m[       OK ] [mShapeTest.NumelCalculation (0 ms)
-[0;32m[----------] [m9 tests from ShapeTest (0 ms total)
-
-[0;32m[----------] [m9 tests from StridesTest
-[0;32m[ RUN      ] [mStridesTest.DefaultConstructor
-[0;32m[       OK ] [mStridesTest.DefaultConstructor (0 ms)
-[0;32m[ RUN      ] [mStridesTest.ConstructFromShape
-[0;32m[       OK ] [mStridesTest.ConstructFromShape (0 ms)
-[0;32m[ RUN      ] [mStridesTest.InitializerListConstructor
-[0;32m[       OK ] [mStridesTest.InitializerListConstructor (0 ms)
-[0;32m[ RUN      ] [mStridesTest.AccessOperations
-[0;32m[       OK ] [mStridesTest.AccessOperations (0 ms)
-[0;32m[ RUN      ] [mStridesTest.LinearIndexCalculation
-[0;32m[       OK ] [mStridesTest.LinearIndexCalculation (0 ms)
-[0;32m[ RUN      ] [mStridesTest.ContiguityCheck
-[0;32m[       OK ] [mStridesTest.ContiguityCheck (0 ms)
-[0;32m[ RUN      ] [mStridesTest.StringRepresentation
-[0;32m[       OK ] [mStridesTest.StringRepresentation (0 ms)
-[0;32m[ RUN      ] [mStridesTest.ComparisonOperators
-[0;32m[       OK ] [mStridesTest.ComparisonOperators (0 ms)
-[0;32m[ RUN      ] [mStridesTest.IteratorSupport
-[0;32m[       OK ] [mStridesTest.IteratorSupport (0 ms)
-[0;32m[----------] [m9 tests from StridesTest (0 ms total)
-
-[0;32m[----------] [m9 tests from LayoutTest
-[0;32m[ RUN      ] [mLayoutTest.DefaultConstructor
-[0;32m[       OK ] [mLayoutTest.DefaultConstructor (0 ms)
-[0;32m[ RUN      ] [mLayoutTest.ShapeConstructor
-[0;32m[       OK ] [mLayoutTest.ShapeConstructor (0 ms)
-[0;32m[ RUN      ] [mLayoutTest.StridesConstructor
-[0;32m[       OK ] [mLayoutTest.StridesConstructor (0 ms)
-[0;32m[ RUN      ] [mLayoutTest.FormatConstructor
-[0;32m[       OK ] [mLayoutTest.FormatConstructor (0 ms)
-[0;32m[ RUN      ] [mLayoutTest.LinearIndexing
-[0;32m[       OK ] [mLayoutTest.LinearIndexing (0 ms)
-[0;32m[ RUN      ] [mLayoutTest.IndexToCoordinates
-[0;32m[       OK ] [mLayoutTest.IndexToCoordinates (0 ms)
-[0;32m[ RUN      ] [mLayoutTest.IsContiguous
-[0;32m[       OK ] [mLayoutTest.IsContiguous (0 ms)
-[0;32m[ RUN      ] [mLayoutTest.Transpose
-[0;32m[       OK ] [mLayoutTest.Transpose (0 ms)
-[0;32m[ RUN      ] [mLayoutTest.Permute
-[0;32m[       OK ] [mLayoutTest.Permute (0 ms)
-[0;32m[----------] [m9 tests from LayoutTest (0 ms total)
-
-[0;32m[----------] [m9 tests from MemoryManagerTest
-[0;32m[ RUN      ] [mMemoryManagerTest.DefaultAllocator
-[0;32m[       OK ] [mMemoryManagerTest.DefaultAllocator (0 ms)
-[0;32m[ RUN      ] [mMemoryManagerTest.AlignedAllocator
-[0;32m[       OK ] [mMemoryManagerTest.AlignedAllocator (0 ms)
-[0;32m[ RUN      ] [mMemoryManagerTest.ZeroMemoryFlag
-[0;32m[       OK ] [mMemoryManagerTest.ZeroMemoryFlag (0 ms)
-[0;32m[ RUN      ] [mMemoryManagerTest.PoolAllocator
-[0;32m[       OK ] [mMemoryManagerTest.PoolAllocator (0 ms)
-[0;32m[ RUN      ] [mMemoryManagerTest.PoolAllocatorGrowth
-[0;32m[       OK ] [mMemoryManagerTest.PoolAllocatorGrowth (0 ms)
-[0;32m[ RUN      ] [mMemoryManagerTest.AllocatedPtr
-[0;32m[       OK ] [mMemoryManagerTest.AllocatedPtr (0 ms)
-[0;32m[ RUN      ] [mMemoryManagerTest.AllocatedPtrWithArgs
-[0;32m[       OK ] [mMemoryManagerTest.AllocatedPtrWithArgs (0 ms)
-[0;32m[ RUN      ] [mMemoryManagerTest.AllocatedArray
-[0;32m[       OK ] [mMemoryManagerTest.AllocatedArray (0 ms)
-[0;32m[ RUN      ] [mMemoryManagerTest.AllocatedArrayWithValue
-[0;32m[       OK ] [mMemoryManagerTest.AllocatedArrayWithValue (0 ms)
-[0;32m[----------] [m9 tests from MemoryManagerTest (0 ms total)
-
-[0;32m[----------] [m24 tests from StorageTest
-[0;32m[ RUN      ] [mStorageTest.DefaultConstructorCreatesEmptyStorage
-[0;32m[       OK ] [mStorageTest.DefaultConstructorCreatesEmptyStorage (0 ms)
-[0;32m[ RUN      ] [mStorageTest.ConstructWithSize
-[0;32m[       OK ] [mStorageTest.ConstructWithSize (0 ms)
-[0;32m[ RUN      ] [mStorageTest.ConstructWithSizeAndValue
-[0;32m[       OK ] [mStorageTest.ConstructWithSizeAndValue (0 ms)
-[0;32m[ RUN      ] [mStorageTest.CopyConstruction
-[0;32m[       OK ] [mStorageTest.CopyConstruction (0 ms)
-[0;32m[ RUN      ] [mStorageTest.MoveConstruction
-[0;32m[       OK ] [mStorageTest.MoveConstruction (0 ms)
-[0;32m[ RUN      ] [mStorageTest.CopyAssignment
-[0;32m[       OK ] [mStorageTest.CopyAssignment (0 ms)
-[0;32m[ RUN      ] [mStorageTest.MoveAssignment
-[0;32m[       OK ] [mStorageTest.MoveAssignment (0 ms)
-[0;32m[ RUN      ] [mStorageTest.ElementAccess
-[0;32m[       OK ] [mStorageTest.ElementAccess (0 ms)
-[0;32m[ RUN      ] [mStorageTest.Resize
-[0;32m[       OK ] [mStorageTest.Resize (0 ms)
-[0;32m[ RUN      ] [mStorageTest.FillMethod
-[0;32m[       OK ] [mStorageTest.FillMethod (0 ms)
-[0;32m[ RUN      ] [mStorageTest.CloneMethod
-[0;32m[       OK ] [mStorageTest.CloneMethod (0 ms)
-[0;32m[ RUN      ] [mStorageTest.CreateFromExistingData
-[0;32m[       OK ] [mStorageTest.CreateFromExistingData (0 ms)
-[0;32m[ RUN      ] [mStorageTest.DeviceTypeTest
-[0;32m[       OK ] [mStorageTest.DeviceTypeTest (0 ms)
-[0;32m[ RUN      ] [mStorageTest.SharedStorageDefaultConstructor
-[0;32m[       OK ] [mStorageTest.SharedStorageDefaultConstructor (0 ms)
-[0;32m[ RUN      ] [mStorageTest.SharedStorageFromUniquePtr
-[0;32m[       OK ] [mStorageTest.SharedStorageFromUniquePtr (0 ms)
-[0;32m[ RUN      ] [mStorageTest.SharedStorageCopy
-[0;32m[       OK ] [mStorageTest.SharedStorageCopy (0 ms)
-[0;32m[ RUN      ] [mStorageTest.SharedStorageMove
-[0;32m[       OK ] [mStorageTest.SharedStorageMove (0 ms)
-[0;32m[ RUN      ] [mStorageTest.SharedStorageCopyAssignment
-[0;32m[       OK ] [mStorageTest.SharedStorageCopyAssignment (0 ms)
-[0;32m[ RUN      ] [mStorageTest.SharedStorageMoveAssignment
-[0;32m[       OK ] [mStorageTest.SharedStorageMoveAssignment (0 ms)
-[0;32m[ RUN      ] [mStorageTest.SharedStorageGetTyped
-[0;32m[       OK ] [mStorageTest.SharedStorageGetTyped (0 ms)
-[0;32m[ RUN      ] [mStorageTest.SharedStorageClone
-[0;32m[       OK ] [mStorageTest.SharedStorageClone (0 ms)
-[0;32m[ RUN      ] [mStorageTest.SharedStorageResize
-[0;32m[       OK ] [mStorageTest.SharedStorageResize (0 ms)
-[0;32m[ RUN      ] [mStorageTest.MakeStorageFunctions
-[0;32m[       OK ] [mStorageTest.MakeStorageFunctions (0 ms)
-[0;32m[ RUN      ] [mStorageTest.MultithreadedSharedStorage
-[0;32m[       OK ] [mStorageTest.MultithreadedSharedStorage (0 ms)
-[0;32m[----------] [m24 tests from StorageTest (0 ms total)
+[0;32m[----------] [m8 tests from ErrorTest (3 ms total)
 
 [0;32m[----------] [m11 tests from OptimizedMathTest
 [0;32m[ RUN      ] [mOptimizedMathTest.FastExp
@@ -210,5 +75,5 @@
 [0;32m[----------] [m11 tests from OptimizedMathTest (0 ms total)
 
 [0;32m[----------] [mGlobal test environment tear-down
-[0;32m[==========] [m91 tests from 9 test suites ran. (4 ms total)
-[0;32m[  PASSED  ] [m91 tests.
+[0;32m[==========] [m31 tests from 4 test suites ran. (7 ms total)
+[0;32m[  PASSED  ] [m31 tests.

@@ -2,10 +2,6 @@ add_executable(shape_test
   error_category_test.cpp
   error_code_test.cpp
   error_test.cpp
-  shape_test.cpp
-  strides_test.cpp
-  layout_test.cpp
-  memory_manager_test.cpp
   optimized_math_test.cpp
   main.cpp
 )

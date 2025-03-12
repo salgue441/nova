@@ -102,6 +102,9 @@
     "ios": "cpp",
     "__locale": "cpp",
     "locale": "cpp",
-    "csignal": "cpp"
+    "csignal": "cpp",
+    "__functional_base": "cpp",
+    "__functional_base_03": "cpp",
+    "__tuple": "cpp"
   }
 }
